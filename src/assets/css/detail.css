@@ -1,0 +1,58 @@
+.detail-collapse-container {
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #bbbbbb;
+}
+
+.detail-base-info-container {
+  display: flex;
+  width: 100%;
+}
+
+.detail-base-info {
+  font: 1em sans-serif;
+
+  height: 2em;
+  text-align: left;
+  padding: 0.5em;
+}
+
+.detail-base-info-left {
+  font: 1em sans-serif;
+  width: 200px;
+  height: 2em;
+  text-align: right;
+  padding: 0.5em;
+}
+
+.detail-base-info-middle {
+  flex: 1;
+  height: 2em;
+  font: 1em sans-serif;
+  text-align: left;
+  padding: 0.5em;
+}
+
+.detail-base-info-middle-1 {
+  font: 1em sans-serif;
+  text-align: left;
+  padding: 0.5em;
+}
+
+.detail-base-info-right {
+  height: 2em;
+  font: 1em sans-serif;
+  padding: 0.5em;
+  margin-left: auto;
+}
+
+.detail-base-info-foot {
+  font: 1em sans-serif;
+  padding: 0.5em;
+  margin-left: auto;
+}
+
+.account-balance-insufficient {
+  font: 1em sans-serif;
+  color: red;
+  margin: auto;
+}

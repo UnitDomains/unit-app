@@ -1,0 +1,380 @@
+{
+  "address": {
+    "etherscanButton": "在 Etherscan 上查看",
+    "filter": {
+      "controller": "管理員",
+      "registrant": "註冊人"
+    },
+    "namesExpiringSoonBanner": {
+      "text": "妳可以在壹次交易中同時為它們續費，方法是選中需要續費的域名並點擊 “續費” 按鈕！",
+      "title": "有些域名馬上就要到期了"
+    },
+    "renew": {
+      "button": "給已勾選項目續費",
+      "confirm": [
+        "以下域名：",
+        "將同時續費 "
+      ],
+      "confirmButton": "續費"
+    },
+    "sort": {
+      "alphabetical": "按字母順序",
+      "expiry": "到期時間"
+    },
+    "transactionBanner": "妳能看到這個頁面是因為我們向您發送了壹筆交易，或是其他網站調用了這筆交易。妳需要續費的域名如下。"
+  },
+  "blockies": {
+    "noAddressFound": "未發現地址"
+  },
+  "c": {
+    "Address": "以太坊地址",
+    "Content": "內容哈希",
+    "Controller": "管理員",
+    "Expiration Date": "到期時間",
+    "Resolver": "解析器",
+    "about": "關於",
+    "addresses": "地址",
+    "cancel": "取消",
+    "cannotclaimDns": "您不能在本站收回 .{ name } 的域名",
+    "claim": "申請",
+    "connect": "連接",
+    "disconnect": "斷開連接",
+    "edit": "編輯",
+    "email": "電子郵箱",
+    "expires": "到期",
+    "faq": "常見問題",
+    "favourites": "收藏",
+    "learnmore": "了解更多",
+    "learnmoreenglishonly": "了解更多 (僅提供英文內容)",
+    "migrate": "遷移",
+    "mynames": "我的域名",
+    "network": "網酪",
+    "otheraddresses": "其他地址",
+    "parent": "父域名",
+    "readonly": "只讀狀態",
+    "refresh": "刷新",
+    "register": "註冊",
+    "registrant": "註冊人",
+    "registrationDate": "註冊時間",
+    "renew": "續費",
+    "return": "收回",
+    "save": "保存",
+    "search": "查詢",
+    "set": "設置",
+    "sync": "同步",
+    "textrecord": "文本記錄",
+    "transfer": "轉讓",
+    "warning": "警告",
+    "appCaption": "基於以太坊區塊鏈的分布式、開放和可擴展的域名系統",
+    "help": "帮助中心",
+    "termsofservice": "服務條款"
+  },
+  "certificate": {
+    "button": "請求 SSL 證書",
+    "warning": "{ name }.link 的 SSL 證書還沒有創建"
+  },
+  "childDomainItem": {
+    "notmigrated": "暫未遷移"
+  },
+  "dns": {
+    "breadcrumbs": [
+      "啟用 DNSSEC",
+      "提交驗證",
+      "提交驗證",
+      "管理域名"
+    ],
+    "dnsowner": "DNS 所有者",
+    "steps": {
+      "addtext": {
+        "text": "點擊“了解更多”來認識這個過程。",
+        "title": "在您的域名註冊商那裏設置壹個 TXT 記錄，然後單擊 刷新 按鈕。這個 TXT 記錄應該包含妳的以太坊地址，格式如下："
+      },
+      "enable": {
+        "text": "點擊“了解更多”來認識這個過程。",
+        "title": "在您的 DNS 域名註冊商那裏啟用 DNSSEC。啟用後，點擊“刷新”來查看是否可以進入下壹步。"
+      },
+      "manage": {
+        "text1": "作為域名的所有者，您現在可以管理域名了。",
+        "text2": "由於您不是該域名的所有者，所以只能在管理器中查看域名。",
+        "title": "恭喜妳！妳已經成功將該 DNS 域名添加到 ENS 註冊表中了。"
+      },
+      "proof": {
+        "text1": "這裏顯示的 DNS 文本中的以太坊地址應該和妳的地址壹致。",
+        "text2": "如果您持有該域名，請更改它的 TXT 記錄以包含您的以太坊地址，並刷新此頁面以再次執行 DNSSEC 驗證。",
+        "title1": "您是這個地址的主人，現在可以將域名加入 ENS 註冊表了。",
+        "title2": "您似乎不是該 DNS 域名的所有者，但任何人都可以將該域名添加到 ENS 註冊表。"
+      }
+    },
+    "viewinmanager": "在管理器中查看"
+  },
+  "expiryNotification": {
+    "placeholder": "輸入電子郵箱地址",
+    "reminder": "提醒我"
+  },
+  "favourites": {
+    "favouriteTitle": "域名收藏夾",
+    "nofavouritesDomains": {
+      "text": "點擊域名旁邊的心形圖標，可以將該域名加入到收藏夾。",
+      "title": "暫未收藏域名"
+    },
+    "nofavouritesSubdomains": {
+      "text": "點擊域名旁邊的心形圖標，可以將該域名加入到收藏夾。",
+      "title": "暫未收藏子域名"
+    },
+    "subdomainFavouriteTitle": "子域名收藏夾"
+  },
+  "home": {
+    "announcements": {},
+    "howtouse": {
+      "body": "ENS 管理器是壹個面向非技術用戶的圖形化界面。您可以利用它查詢域名，管理域名指向的地址或資源，還可以為域名創建子域名。",
+      "title": "如何使用 ENS"
+    },
+    "whatisens": {
+      "body": "以太坊域名服務（Ethereum Name Service）是壹個基於以太坊區塊鏈的分布式、開放和可擴展的域名系統。ENS 域名讓人們不用再復制或輸入冗長的區塊鏈地址。通俗地說，ENS 就是區塊鏈中的域名系統。",
+      "title": "ENS 是什麽"
+    },
+    "website": {
+      "about": {
+        "p0": "Unit Domains是壹個基於以太坊區塊鏈的分布式、開放和可擴展的域名系統，該域名系統讓人們不用再復制或輸入冗長的區塊鏈地址，代之以簡短的域名。",
+        "p1": "Unit Domains網站允許妳查詢域名、註冊域名和管理域名。",
+        "p2": "Unit Domains智能合約基於ENS（https://ens.domains/）之上，並進行了修改，使之能夠支持多個頂級域名。同時網站也參考了ENS。用戶可以可以在Github網站上查看這些代碼。"
+      }
+    }
+  },
+  "howtouse": {
+    "favourite": {
+      "text": "關註妳自己的或是有興趣的域名和子域名。",
+      "title": "收藏域名"
+    },
+    "manage": {
+      "text": "將域名指向妳的以太坊地址，以及轉讓域名等等",
+      "title": "管理域名"
+    },
+    "register": {
+      "text": "以每年 5 美元的價格註冊 .eth 域名，隨時更新或棄用妳的域名",
+      "title": "註冊域名"
+    },
+    "search": {
+      "text": "查詢妳想要註冊或了解的域名和子域名。",
+      "title": "查詢域名"
+    }
+  },
+  "linegraph": {
+    "daysRemaining": "還有 {daysRemaining} 天 (總共 {totalDays} 天)",
+    "endPrice": "最終價格",
+    "startingPrice": "起始價格",
+    "title": "當前購入價格為 {premiumInEth}"
+  },
+  "pendingTx": {
+    "text": "等待交易被打包"
+  },
+  "pricer": {
+    "gasDescription": "預估的 Gas 費（第 1 步 + 第 3 步）。Gas 價格存在波動。",
+    "pricePerAmount": "當前選定時長的註冊價格",
+    "registrationPeriodLabel": "註冊時長",
+    "registrationPriceLabel": "註冊費用",
+    "totalDescription": "預估的總費用（註冊費 + Gas）。Gas 價格基於 {gasPriceToGweiFast} Gwei",
+    "totalPriceLabel": "支付總額",
+    "yearUnit": "年份"
+  },
+  "register": {
+    "buttons": {
+      "insufficient": "您錢包上的余額不足，請向您的錢包充值並重新加載頁面。",
+      "manage": "管理域名",
+      "register": "註冊",
+      "request": "請求註冊",
+      "setreverserecord": "設置反向解析",
+      "warning": "點擊“註冊”進入第 3 步"
+    },
+    "favourite": "* 您可以收藏喜歡的域名，以便於瀏覽器關閉以後重新查看這個域名。",
+    "increaseRegistrationPeriod": "為避免每年都要支付 Gas，建議增加註冊時長",
+    "notifications": {
+      "ready": "已經可以正式註冊了"
+    },
+    "notify": "通知我",
+    "premium": {
+      "dateDescription": "溢價到達該價格的時間（當地時區）",
+      "invalid": "超過 2000 均為無效價格",
+      "title": "溢價"
+    },
+    "premiumWarning": {
+      "description": "為了確保每個人都有公平的機會去註冊壹個剛剛過期的域名，這些域名的溢價起始價格為 2000 美元，並在 28 天內逐漸降低，直到溢價消失。輸入妳願意支付的溢價費用，就會自動顯示妳應該在什麽時間來註冊這個域名。",
+      "title": "該域名存在壹個臨時性的溢價。"
+    },
+    "step1": {
+      "label": "第 1 步",
+      "text": "需要在錢包中確認壹筆交易，這是完成域名註冊所需的兩筆交易中的第壹筆。",
+      "text2": "如果第 1 步完成之後的 24 小時內沒有進行第 2 步，則需要從第 1 步重新開始。",
+      "title": "請求註冊"
+    },
+    "step2": {
+      "label": "第 2 步",
+      "text": "需要等待壹段時間，以確保其他人沒有嘗試註冊相同的名字，同時也是在保護妳的註冊請求。",
+      "title": "等壹分鐘"
+    },
+    "step3": {
+      "label": "第 3 步",
+      "text": "點擊“註冊”按鈕，並在錢包中再次確認壹筆交易，只有在這次交易確認後，才能確定是不是成功註冊了這個域名。",
+      "title": "完成註冊"
+    },
+    "titles": [
+      "註冊壹個域名需要 3 個步驟",
+      "您很快就可以完成域名註冊",
+      "您已經完成域名註冊，現在可以管理域名了！"
+    ]
+  },
+  "registrymigration": {
+    "donotaccept": "* 如果您在交易 ENS 域名，現在不要交易這個域名！",
+    "messages": {
+      "controller": "該域名由智能合約控制，不能自動遷移。在設置新控制器之前，請重新部署您的合約以使用新的註冊表。",
+      "default": "該名稱需要遷移到新的註冊表，只有它的父域名（{parent}）可以執行這壹操作。",
+      "dnssec": "這個域名需要遷移到新註冊表中，請正確設置 DNS 所有者的以太坊地址並點擊下面的 “同步” 按鈕。",
+      "parentmigrate": "在遷移這個子域名之前，妳必須先確認它的父域名 { parent} 已經遷移。"
+    }
+  },
+  "reminder": {
+    "everywhere": "任意地點",
+    "release": {
+      "description": "在 https://unit.domains/name/{name}/register 註冊 {name}",
+      "title": "註冊 {name}"
+    },
+    "renewal": {
+      "description": "您的 ENS 域名即將過期，請續費",
+      "title": "為妳的 ENS 域名 {name} 進行續費"
+    }
+  },
+  "search": {
+    "button": "查詢",
+    "placeholder": "輸入域名或地址"
+  },
+  "searchErrors": {
+    "domainMalformed": {
+      "long": "您添加了壹個不帶 TLD（比如 .eth）的域名，或是使用了不支持的字符。",
+      "short": "域名異常。 {searchTerm} 不是壹個有效的域名。"
+    },
+    "tooShort": {
+      "long": "6 個字符以下的域名將在永久註冊器被啟用時開放。",
+      "short1": "域名太短。",
+      "short2": "域名至少包含 3 個字符。"
+    },
+    "unsupported": {
+      "long": "我們尚未支持所有的域名，未來將計劃支持更多的域名",
+      "short": "暫未支持 {tld} 這壹 TLD。"
+    }
+  },
+  "singleName": {
+    "confirm": {
+      "button": {
+        "cancel": "取消",
+        "confirm": "確定"
+      },
+      "subTitle": "該操作將更新域名在區塊鏈上的狀態。",
+      "title": "您確定要執行該操作？",
+      "value": {
+        "future": "更新後",
+        "previous": "更新前"
+      }
+    },
+    "dns": {
+      "messages": {
+        "error": "解決域名註冊器的問題。通過刷新來顯示更新。",
+        "outOfSync": "管理員和 DNS 所有者不同步。單擊 “同步” 讓 DNS 所有者成為管理員。如果您在 DNS 註冊商中對域名進行了更改，請單擊 “刷新”。",
+        "readyToRegister": "* 如果您在 DNS 註冊商中對域名進行了更改，請單擊 “刷新”。"
+      }
+    },
+    "domain": {
+      "state": {
+        "auction": "拍賣中",
+        "available": "可註冊",
+        "default": "未知狀態",
+        "owned": "不可註冊",
+        "owner": "所有者"
+      }
+    },
+    "expiry": {
+      "cannotown": "為其他人的域名續費並不會獲得該域名的所有權。",
+      "expired": "已經到期",
+      "expiring": "即將到期",
+      "gracePeriodEnds": "寬限期截至 ",
+      "isUnderPremiumSale": "可通過支付溢價進行註冊"
+    },
+    "learnmore": {
+      "step1": {
+        "text": "域名註冊完成後，打開“我的域名”頁面，並設置壹個反向解析記錄。這樣您用以太坊賬戶連接 Dapp 時，它們就可以直接顯示妳的 ENS 域名。",
+        "title": "1. 設置反向解析記錄"
+      },
+      "step2": {
+        "text": "您可以設置許多不同加密貨幣的地址、個人資料信息（如頭像、Twitter 等)",
+        "title": "2. 設置其他記錄"
+      },
+      "step3": {
+        "text": "您可以將在 IPFS 部署靜態網站（html/css/images），並將其哈希值記錄在 ENS 域名的內容記錄中，然後那些支持 ENS 的瀏覽器（比如 Opera）、瀏覽器插件（比如 Metamask）或是在做任意瀏覽器中加上 ‘.link’ 後綴，就可以解析這類記錄。",
+        "title": "3. 設置去中心化網站的內容哈希"
+      },
+      "title": "學習如何管理妳的域名"
+    },
+    "messages": {
+      "alreadyregistered": "這個名字已經註冊了",
+      "noowner": "暫無註冊人",
+      "noresolver": "暫未設置解析器",
+      "notfinalised": "（未完成）",
+      "pending": "打包中"
+    },
+    "record": {
+      "cantEdit": "在遷移到新的解析器之前，您不能編輯或添加記錄。",
+      "closeEdit": "關閉 添加/編輯 記錄",
+      "messages": {
+        "explanation": "反向解析將地址轉換為域名。它能讓 dapp 在其界面上顯示 “{name}”，而不是 “{account}” 這個冗長的地址。如果您想為另壹個賬戶設置反向解析，請先在 dapp 瀏覽器中切換帳戶。",
+        "explanation2": "您只能選擇已經解析至這個以太坊地址的域名。",
+        "noForwardRecordAavilable": "您尚未擁有 ENS 域名，或者您 ENS 域名的 ETH 記錄沒有設置為此地址。",
+        "notSet": "反向記錄：未設置",
+        "reverseRecordRemoval": "您確定要刪除反向解析記錄？",
+        "selectPlaceholder": "選擇您的 ENS 域名",
+        "setTo": "反向記錄：解析至 ",
+        "setToDifferent": "反向記錄：已解析至另壹個域名："
+      },
+      "openEdit": "添加/編輯 記錄",
+      "title": "解析記錄"
+    },
+    "resolver": {
+      "error": "解析器遷移異常",
+      "message": "若要手動重置解析器，請單擊 “設置” 並輸入自定義解析器的地址。",
+      "placeholder": "使用公共解析器或輸入自定義解析器合約的地址",
+      "publicResolver": "使用公共解析器",
+      "resolverAddressWarning": "僅允許使用合約地址",
+      "warning": "您使用的公共解析器是壹個過時的版本。單擊 “遷移” 來遷移解析器和解析記錄。遷移您的解析器和解析記錄時，需要您確認兩筆交易。"
+    },
+    "search": {
+      "title": "域名"
+    },
+    "subdomains": {
+      "add": "添加子域名",
+      "nosubdomains": "暫未分配子域名"
+    },
+    "tabs": {
+      "details": "詳情",
+      "register": "註冊",
+      "subdomains": "子域名"
+    },
+    "test": {
+      "note": "註意：誰都可以註冊尚未使用的 <1>.test</1> 域名，域名會在申請 28 天後到期。"
+    },
+    "tooltips": {
+      "detailsItem": {
+        "Controller": "如果要轉讓域名的管理員，請先確定妳登錄的是該域名的管理員或註冊人賬戶。",
+        "ControllerAndDnsAlreadySync": "管理員和 DNS 所有者已經完成同步。",
+        "Resolver": "如果要設置域名的解析器，請先確定您登錄的是該域名的管理員賬戶。",
+        "default": "只有當錢包中使用的賬戶是域名的管理員賬戶時，妳才能更改該域名的相關信息。",
+        "registrant": "如果要轉讓域名的註冊人，請先確定妳登錄的是該域名當前的註冊人賬戶。",
+        "registrantExpired": "該域名已經過期，無法轉讓，請先為其續費再進行操作。"
+      }
+    }
+  },
+  "warnings": {
+    "homoglyph": {
+      "content": "該域名包含非 ASCII 字符。請註意，有些字符看起來與英文字母相同或非常相似，特別是西裏爾字母和希臘字母。此外，中文的繁體字與簡體字看起來相同或非常相似。要了解更多信息，請參閱",
+      "link": "維基百科的相關文章",
+      "title": "註意"
+    }
+  }
+}
