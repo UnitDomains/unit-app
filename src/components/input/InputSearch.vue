@@ -1,14 +1,10 @@
 <template>
     <div style="display: inline-block;">
         <div style="display: flex;">
-            <input
-                class="custom-input-box"
-                :placeholder="$t('search.placeholder')"
-                @keyup.enter="onClick"
-                v-model="searchText"
-            />
+            <input class="custom-input-box" :placeholder="$t('search.placeholder')" @keyup.enter="onClick"
+                v-model="searchText" />
             <div class="search-button" @click="onClick">
-                <span>Search</span>
+                <span>{{ $t('search.button') }}</span>
             </div>
         </div>
     </div>
@@ -48,9 +44,11 @@ export default {
     color: #606266;
     font: 2em sans-serif;
 }
+
 .custom-input-box:focus {
     border-color: #409eff;
 }
+
 ::-webkit-input-placeholder {
     color: #c0c4cc;
 }

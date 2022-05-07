@@ -1,6 +1,7 @@
 <template>
   <div>
-    <NameDetails :domainName="domainName"></NameDetails>
+    <NameDetails :domainName="domainName" v-if="!isSubdomain"></NameDetails>
+    <SubdomainNameDetails :domainName="domainName" v-else></SubdomainNameDetails>
   </div>
 </template>
 
@@ -11,11 +12,12 @@
 
 
 import NameDetails from 'components/name/NameDetails.vue';
+import SubdomainNameDetails from 'components/name/SubdomainNameDetails.vue';
 
 export default {
   name: "Register",
   components: {
-    NameDetails
+    NameDetails, SubdomainNameDetails
   },
   data() {
     return {
@@ -24,7 +26,9 @@ export default {
     };
   },
   computed: {
-
+    isSubdomain() {
+      return this.domainName?.split('.').length - 1 > 1
+    }
 
   },
 

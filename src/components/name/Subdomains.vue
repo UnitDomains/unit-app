@@ -84,7 +84,7 @@ export default {
 
         //账户是否是域名的拥有者
         isOwner() {
-            if (this.domainEntry != null)
+            if (this.owner != null)
                 return this.owner == this.account
             return true
         },

@@ -3,14 +3,12 @@
     <div id="ContentContainer">
         <div class="detail-base-info-container" v-if="!editAreaVisible">
             <div class="detail-base-info-left">{{ title }}</div>
-            <div class="detail-base-info-middle">{{ content }}</div>
+            <div class="detail-base-info-middle">{{ content }}
+                <CopyToClipboard :value="content" />
+            </div>
             <div class="detail-base-info-right">
-                <UnitButton
-                    :caption="buttonCaption"
-                    @onClick="onShowEditAreaButtonClick"
-                    :enable="enable"
-                    type="primary"
-                ></UnitButton>
+                <UnitButton :caption="buttonCaption" @onClick="onShowEditAreaButtonClick" :enable="enable"
+                    type="primary"></UnitButton>
             </div>
         </div>
         <div v-else class="detail-collapse-container">
@@ -19,30 +17,17 @@
 
                 <div class="detail-base-info-middle-1">
                     <div>{{ content }}</div>
-                    <input
-                        class="custom-input-box"
-                        :placeholder="$t('search.placeholder')"
-                        @keyup.enter="onAddressContentChange"
-                        @input="onAddressContentChange"
-                        v-model="address"
-                    />
+                    <input class="custom-input-box" :placeholder="$t('search.placeholder')"
+                        @keyup.enter="onAddressContentChange" @input="onAddressContentChange" v-model="address" />
                     <div>{{ newAddress }}</div>
                 </div>
             </div>
 
             <div class="detail-base-info-foot">
-                <UnitButton
-                    :caption="$t('c.cancel')"
-                    @onClick="onHideEditAreaButtonClick"
-                    :enable="true"
-                    type="primary"
-                ></UnitButton>
-                <UnitButton
-                    :caption="buttonCaption"
-                    @onClick="onOkButtonClick"
-                    :enable="addressValidate"
-                    type="primary"
-                ></UnitButton>
+                <UnitButton :caption="$t('c.cancel')" @onClick="onHideEditAreaButtonClick" :enable="true"
+                    type="primary"></UnitButton>
+                <UnitButton :caption="buttonCaption" @onClick="onOkButtonClick" :enable="addressValidate"
+                    type="primary"></UnitButton>
             </div>
         </div>
     </div>
@@ -73,12 +58,12 @@ import { ElLoading } from 'element-plus'
 import { getAccount } from '../../contracts/web3'
 
 import UnitButton from 'components/ui/UnitButton.vue'
-
+import CopyToClipboard from 'components/ui/CopyToClipboard.vue'
 
 export default {
     name: "DetailAddressItem",
     components: {
-        UnitButton
+        UnitButton, CopyToClipboard
     },
     props: {
         domainName: {
@@ -178,6 +163,7 @@ export default {
     color: #606266;
     font: 1em sans-serif;
 }
+
 .custom-input-box:focus {
     border-color: #409eff;
 }

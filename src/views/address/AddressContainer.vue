@@ -12,46 +12,57 @@
 
             <div v-if="showReverseRecord">
                 <div v-if="noneReverseRecord">
-                    <div>{{ $t('singleName.record.messages.notSet') }}</div>
-                    <div>{{
-                        $t('singleName.record.messages.explanation', {
-                            name: 'example.unit', account: routerAccount
-                        })
-                    }}</div>
+                    <div>{{ $t("singleName.record.messages.notSet") }}</div>
+                    <div>
+                        {{
+                                $t("singleName.record.messages.explanation", {
+                                    name: "example.unit",
+                                    account: routerAccount,
+                                })
+                        }}
+                    </div>
 
-                    <div class="message_warning">{{ $t('singleName.record.messages.noForwardRecordAavilable') }}</div>
-                    <div>{{ $t('singleName.record.messages.explanation2') }}</div>
+                    <div class="message_warning">
+                        {{ $t("singleName.record.messages.noForwardRecordAavilable") }}
+                    </div>
+                    <div>{{ $t("singleName.record.messages.explanation2") }}</div>
                 </div>
 
                 <div v-else>
                     <div v-if="hasValidReverseRecord">
                         <div>
-                            {{ $t('singleName.record.messages.setTo') }}
+                            {{ $t("singleName.record.messages.setTo") }}
                             <span class="account-reverse-record">{{ accountReverseRecord }}</span>
                         </div>
-                        <div>{{
-                            $t('singleName.record.messages.explanation', {
-                                name: accountReverseRecord, account:
-                                    routerAccount
-                            })
-                        }}</div>
+                        <div>
+                            {{
+                                    $t("singleName.record.messages.explanation", {
+                                        name: accountReverseRecord,
+                                        account: routerAccount,
+                                    })
+                            }}
+                        </div>
 
                         <UnitButton caption="Delete" @onClick="onDeleteReverseClick" :enable="true" type="primary">
                         </UnitButton>
                     </div>
                     <div v-else>
-                        <div>{{ $t('singleName.record.messages.notSet') }}</div>
-                        <div>{{
-                            $t('singleName.record.messages.explanation', {
-                                name: 'example.unit', account:
-                                    routerAccount
-                            })
-                        }}</div>
+                        <div>{{ $t("singleName.record.messages.notSet") }}</div>
+                        <div>
+                            {{
+                                    $t("singleName.record.messages.explanation", {
+                                        name: "example.unit",
+                                        account: routerAccount,
+                                    })
+                            }}
+                        </div>
                         <select class="select-reverse-record-list" v-model="selectedItem">
                             <option class="select-reverse-record-option" v-for="(item, index) in reverseRecordDomains"
-                                :key="index">{{ getItemValue(item) }}</option>
+                                :key="index">
+                                {{ getItemValue(item) }}
+                            </option>
                         </select>
-                        <div>{{ $t('singleName.record.messages.explanation2') }}</div>
+                        <div>{{ $t("singleName.record.messages.explanation2") }}</div>
 
                         <UnitButton :caption="$t('c.set')" @onClick="onSetReverseClick" :enable="true" type="primary">
                         </UnitButton>
@@ -67,236 +78,195 @@
 </template>
 
 <script>
+import InputSearch from "components/input/InputSearch.vue";
 
+import EthVal from "ethval";
+import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
+import { labelhash } from "contracts/utils/labelhash.js";
+import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
+import { emptyAddress } from "contracts/utils";
 
+import { calculateDuration } from "utils/dates.js";
 
+import { normalize } from "contracts/utils/eth-ens-namehash";
+import { getJointName } from "contractUtils/domainName.js";
 
-import InputSearch from 'components/input/InputSearch.vue'
+import moment from "moment";
 
+import createIcon from "@/blockies";
 
+import { ElLoading } from "element-plus";
 
-
-import EthVal from 'ethval'
-import { setup, getRegistrar, getENS, getReverseRecord } from 'contracts/api'
-import { labelhash } from 'contracts/utils/labelhash.js'
-import { getBlock, getNetworkId, getAccount } from 'contracts/web3.js'
-import { emptyAddress } from 'contracts/utils'
-
-import { calculateDuration } from 'utils/dates.js'
-
-import { normalize } from 'contracts/utils/eth-ens-namehash'
-import { getJointName } from 'contractUtils/domainName.js'
-
-import moment from 'moment'
-
-
-
-import createIcon from '@/blockies'
-
-
-import { ElLoading } from 'element-plus'
-
-import axios from 'http/http'
+import axios from "http/http";
 import BASEURL from "http/api.js";
-import { sendHelper } from '../../contractUtils/transaction'
+import { sendHelper } from "../../contractUtils/transaction";
 
-import UnitButton from 'components/ui/UnitButton.vue'
-
+import UnitButton from "components/ui/UnitButton.vue";
 
 export default {
     name: "AddressContainer",
     components: {
-        InputSearch, UnitButton
+        InputSearch,
+        UnitButton,
     },
     data() {
         return {
             routerAccount: this.$route.params.account,
-            account: '',
-            accountReverseRecord: '',
+            account: "",
+            accountReverseRecord: "",
             addressData: null,
             reverseRecordDomains: [],
-            selectedItem: '',
-            deleteReverseRecordEnable: true
-
-
+            selectedItem: "",
+            deleteReverseRecordEnable: true,
         };
     },
     computed: {
         blockImgURL() {
             var imgURL = createIcon({
-                seed: (this.routerAccount.toLowerCase()),
+                seed: this.routerAccount.toLowerCase(),
                 size: 8,
                 scale: 5,
-                color: 0,//'#E1E1E1',
-                bgcolor: 0,// '#FFFFFF',
-                spotcolor: 0,//'#CFCFCF'
-            }).toDataURL()
+                color: 0, //'#E1E1E1',
+                bgcolor: 0, // '#FFFFFF',
+                spotcolor: 0, //'#CFCFCF'
+            }).toDataURL();
 
-            return imgURL
+            return imgURL;
         },
         hasValidReverseRecord() {
-            return this.accountReverseRecord != ''
+            return this.accountReverseRecord != "";
         },
         noneReverseRecord() {
-            if (this.reverseRecordDomains == null || this.reverseRecordDomains.length == 0) return true;
+            if (this.reverseRecordDomains == null || this.reverseRecordDomains.length == 0)
+                return true;
             return false;
-        }, showReverseRecord() {
-            return this.account === this.routerAccount
-        }
-
-
-
+        },
+        showReverseRecord() {
+            return this.account === this.routerAccount;
+        },
     },
 
     async mounted() {
-
-        await this.getReverseRecordState()
-
-
-
+        await this.getReverseRecordState();
     },
     async beforeRouteUpdate(to, from, next) {
-        this.routerAccount = to.params.account
+        this.routerAccount = to.params.account;
 
-        await this.getReverseRecordState()
+        await this.getReverseRecordState();
 
         next();
     },
 
     methods: {
-
-
         onAddressItemClick(name) {
-            this.$router.push({ path: `/name/${name}/details` })
+            this.$router.push({ path: `/name/${name}/details` });
         },
 
         async getReverseRecordState() {
+            var options = { target: document.querySelector(".address-account-container") };
+            const loadingInstance = ElLoading.service(options);
 
-            var options = { target: document.querySelector('.address-account-container') }
-            const loadingInstance = ElLoading.service(options)
+            try {
+                await setup();
+                this.account = await getAccount();
 
-            await setup()
-            this.account = await getAccount()
+                if (this.account === this.routerAccount) {
+                    let reverseRecord = await getReverseRecord();
 
-            if (this.account === this.routerAccount) {
+                    var result = await reverseRecord.getReverseRecordName(this.routerAccount);
 
+                    this.accountReverseRecord = result;
 
-                let reverseRecord = await getReverseRecord()
-
-                var result = await reverseRecord.getReverseRecordName(this.routerAccount)
-
-
-                this.accountReverseRecord = result
-
-                //从服务器获得相关域名
-                await this.getReverseRecordDomainsFromServer()
+                    //从服务器获得相关域名
+                    await this.getReverseRecordDomainsFromServer();
+                }
+            } catch (error) {
+                console.log(error);
             }
 
-
-
-
-
             // Loading should be closed asynchronously
-            loadingInstance.close()
-
+            loadingInstance.close();
         },
         async setReverseRecord(name) {
-            await setup()
-            var ens = await getENS()
+            await setup();
+            var ens = await getENS();
 
-            var tx = await ens.claimAndSetReverseRecordName(name)
-            await sendHelper(tx)
-
+            var tx = await ens.claimAndSetReverseRecordName(name);
+            await sendHelper(tx);
         },
 
         async deleteReverseRecord() {
-            var options = { target: document.querySelector('.address-account-container') }
-            const loadingInstance = ElLoading.service(options)
+            var options = { target: document.querySelector(".address-account-container") };
+            const loadingInstance = ElLoading.service(options);
             try {
-                this.deleteReverseRecordEnable = false
+                this.deleteReverseRecordEnable = false;
 
-                await setup()
-                var ens = await getENS()
+                await setup();
+                var ens = await getENS();
 
-                var tx = await ens.claimAndSetReverseRecordName(emptyAddress)
+                var tx = await ens.claimAndSetReverseRecordName(emptyAddress);
 
-                await sendHelper(tx)
-                await this.getReverseRecordState()
-
+                await sendHelper(tx);
+                await this.getReverseRecordState();
             } catch (error) {
-                this.deleteReverseRecordEnable = true
-
+                this.deleteReverseRecordEnable = true;
             }
-            loadingInstance.close()
+            loadingInstance.close();
         },
 
         async onSetReverseClick() {
-
-            if (this.selectedItem == null || this.selectedItem == '') {
-                alert(this.$t('singleName.record.messages.selectPlaceholder'))
-                return
+            if (this.selectedItem == null || this.selectedItem == "") {
+                alert(this.$t("singleName.record.messages.selectPlaceholder"));
+                return;
             }
 
-            var options = { target: document.querySelector('.address-account-container') }
-            const loadingInstance = ElLoading.service(options)
-            var name = this.selectedItem
+            var options = { target: document.querySelector(".address-account-container") };
+            const loadingInstance = ElLoading.service(options);
+            var name = this.selectedItem;
 
             try {
-                await this.setReverseRecord(name)
+                await this.setReverseRecord(name);
 
-                await this.getReverseRecordState()
+                await this.getReverseRecordState();
             } catch (error) {
-                console.log(error)
-
+                console.log(error);
             }
 
-
             // Loading should be closed asynchronously
-            loadingInstance.close()
-
-        }
-        ,
+            loadingInstance.close();
+        },
         getItemValue(item) {
-            return getJointName(item.name, item.baseNodeIndex)
+            return getJointName(item.name, item.baseNodeIndex);
         },
 
         async onDeleteReverseClick() {
-            var r = confirm(this.$t('singleName.record.messages.reverseRecordRemoval'))
+            var r = confirm(this.$t("singleName.record.messages.reverseRecordRemoval"));
             if (r) {
+                var options = { target: document.querySelector(".address-account-container") };
+                const loadingInstance = ElLoading.service(options);
 
-                var options = { target: document.querySelector('.address-account-container') }
-                const loadingInstance = ElLoading.service(options)
-
-                this.deleteReverseRecord()
+                this.deleteReverseRecord();
 
                 // Loading should be closed asynchronously
-                loadingInstance.close()
-
-            } else { }
-
+                loadingInstance.close();
+            } else {
+            }
         },
 
         async getReverseRecordDomainsFromServer() {
-
             try {
-                await setup()
-
+                await setup();
 
                 let res = await axios.get(BASEURL.domains + "reverse", {
-                    params: { address: this.routerAccount }
-                })
+                    params: { address: this.routerAccount },
+                });
 
-
-                this.reverseRecordDomains = res.data
-
-
+                this.reverseRecordDomains = res.data;
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
-        }
-
-
-    }
+        },
+    },
 };
 </script>
 

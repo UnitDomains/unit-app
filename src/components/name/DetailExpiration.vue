@@ -3,45 +3,29 @@
     <div id="ContentContainer">
         <div class="detail-base-info-container" v-if="!durationVisible">
             <div class="detail-base-info-left">{{ $t('c.Expiration Date') }}</div>
-            <div class="detail-base-info-middle">{{ expiryTime }}</div>
+            <div class="detail-base-info-middle">{{ domainExpiryTime }}</div>
             <div class="detail-base-info-right">
-                <UnitButton
-                    :caption="$t('c.renew')"
-                    @onClick="onShowDurationButtonClick"
-                    :enable="true"
-                    type="primary"
-                >{{ $t('c.renew') }}</UnitButton>
+                <UnitButton :caption="$t('c.renew')" @onClick="onShowDurationButtonClick" :enable="true" type="primary">
+                    {{ $t('c.renew') }}</UnitButton>
             </div>
         </div>
         <div v-else class="detail-collapse-container">
             <div class="detail-base-info-container">
                 <div class="detail-base-info-left">{{ $t('c.Expiration Date') }}</div>
                 <div class="detail-base-info-middle-1">
-                    <RenewDuration
-                        :domainName="domainName"
-                        @onDurationChange="onDurationChange"
-                        @onDurationBeginChange="onDurationBeginChange"
-                    ></RenewDuration>
+                    <RenewDuration :domainName="domainName" @onDurationChange="onDurationChange"
+                        @onDurationBeginChange="onDurationBeginChange"></RenewDuration>
                 </div>
             </div>
-            <div
-                v-show="accountBalanceInsufficientVisible"
-                class="account-balance-insufficient"
-            >{{ $t('register.buttons.insufficient') }}</div>
+            <div v-show="accountBalanceInsufficientVisible" class="account-balance-insufficient">{{
+                    $t('register.buttons.insufficient')
+            }}</div>
 
             <div class="detail-base-info-foot">
-                <UnitButton
-                    :caption="$t('c.cancel')"
-                    @onClick="onHideDurationButtonClick"
-                    :enable="true"
-                    type="primary"
-                ></UnitButton>
-                <UnitButton
-                    :caption="$t('c.renew')"
-                    @onClick="onRenewButtonClick"
-                    :enable="renewButtonEnable"
-                    type="primary"
-                ></UnitButton>
+                <UnitButton :caption="$t('c.cancel')" @onClick="onHideDurationButtonClick" :enable="true"
+                    type="primary"></UnitButton>
+                <UnitButton :caption="$t('c.renew')" @onClick="onRenewButtonClick" :enable="renewButtonEnable"
+                    type="primary"></UnitButton>
             </div>
         </div>
     </div>
@@ -54,7 +38,7 @@ import EthVal from 'ethval'
 import { setup, getRegistrar, getENS } from 'contracts/api'
 import { labelhash } from 'contracts/utils/labelhash.js'
 import { getBlock, getNetworkId } from 'contracts/web3.js'
-import { calculateDuration } from 'utils/dates.js'
+import { calculateDuration, formatDate } from 'utils/dates.js'
 
 import { getRentPrice, getAccountBalance } from 'contractUtils/Price.js'
 import { getDomain, getDomainSuffix } from 'contractUtils/domainName.js'
@@ -90,6 +74,9 @@ export default {
             if (this.accountBalanceInsufficientVisible) return false;
             if (this.totalFees == 0) return false;
             return true;
+        },
+        domainExpiryTime() {
+            return this.expiryTime == null ? "" : formatDate(this.expiryTime, false)
         }
 
 

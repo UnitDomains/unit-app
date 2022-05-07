@@ -31,6 +31,12 @@ export default {
 
 
     },
+    watch: {
+        '$route'(to, from) {
+            location.reload()
+        }
+    },
+
 
     mounted() {
 

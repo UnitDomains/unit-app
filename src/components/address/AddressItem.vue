@@ -1,6 +1,6 @@
 <template>
-    <div class="address-panel">
-        <div class="address-name" @click="onAddressItemClick()">{{ name }}</div>
+    <div class="address-panel" @click="onAddressItemClick()">
+        <div class="address-name">{{ name }}</div>
     </div>
 </template>
 
