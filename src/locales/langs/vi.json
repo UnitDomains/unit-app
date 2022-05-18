@@ -224,6 +224,7 @@
       "Bạn sẽ có thể quản lý tên miền ngay thôi.",
       "Bạn đã hoàn thành tất cả các bước, hãy quản lý tên miền ngay!"
     ]
+
   },
   "registrymigration": {
     "donotaccept": "*Đừng chấp nhận tên miền này khi bạn giao dịch ENS!",
@@ -291,6 +292,15 @@
         "default": "Tình trạng chưa rõ",
         "owned": "Không có sẵn",
         "owner": "Chủ nhân"
+      },
+
+      "whygreat": {
+        "title": "Why it's great",
+        "less5": "{name} is 5 characters or less",
+        "less10": "{name} is 10 characters or less",
+        "less15": "{name} is 15 characters or less",
+        "unique": "{name} is unique"
+
       }
     },
     "expiry": {

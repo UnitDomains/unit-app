@@ -291,6 +291,15 @@
         "default": "알 수 없는 상태",
         "owned": "사용 불가",
         "owner": "소유자"
+      },
+
+      "whygreat": {
+        "title": "최고의 서비스인 이유",
+        "less5": "{name} 은(는) 5자 이하입니다",
+        "less10": "{name} 은(는) 10자 이하입니다",
+        "less15": "{name} 은(는) 15자 이하입니다",
+        "unique": "{name} is unique"
+
       }
     },
     "expiry": {

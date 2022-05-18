@@ -1,62 +1,42 @@
-
 <template>
-    <div id="ContentContainer">
-        <div class="detail-base-info-container">
-            <div class="detail-base-info-left">{{ title }}</div>
-            <div class="detail-base-info-middle">{{ content }}</div>
-        </div>
+  <div id="ContentContainer">
+    <div class="detail-base-info-container">
+      <div class="detail-base-info-left">{{ title }}</div>
+      <div class="detail-base-info-middle">{{ content }}</div>
     </div>
+  </div>
 </template>
 
-
-
 <script>
-
-
-
-
 export default {
-    name: "DetailItemReadonly",
-    components: {
-
+  name: "DetailItemReadonly",
+  components: {},
+  props: {
+    domainName: {
+      type: String,
+      default: "",
     },
-    props: {
-        domainName: {
-            type: String,
-            default: ''
-        }, title: {
-            type: String,
-            default: ''
-        }, content: {
-            type: String,
-            default: ''
-        }
+    title: {
+      type: String,
+      default: "",
     },
-    computed: {
-
-
-
+    content: {
+      type: String,
+      default: "",
     },
-    data() {
-        return {
+  },
+  computed: {},
+  data() {
+    return {};
+  },
 
+  async mounted() {},
 
-        };
-    },
-
-
-    async mounted() {
-
-    },
-
-    methods: {
-
-    }
+  methods: {},
 };
 </script>
 
 <style scoped>
 @import "~@/assets/css/detail.css";
+@import "~@/assets/css/document.css";
 </style>
-
-

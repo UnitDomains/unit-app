@@ -291,6 +291,15 @@
         "default": "不明",
         "owned": "利用不可",
         "owner": "所有済み"
+      },
+
+      "whygreat": {
+        "title": "優れている理由",
+        "less5": "{name} は5文字以内です",
+        "less10": "{name} は10文字以内です",
+        "less15": "{name} は15文字以内です",
+        "unique": "{name} is unique"
+
       }
     },
     "expiry": {

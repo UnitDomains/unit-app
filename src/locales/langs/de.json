@@ -11,10 +11,7 @@
     },
     "renew": {
       "button": "Ausgewählte verlängern",
-      "confirm": [
-        "Die folgenden Namen:",
-        "werden für "
-      ],
+      "confirm": ["Die folgenden Namen:", "werden für "],
       "confirmButton": "Verlängern",
       "year": "{count} Jahr verlängert",
       "year_plural": "{count} Jahre verlängert"
@@ -293,6 +290,14 @@
         "default": "Unknown State",
         "owned": "Unavailable",
         "owner": "Owner"
+      },
+
+      "whygreat": {
+        "title": "Why it's great",
+        "less5": "{name} is 5 characters or less",
+        "less10": "{name} is 10 characters or less",
+        "less15": "{name} is 15 characters or less",
+        "unique": "{name} is unique"
       }
     },
     "expiry": {

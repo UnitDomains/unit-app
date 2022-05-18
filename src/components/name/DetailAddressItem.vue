@@ -150,6 +150,7 @@ export default {
 
 <style scoped>
 @import "~@/assets/css/detail.css";
+@import "~@/assets/css/document.css";
 
 .custom-input-box {
     margin: 10px;

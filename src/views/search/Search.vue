@@ -1,143 +1,261 @@
 <template>
-    <div>
-        <div class="input-search">
-            <InputSearch @onClick="onSearchClick"></InputSearch>
-        </div>
-        <div id="contentContainer" class="search-result">
-            <DomainList :domainNameArray="domainNameArray" @onDomainItemClick="onDomainItemClick"></DomainList>
-        </div>
+  <div>
+    <div class="input-search">
+      <InputSearch @onClick="onSearchClick"></InputSearch>
     </div>
+    <div id="contentContainer" class="search-result">
+      <DomainNameSpecificList
+        :domainNameArray="domainNameSpecificArray"
+        @onDomainItemClick="onDomainItemClick"
+      ></DomainNameSpecificList>
+
+      <div class="divider" v-show="domainNameSpecificArray.length > 0"></div>
+      <DomainList
+        :domainNameArray="domainNameSuggestArray"
+        @onDomainItemClick="onDomainItemClick"
+      ></DomainList>
+
+      <div class="divider" v-show="domainNameSuggestArray.length > 0"></div>
+      <DomainList
+        :domainNameArray="domainNameNotAvailableArray"
+        @onDomainItemClick="onDomainItemClick"
+      ></DomainList>
+    </div>
+  </div>
 </template>
 
 <script>
+import { setup, getRegistrar, getENS } from "contracts/api";
+import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
+import {
+  getDomain,
+  getDomainSuffix,
+  getSupportDomainNamesSuffixArray,
+  getJointName,
+  getDomainIndex,
+  getHostDomain,
+} from "contractUtils/domainName.js";
 
+import { getAddressValidation } from "contractUtils/address.js";
 
-import { setup, getRegistrar, getENS } from 'contracts/api'
+import { ElLoading } from "element-plus";
 
+import axios from "http/http";
+import BASEURL from "http/api.js";
 
-import { getDomain, getDomainSuffix, getSupportDomainNamesSuffixArray } from 'contractUtils/domainName.js'
+import InputSearch from "components/input/InputSearch.vue";
+import DomainList from "components/domains/DomainList.vue";
+import DomainNameSpecificList from "components/domains/DomainNameSpecificList.vue";
 
-import { getAddressValidation } from 'contractUtils/address.js'
-
-
-
-import { ElLoading } from 'element-plus'
-
-import InputSearch from 'components/input/InputSearch.vue'
-import DomainList from 'components/domains/DomainList.vue';
 export default {
-    name: "Search",
-    components: {
-        InputSearch, DomainList
+  name: "Search",
+  components: {
+    InputSearch,
+    DomainList,
+    DomainNameSpecificList,
+  },
+
+  data() {
+    return {
+      searchText: "",
+      domainNameSpecificArray: [],
+      domainNameSuggestArray: [],
+      domainNameNotAvailableArray: [],
+    };
+  },
+  async beforeRouteUpdate(to, from) {
+    // 对路由变化做出响应...
+    this.searchText = to.params.searchText;
+
+    //from eth network
+    //  await this.getSearchResults(this.searchText);
+
+    //from data server
+    await this.getSpecificResultFromServer(this.searchText);
+    await this.getSuggestResultFromServer(this.searchText);
+    await this.getNotAvailableResultFromServer(this.searchText);
+  },
+  async mounted() {
+    this.searchText = this.$route.params.searchText;
+
+    //from eth network
+    // await this.getSearchResults(this.searchText);
+
+    //from data server
+    await this.getSpecificResultFromServer(this.searchText);
+    await this.getSuggestResultFromServer(this.searchText);
+    await this.getNotAvailableResultFromServer(this.searchText);
+  },
+  methods: {
+    onSearchClick(searchText) {},
+    onDomainItemClick(item) {
+      this.$router.push({ path: `/name/${item.domainName}/register` });
     },
 
-    data() {
-        return {
-            searchText: '',
-            domainNameArray: [
-            ]
-        };
+    async getSearchResults(searchText) {
+      if (searchText == null || searchText.length == 0) return;
+
+      if (getAddressValidation(searchText)) {
+        this.$router.push({ path: `/address/${searchText}` });
+        return;
+      }
+
+      var options = { target: document.querySelector("#contentContainer") };
+      const loadingInstance = ElLoading.service(options);
+
+      try {
+        this.domainNameArray = [];
+
+        searchText = getDomain(searchText);
+
+        await setup();
+
+        var suffixArray = getSupportDomainNamesSuffixArray();
+        for (const suffix of suffixArray) {
+          var result = await this.getDomainNameAvailable(searchText + "." + suffix);
+          if (result != null) {
+            console.log(result.expiryTime);
+            this.domainNameArray.push({
+              domainName: searchText + "." + suffix,
+              expiryTime: result.expiryTime,
+              owned: true,
+            });
+          } else {
+            this.domainNameArray.push({
+              domainName: searchText + "." + suffix,
+              owned: false,
+            });
+          }
+        }
+      } catch (error) {}
+
+      // Loading should be closed asynchronously
+      loadingInstance.close();
     },
-    async beforeRouteUpdate(to, from) {
-        // 对路由变化做出响应...
-        this.searchText = (to.params.searchText)
+    async getDomainNameAvailable(domainName) {
+      var registrar = await getRegistrar();
 
+      var available = await registrar.getAvailable(domainName);
 
-        await this.getSearchResults(this.searchText)
+      if (available) {
+        //domain name is not registered
+        return null;
+      } else {
+        var domainEntry = await registrar.getEntry(domainName);
 
+        return domainEntry;
+      }
     },
-    async mounted() {
-        this.searchText = this.$route.params.searchText
+    async getSpecificResultFromServer(searchText) {
+      try {
+        this.domainNameSpecificArray = [];
+        var baseNodeIndex = getDomainIndex(searchText);
+        if (baseNodeIndex < 0) return;
 
-        await this.getSearchResults(this.searchText)
+        await setup();
+
+        var networkId = await getNetworkId();
+
+        let res = await axios.get(BASEURL.domains + "specific", {
+          params: {
+            networkId: networkId,
+            searchText: searchText,
+          },
+        });
+
+        console.log(res.data);
+
+        if (res.data != null && res.data.length > 0) {
+          for (const domainInfo of res.data) {
+            this.domainNameSpecificArray.push({
+              domainName: getJointName(domainInfo.name, domainInfo.baseNodeIndex),
+              expiryTime: domainInfo.expires,
+              owned: true,
+            });
+          }
+        } else {
+          if (baseNodeIndex >= 0) {
+            this.domainNameSpecificArray.push({
+              domainName: getHostDomain(searchText),
+
+              owned: false,
+            });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
-    methods: {
-        onSearchClick(searchText) {
-        },
-        onDomainItemClick(item) {
-            this.$router.push({ path: `/name/${item.domainName}/register` })
-        },
 
-        async getSearchResults(searchText) {
+    async getNotAvailableResultFromServer(searchText) {
+      try {
+        await setup();
 
+        var networkId = await getNetworkId();
 
-            if (searchText == null || searchText.length == 0) return
+        let res = await axios.get(BASEURL.domains + "notavailable", {
+          params: {
+            networkId: networkId,
+            searchText: searchText,
+          },
+        });
 
-            if (getAddressValidation(searchText)) {
-                this.$router.push({ path: `/address/${searchText}` })
-                return
-            }
+        console.log(res);
 
-            var options = { target: document.querySelector('#contentContainer') }
-            const loadingInstance = ElLoading.service(options)
-
-            try {
-
-
-                this.domainNameArray = []
-
-
-                searchText = getDomain(searchText)
-
-                await setup()
-
-
-
-                var suffixArray = getSupportDomainNamesSuffixArray()
-                for (const suffix of suffixArray) {
-                    var result = await this.getDomainNameAvailable(searchText + "." + suffix)
-                    if (result != null) {
-                        console.log(result.expiryTime)
-                        this.domainNameArray.push({ domainName: searchText + "." + suffix, expiryTime: result.expiryTime, owned: true })
-                    } else {
-                        this.domainNameArray.push({ domainName: searchText + "." + suffix, owned: false })
-                    }
-                }
-
-
-
-
-            } catch (error) {
-
-            }
-
-            // Loading should be closed asynchronously
-            loadingInstance.close()
-
-
-        },
-        async getDomainNameAvailable(domainName) {
-            var registrar = await getRegistrar()
-
-
-            var available = await registrar.getAvailable(domainName)
-
-
-            if (available) {
-                //domain name is not registered
-                return null
-            } else {
-                var domainEntry = await registrar.getEntry(domainName)
-
-                return domainEntry
-            }
-        },
-
+        this.domainNameNotAvailableArray = [];
+        if (res.data != null && res.data.length > 0) {
+          for (const domainInfo of res.data) {
+            this.domainNameNotAvailableArray.push({
+              domainName: getJointName(domainInfo.name, domainInfo.baseNodeIndex),
+              expiryTime: domainInfo.expires,
+              owned: true,
+            });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
+
+    async getSuggestResultFromServer(searchText) {
+      try {
+        await setup();
+
+        var networkId = await getNetworkId();
+
+        let res = await axios.get(BASEURL.domains + "suggest", {
+          params: {
+            networkId: networkId,
+            searchText: searchText,
+          },
+        });
+
+        this.domainNameSuggestArray = [];
+
+        for (const suggestResult of res.data) {
+          this.domainNameSuggestArray.push({
+            domainName: suggestResult.name,
+
+            owned: false,
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
 <style scoped>
+@import "~@/assets/css/document.css";
 .input-search {
-    text-align: center;
-    padding: 20px;
-    margin: 0px;
+  text-align: center;
+  padding: 20px;
+  margin: 0px;
 }
 
 .search-result {
-    padding-bottom: 10px;
-    margin: 0px;
+  padding-bottom: 10px;
+  margin: 0px;
 }
 </style>
-
-
-

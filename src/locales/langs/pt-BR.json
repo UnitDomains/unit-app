@@ -293,6 +293,15 @@
         "default": "Estado desconhecido",
         "owned": "Indisponível",
         "owner": "Proprietário"
+      },
+
+      "whygreat": {
+        "title": "Why it's great",
+        "less5": "{name} is 5 characters or less",
+        "less10": "{name} is 10 characters or less",
+        "less15": "{name} is 15 characters or less",
+        "unique": "{name} is unique"
+
       }
     },
     "expiry": {

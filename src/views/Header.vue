@@ -1,19 +1,14 @@
-<script  setup>
-import {
+<script setup>
+import { Check } from "@element-plus/icons-vue";
 
-  Check,
-
-} from '@element-plus/icons-vue'
-
-import UserInfoVue from 'components/userInfo/UserInfo.vue';
-import UnitButton from 'components/ui/UnitButton.vue'
-
+import UserInfoVue from "components/userInfo/UserInfo.vue";
+import UnitButton from "components/ui/UnitButton.vue";
 </script>
 
 <template>
   <div class="app-header-container">
     <div class="app-logo" @click="onLogoClick">
-      <img style="width: 60px; height: 60px;" :src="logoSvg" alt="Logo" />
+      <img style="width: 60px; height: 60px" :src="logoSvg" alt="Logo" />
     </div>
 
     <div class="horizontal-divider"></div>
@@ -26,8 +21,12 @@ import UnitButton from 'components/ui/UnitButton.vue'
         <div class="dropdown">
           <button class="dropbtn">{{ currentLanguage }}</button>
           <div class="dropdown-content">
-            <div class="dropdown-content-item" v-for="(item, index) in LANGUAGES" :key="index"
-              @click="onLanguageItemClick(item)">
+            <div
+              class="dropdown-content-item"
+              v-for="(item, index) in LANGUAGES"
+              :key="index"
+              @click="onLanguageItemClick(item)"
+            >
               <div>{{ item.label }}</div>
             </div>
           </div>
@@ -35,78 +34,81 @@ import UnitButton from 'components/ui/UnitButton.vue'
       </div>
 
       <div>
-        <UnitButton :caption="$t('c.mynames')" @onClick="onMyNamesClick" :enable="true" type="primary"></UnitButton>
+        <UnitButton
+          :caption="$t('c.mynames')"
+          @onClick="onMyNamesClick"
+          :enable="true"
+          type="primary"
+        ></UnitButton>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 const LanguageStore = {
   get: () => {
-    return window.localStorage.getItem('activeLanguageValue')
+    return window.localStorage.getItem("activeLanguageValue");
   },
   set: (obj) => {
-
-    window.localStorage.setItem('activeLanguageValue', obj)
-  }
-}
+    window.localStorage.setItem("activeLanguageValue", obj);
+  },
+};
 
 const LANGUAGES = [
   {
-    value: 'en',
-    label: 'English (EN)'
+    value: "en",
+    label: "English (EN)",
   },
   {
-    value: 'cn',
-    label: '简体中文 (CN)'
+    value: "cn",
+    label: "简体中文 (CN)",
   },
   {
-    value: 'hk',
-    label: '繁體中文 (HK)'
+    value: "hk",
+    label: "繁體中文 (HK)",
   },
   {
-    value: 'ja',
-    label: '日本語 (JA)'
+    value: "ja",
+    label: "日本語 (JA)",
   },
   {
-    value: 'de',
-    label: 'Deutsch (DE)'
+    value: "de",
+    label: "Deutsch (DE)",
   },
   {
-    value: 'es',
-    label: 'Español (ES)'
+    value: "es",
+    label: "Español (ES)",
   },
   {
-    value: 'fr',
-    label: 'Français (FR)'
+    value: "fr",
+    label: "Français (FR)",
   },
   {
-    value: 'ko',
-    label: '한국어 (KO)'
+    value: "ko",
+    label: "한국어 (KO)",
   },
   {
-    value: 'it',
-    label: 'Italiano (IT)'
+    value: "it",
+    label: "Italiano (IT)",
   },
   {
-    value: 'pl',
-    label: 'Polski (PL)'
+    value: "pl",
+    label: "Polski (PL)",
   },
   {
-    value: 'pt-BR',
-    label: 'Português (BR)'
+    value: "pt-BR",
+    label: "Português (BR)",
   },
   {
-    value: 'ru',
-    label: 'Pусский (RU)'
+    value: "ru",
+    label: "Pусский (RU)",
   },
   {
-    value: 'vi',
-    label: 'Tiếng Việt (VI)'
-  }
-]
+    value: "vi",
+    label: "Tiếng Việt (VI)",
+  },
+];
 
 import {
   setupWeb3,
@@ -114,76 +116,65 @@ import {
   getNetworkId,
   getProvider,
   getAccount,
-  getSigner
-} from 'contracts/web3'
+  getSigner,
+} from "contracts/web3";
 
-import { setup, getRegistrar, getENS } from 'contracts/api'
+import { setup, getRegistrar, getENS } from "contracts/api";
 
-import logoSVG from 'images/logo.svg'
-import { ElSelect } from 'element-plus';
-import { sendHelper } from '../contractUtils/transaction';
+import logoSVG from "images/logo.svg";
+import { ElSelect } from "element-plus";
+import { sendHelper } from "../contractUtils/transaction";
 
 export default {
   name: "Header",
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       logoSvg: logoSVG,
-      activeLanguageValue: 'en'
+      activeLanguageValue: "en",
     };
-
   },
   computed: {
     currentLanguage() {
-
-
-      return this.getLang(this.activeLanguageValue).label
-    }
+      return this.getLang(this.activeLanguageValue).label;
+    },
   },
 
   mounted() {
-    this.getStoreLanguage()
-
-
+    this.getStoreLanguage();
   },
 
   methods: {
     getStoreLanguage() {
-      let langStore = LanguageStore.get()
-      let lang = 'en'
+      let langStore = LanguageStore.get();
+      let lang = "en";
 
-      if (langStore != null)
-        lang = langStore
-      this.activeLanguageValue = lang
-      this.$i18n.locale = lang
-
+      if (langStore != null) lang = langStore;
+      this.activeLanguageValue = lang;
+      this.$i18n.locale = lang;
     },
 
-    onLogoClick() { this.$router.push({ path: '/' }) },
+    onLogoClick() {
+      this.$router.push({ path: "/" });
+    },
 
     onLanguageItemClick(item) {
-      this.activeLanguageValue = item.value
-      LanguageStore.set(item.value)
-      this.$i18n.locale = item.value
+      this.activeLanguageValue = item.value;
+      LanguageStore.set(item.value);
+      this.$i18n.locale = item.value;
     },
 
     getLang(lang) {
-      return LANGUAGES.find(l => l.value === lang)
+      return LANGUAGES.find((l) => l.value === lang);
     },
 
     async onMyNamesClick() {
+      await setupWeb3();
+      var address = await getAccount();
 
-
-      await setupWeb3()
-      var address = await getAccount()
-
-      this.$router.push({ path: `/address/${address}` })
+      this.$router.push({ path: `/address/${address}` });
     },
-
-
-  }
+  },
 };
 </script>
 
@@ -244,7 +235,7 @@ export default {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 2px 2px 2px 0 rgba(46, 61, 73, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(157, 158, 158, 0.5);
   z-index: 1;
   user-select: none;
 }
@@ -279,5 +270,3 @@ export default {
   background-color: gray;
 }
 </style>
-
-

@@ -43,7 +43,7 @@ export default {
   width: 400px;
   height: 80px;
   text-align: center;
-  border: #aaa 1px solid;
+  border: #dcdfe6 1px solid;
   border-radius: 10px;
   background-color: #fff8dc;
 }

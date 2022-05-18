@@ -19,3 +19,11 @@ p {
   padding: 20px;
 }
 
+.divider {
+  height: 0;
+  border-bottom: 1px solid #dcdfe6;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
