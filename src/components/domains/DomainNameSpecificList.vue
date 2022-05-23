@@ -5,6 +5,7 @@
         :domainName="item.domainName"
         :owned="item.owned"
         :expiryTime="item.expiryTime"
+        :priceInfo="priceInfo"
         @click="onDomainItemClick(item)"
       ></DomainNameSpecificItem>
     </div>
@@ -27,6 +28,10 @@ export default {
     domainNameArray: {
       type: Array,
       default: () => [],
+    },
+    priceInfo: {
+      type: Object,
+      default: null,
     },
   },
   methods: {

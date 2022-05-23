@@ -8,11 +8,16 @@
         <span v-else> {{ $t("singleName.domain.state.available") }}</span>
       </div>
 
-      <div class="domain-state">
+      <div class="domain-state" v-if="!owned">
         <div class="domain-state-why-great-title">
           {{ $t("pricer.registrationPriceLabel") }}
         </div>
-        <div>205ETH</div>
+
+        <div>
+          {{ $t("pricer.totalPriceLabel") }}：{{ RegisterPrice }}ETH+{{ RentPrice }}ETH/{{
+            $t("pricer.yearUnit")
+          }}
+        </div>
       </div>
       <div class="domain-state">
         <div v-if="owned">
@@ -79,6 +84,10 @@ import {
   getHostDomain,
 } from "contractUtils/domainName.js";
 
+import EthVal from "ethval";
+
+import { Contract, utils, BigNumber } from "ethers";
+
 import { calculateDuration, formatDate } from "utils/dates.js";
 import UnitButton from "components/ui/UnitButton.vue";
 
@@ -111,6 +120,12 @@ export default {
     domainSuffix() {
       return getDomainSuffix(this.domainName);
     },
+    RegisterPrice() {
+      return this.getRegisterPrice(this.domainName);
+    },
+    RentPrice() {
+      return this.getRentPrice(this.domainName);
+    },
   },
   data() {
     return {
@@ -130,10 +145,55 @@ export default {
       type: Number,
       default: 0,
     },
+    priceInfo: {
+      type: Object,
+      default: null,
+    },
   },
   methods: {
     onRegisterDomainButtonClick() {
       this.$router.push({ path: `/name/${this.domainName}/register` });
+    },
+    convertPriceString2Array(price) {
+      if (price == null || price.length == 0) return null;
+      if (price[0] != "[" || price[price.length - 1] != "]") return null;
+      price = price.substring(1, price.length - 1);
+      console.log(price);
+
+      return price.split(",");
+    },
+    getRegisterPrice(name) {
+      if (name == null || name.length == 0) return null;
+      name = getDomain(name);
+      if (this.priceInfo == null) return null;
+
+      const registerArray = this.convertPriceString2Array(this.priceInfo.registerPrice);
+
+      var price = 0;
+
+      if (name.length >= registerArray.length)
+        price = registerArray[registerArray.length - 1];
+      else price = registerArray[name.length - 1];
+
+      let p = BigNumber.from(price.replace(/\s+/g, ""));
+
+      return new EthVal(p).toEth().toFixed(2);
+    },
+
+    getRentPrice(name) {
+      if (name == null || name.length == 0) return null;
+      name = getDomain(name);
+      if (this.priceInfo == null) return null;
+
+      const rentrArray = this.convertPriceString2Array(this.priceInfo.rentPrice);
+      var price = 0;
+      if (name.length >= rentrArray.length) price = rentrArray[rentrArray.length - 1];
+      else price = rentrArray[name.length - 1];
+
+      let p = BigNumber.from(price.replace(/\s+/g, ""));
+      const duration = calculateDuration(1);
+
+      return new EthVal(p).mul(duration).toEth().toFixed(4);
     },
   },
 };

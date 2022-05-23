@@ -354,7 +354,7 @@ export default class Registrar {
       const networkId = await getNetworkId();
       const baseNode = namehash(TLD);
       const baseNodesLen = await Registrar.getBaseNodesLength();
-
+      console.log(baseNodesLen);
       for (var i = 0; i < baseNodesLen; i++) {
         if (baseNode == (await Registrar.baseNodes(i))) return true;
       }

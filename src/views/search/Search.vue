@@ -6,6 +6,7 @@
     <div id="contentContainer" class="search-result">
       <DomainNameSpecificList
         :domainNameArray="domainNameSpecificArray"
+        :priceInfo="priceInfo"
         @onDomainItemClick="onDomainItemClick"
       ></DomainNameSpecificList>
 
@@ -61,6 +62,7 @@ export default {
       domainNameSpecificArray: [],
       domainNameSuggestArray: [],
       domainNameNotAvailableArray: [],
+      priceInfo: null,
     };
   },
   async beforeRouteUpdate(to, from) {
@@ -156,14 +158,12 @@ export default {
 
         var networkId = await getNetworkId();
 
-        let res = await axios.get(BASEURL.domains + "specific", {
+        let res = await axios.get(BASEURL.search + "specific", {
           params: {
             networkId: networkId,
             searchText: searchText,
           },
         });
-
-        console.log(res.data);
 
         if (res.data != null && res.data.length > 0) {
           for (const domainInfo of res.data) {
@@ -182,6 +182,8 @@ export default {
             });
           }
         }
+
+        await this.getPriceInfoFromServer(searchText);
       } catch (err) {
         console.log(err);
       }
@@ -193,7 +195,7 @@ export default {
 
         var networkId = await getNetworkId();
 
-        let res = await axios.get(BASEURL.domains + "notavailable", {
+        let res = await axios.get(BASEURL.search + "notavailable", {
           params: {
             networkId: networkId,
             searchText: searchText,
@@ -223,7 +225,7 @@ export default {
 
         var networkId = await getNetworkId();
 
-        let res = await axios.get(BASEURL.domains + "suggest", {
+        let res = await axios.get(BASEURL.search + "suggest", {
           params: {
             networkId: networkId,
             searchText: searchText,
@@ -239,6 +241,23 @@ export default {
             owned: false,
           });
         }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getPriceInfoFromServer(searchText) {
+      try {
+        await setup();
+
+        var networkId = await getNetworkId();
+
+        let res = await axios.get(BASEURL.price + "price", {
+          params: {
+            networkId: networkId,
+          },
+        });
+
+        this.priceInfo = res.data;
       } catch (err) {
         console.log(err);
       }
