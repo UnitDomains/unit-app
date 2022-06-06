@@ -19,9 +19,7 @@ export default {
   name: "DomainItem",
   computed: {
     domainExpiryTime() {
-      return this.expiryTime == null
-        ? ""
-        : formatDate(new Date(this.expiryTime * 1000), false);
+      return !this.expiryTime ? "" : formatDate(new Date(this.expiryTime * 1000), false);
     },
   },
   data() {

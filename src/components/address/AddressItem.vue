@@ -10,7 +10,7 @@ export default {
   name: "AddressItem",
   computed: {
     name() {
-      if (this.item == null) return "";
+      if (!this.item) return "";
       return getJointName(this.item.name, this.item.baseNodeIndex);
     },
   },

@@ -28,6 +28,12 @@ import ensContract from "./abis/IENS.json";
 
 import has from "lodash/has";
 
+import {
+  getEnsContractAddress,
+  getPriceContractAddress,
+  getSubdomainContractAddress,
+} from "./addressconfig";
+
 /* Utils */
 export function getNamehash(name) {
   return namehash(name);
@@ -38,36 +44,10 @@ async function getNamehashWithLabelHash(labelHash, nodeHash) {
   return node.toString();
 }
 
-const contracts = {
-  //Mainnet
-  1: {
-    registry: "",
-  },
-  //Ropsten test network
-  3: {
-    registry: "0xEda75Ae1Ec9957e6F009e6dB22367132A782c588",
-  },
-  //Rinkeby test network
-  4: {
-    registry: "0xe5b98C33EF8678b5142727483F2FfF312e7e6e45",
-  },
-  5: {
-    registry: "",
-  },
-  1337: {
-    registry: "",
-  },
-};
-
 export class ENS {
   constructor({ networkId, registryAddress, provider }) {
-    this.contracts = contracts;
-    const hasRegistry = has(this.contracts[networkId], "registry");
-
-    if (!hasRegistry && !registryAddress) {
-      throw new Error(`Unsupported network ${networkId}`);
-    } else if (this.contracts[networkId] && !registryAddress) {
-      registryAddress = contracts[networkId].registry;
+    if (!registryAddress) {
+      registryAddress = getEnsContractAddress(networkId);
     }
 
     this.registryAddress = registryAddress;

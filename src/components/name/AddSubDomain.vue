@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import UnitButton from "components/ui/UnitButton.vue";
+
 
 export default {
   name: "AddSubDomain",
   components: {
-    UnitButton,
+ 
   },
   props: {
     domainName: {

@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 
 <template>
   <div>

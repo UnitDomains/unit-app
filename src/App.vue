@@ -2,8 +2,8 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 
-import HeaderVue from './views/Header.vue';
-import FooterVue from './views/Footer.vue';
+import HeaderVue from "./views/Header.vue";
+import FooterVue from "./views/Footer.vue";
 </script>
 
 <template>
@@ -19,6 +19,14 @@ import FooterVue from './views/Footer.vue';
     </div>
   </div>
 </template>
+
+<script>
+import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
+
+export default {
+  setup() {},
+};
+</script>
 
 <style>
 #app {

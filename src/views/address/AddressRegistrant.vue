@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 
 <template>
   <div class="address-account-container">
@@ -46,10 +44,9 @@ import moment from "moment";
 
 import createIcon from "@/blockies";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 
-import axios from "http/http";
-import BASEURL from "http/api.js";
+import { getRegistrantFromServer } from "server/domain.js";
 
 import AddressList from "components/address/AddressList.vue";
 
@@ -72,13 +69,15 @@ export default {
   async mounted() {
     await this.getRecordsFromServer();
   },
+
+  /*
   watch: {
     $route(to, from) {
       this.account = to.params.account;
+      console.log(to);
       this.getRecordsFromServer();
-      // 对路由变化作出响应...
     },
-  },
+  },*/
 
   async beforeRouteUpdate(to, from, next) {
     this.account = to.params.account;
@@ -99,7 +98,7 @@ export default {
     },
     async onPageClick(page) {
       this.pageNo = page;
-      await this.getRecordsFromServer();
+      this.addressData = await this.getRecordsFromServer();
     },
 
     async getRecordsFromServer() {
@@ -109,17 +108,12 @@ export default {
         console.log(account);
         var networkId = await getNetworkId();
 
-        let res = await axios.get(BASEURL.domains + "registrant", {
-          params: {
-            networkId: networkId,
-            address: account,
-            pageNo: self.pageNo,
-            pageSize: self.pageSize,
-          },
-        });
-
-        this.addressData = res.data;
-        console.log(res.data);
+        this.addressData = await getRegistrantFromServer(
+          networkId,
+          account,
+          this.pageNo,
+          this.pageSize
+        );
       } catch (err) {
         console.log(err);
       }

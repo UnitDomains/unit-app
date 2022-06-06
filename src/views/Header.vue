@@ -2,7 +2,6 @@
 import { Check } from "@element-plus/icons-vue";
 
 import UserInfoVue from "components/userInfo/UserInfo.vue";
-import UnitButton from "components/ui/UnitButton.vue";
 </script>
 
 <template>
@@ -149,7 +148,7 @@ export default {
       let langStore = LanguageStore.get();
       let lang = "en";
 
-      if (langStore != null) lang = langStore;
+      if (langStore) lang = langStore;
       this.activeLanguageValue = lang;
       this.$i18n.locale = lang;
     },

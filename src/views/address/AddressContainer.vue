@@ -103,24 +103,27 @@ import { calculateDuration } from "utils/dates.js";
 
 import { normalize } from "contracts/utils/eth-ens-namehash";
 import { getJointName } from "contractUtils/domainName.js";
+import { UserAccountStore } from "store/store.js";
 
 import moment from "moment";
 
 import createIcon from "@/blockies";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 
 import axios from "http/http";
 import BASEURL from "http/api.js";
 import { sendHelper } from "../../contractUtils/transaction";
 
-import UnitButton from "components/ui/UnitButton.vue";
+import {
+  getReverseNameFromServer,
+  getReverseRecordDomainsFromServer,
+} from "server/reverse.js";
 
 export default {
   name: "AddressContainer",
   components: {
     InputSearch,
-    UnitButton,
   },
   data() {
     return {
@@ -147,10 +150,10 @@ export default {
       return imgURL;
     },
     hasValidReverseRecord() {
-      return this.accountReverseRecord != "";
+      return this.accountReverseRecord;
     },
     noneReverseRecord() {
-      if (this.reverseRecordDomains == null || this.reverseRecordDomains.length == 0)
+      if (!this.reverseRecordDomains || this.reverseRecordDomains.length == 0)
         return true;
       return false;
     },
@@ -160,12 +163,26 @@ export default {
   },
 
   async mounted() {
-    await this.getReverseRecordState();
+    //You can get data from server or eth-chains
+    /**  
+    //Get data from eth-chains
+     await this.getReverseRecordState();
+    */
+
+    //Get data from server
+    await this.getReverseInfoFromServer();
   },
   async beforeRouteUpdate(to, from, next) {
     this.routerAccount = to.params.account;
 
-    await this.getReverseRecordState();
+    //You can get data from server or eth-chains
+    /**  
+    //Get data from eth-chains.
+     await this.getReverseRecordState();
+    */
+
+    //Get data from server
+    await this.getReverseInfoFromServer();
 
     next();
   },
@@ -175,13 +192,47 @@ export default {
       this.$router.push({ path: `/name/${name}/details` });
     },
 
+    async getReverseInfoFromServer() {
+      loading.showLoading(".address-account-container");
+
+      await setup();
+
+      //Get data from wallet
+
+      //this.account = await getAccount();
+      //var networkId = await getNetworkId();
+
+      //Get data from store
+      this.account = UserAccountStore.account;
+      var networkId = UserAccountStore.networkId;
+
+      console.log(networkId);
+      console.log(this.routerAccount);
+      console.log(this.account);
+
+      this.accountReverseRecord = await getReverseNameFromServer(
+        networkId,
+        this.routerAccount
+      );
+
+      //Get data from server
+      this.reverseRecordDomains = await getReverseRecordDomainsFromServer(
+        networkId,
+        this.routerAccount
+      );
+      loading.hideLoading();
+    },
+
+    /**
+Get data from eth chains
+ */
     async getReverseRecordState() {
-      var options = { target: document.querySelector(".address-account-container") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading(".address-account-container");
 
       try {
         await setup();
         this.account = await getAccount();
+        var networkId = await getNetworkId();
 
         if (this.account === this.routerAccount) {
           let reverseRecord = await getReverseRecord();
@@ -191,14 +242,17 @@ export default {
           this.accountReverseRecord = result;
 
           //从服务器获得相关域名
-          await this.getReverseRecordDomainsFromServer();
+          this.reverseRecordDomains = await getReverseRecordDomainsFromServer(
+            networkId,
+            this.routerAccount
+          );
         }
       } catch (error) {
         console.log(error);
       }
 
       // Loading should be closed asynchronously
-      loadingInstance.close();
+      loading.hideLoading();
     },
     async setReverseRecord(name) {
       await setup();
@@ -209,8 +263,7 @@ export default {
     },
 
     async deleteReverseRecord() {
-      var options = { target: document.querySelector(".address-account-container") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading(".address-account-container");
       try {
         this.deleteReverseRecordEnable = false;
 
@@ -224,17 +277,16 @@ export default {
       } catch (error) {
         this.deleteReverseRecordEnable = true;
       }
-      loadingInstance.close();
+      loading.hideLoading();
     },
 
     async onSetReverseClick() {
-      if (this.selectedItem == null || this.selectedItem == "") {
+      if (!this.selectedItem) {
         alert(this.$t("singleName.record.messages.selectPlaceholder"));
         return;
       }
 
-      var options = { target: document.querySelector(".address-account-container") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading(".address-account-container");
       var name = this.selectedItem;
 
       try {
@@ -246,7 +298,7 @@ export default {
       }
 
       // Loading should be closed asynchronously
-      loadingInstance.close();
+      loading.hideLoading();
     },
     getItemValue(item) {
       return getJointName(item.name, item.baseNodeIndex);
@@ -255,29 +307,13 @@ export default {
     async onDeleteReverseClick() {
       var r = confirm(this.$t("singleName.record.messages.reverseRecordRemoval"));
       if (r) {
-        var options = { target: document.querySelector(".address-account-container") };
-        const loadingInstance = ElLoading.service(options);
+        loading.showLoading(".address-account-container");
 
         this.deleteReverseRecord();
 
         // Loading should be closed asynchronously
-        loadingInstance.close();
+        loading.hideLoading();
       } else {
-      }
-    },
-
-    async getReverseRecordDomainsFromServer() {
-      try {
-        await setup();
-        var networkId = await getNetworkId();
-
-        let res = await axios.get(BASEURL.domains + "reverse", {
-          params: { networkId: networkId, address: this.routerAccount },
-        });
-
-        this.reverseRecordDomains = res.data;
-      } catch (err) {
-        console.log(err);
       }
     },
   },

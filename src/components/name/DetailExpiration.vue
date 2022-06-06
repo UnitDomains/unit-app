@@ -64,16 +64,14 @@ import { getAddressValidation } from "contractUtils/address.js";
 
 import NameDetailItem from "components/name/NameDetailItem.vue";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 import { getAccount } from "../../contracts/web3";
 
-import UnitButton from "components/ui/UnitButton.vue";
 import RenewDuration from "components/name/RenewDuration.vue";
 
 export default {
   name: "DetailExpiration",
   components: {
-    UnitButton,
     RenewDuration,
   },
   props: {
@@ -82,7 +80,8 @@ export default {
       default: "",
     },
     expiryTime: {
-      type: Date,
+      type: Number,
+      default: 0,
     },
   },
   computed: {
@@ -92,7 +91,7 @@ export default {
       return true;
     },
     domainExpiryTime() {
-      return this.expiryTime == null ? "" : formatDate(this.expiryTime, false);
+      return !this.expiryTime ? "" : formatDate(this.expiryTime, false);
     },
   },
   data() {

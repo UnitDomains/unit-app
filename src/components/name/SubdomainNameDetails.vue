@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 <template>
   <div id="ContentContainer" class="detail-panel-container">
     <div class="domain-name-frame">
@@ -191,7 +189,7 @@ import { getBlock, getNetworkId, isContractController } from "contracts/web3.js"
 import { calculateDuration } from "utils/dates.js";
 
 import { getRentPrice, getAccountBalance } from "contractUtils/Price.js";
-import { getDomain, getDomainSuffix } from "contractUtils/domainName.js";
+import { getDomain, getDomainSuffix, getHostDomain } from "contractUtils/domainName.js";
 import moment from "moment";
 import { getAddressValidation } from "contractUtils/address.js";
 
@@ -199,8 +197,10 @@ import { sendHelper } from "contractUtils/transaction.js";
 
 import NameDetailItem from "components/name/NameDetailItem.vue";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 import { getAccount } from "../../contracts/web3";
+
+import { getSubDomainInfoFromServer } from "server/domain.js";
 
 import DetailExpiration from "components/name/DetailExpiration.vue";
 import DetailAddressItem from "components/name/DetailAddressItem.vue";
@@ -208,6 +208,8 @@ import DetailItemReadonly from "components/name/DetailItemReadonly.vue";
 import DetailContentItem from "components/name/DetailContentItem.vue";
 
 import TEXT_PLACEHOLDER_RECORDS from "contractUtils/constants/textRecords";
+
+import { namehash } from "contracts/utils/namehash.js";
 
 export default {
   name: "SubdomainNameDetails",
@@ -224,7 +226,7 @@ export default {
   computed: {
     //是否是注册账户
     isRegistrant() {
-      if (this.domainEntry != null)
+      if (this.domainEntry)
         return !this.available && this.domainEntry.registrant === this.account;
       return false;
     },
@@ -234,7 +236,7 @@ export default {
     },
     //账户是否是域名的拥有者
     isOwner() {
-      if (this.owner != null) return this.owner == this.account;
+      if (this.owner) return this.owner == this.account;
       return false;
     },
     enableRegistrantEdit() {
@@ -250,12 +252,12 @@ export default {
       return this.domainName.substring(this.domainName.indexOf(".") + 1);
     },
     registrant() {
-      if (this.domainEntry != null) return this.domainEntry.registrant;
+      if (this.domainEntry) return this.domainEntry.registrant;
       return "";
     },
 
     expiryTime() {
-      if (this.domainEntry != null) return this.domainEntry.expiryTime;
+      if (this.domainEntry) return this.domainEntry.expiryTime;
       return "";
     },
   },
@@ -298,8 +300,7 @@ export default {
 
     //注册人转让
     async onRegistrantButtonClick(newAddress) {
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#ContentContainer");
 
       try {
         await setup();
@@ -313,14 +314,11 @@ export default {
         console.log(e);
       }
 
-      loadingInstance.close();
+      loading.hideLoading();
     },
 
     async onControllerSetButtonClick(address) {
-      //注册者设置Controller
-
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#ContentContainer");
 
       try {
         await setup();
@@ -333,13 +331,11 @@ export default {
         console.log(e);
       }
 
-      loadingInstance.close();
+      loading.hideLoading();
     },
 
     async onControllerTransferButtonClick(address) {
-      //非注册者设置Controller
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#ContentContainer");
       try {
         await setup();
         var ens = await getENS();
@@ -349,22 +345,20 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      loadingInstance.close();
+      loading.hideLoading();
     },
     async onRenewButtonClick(years, totalFees) {
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#ContentContainer");
       await setup();
 
       var registrar = await getRegistrar();
       var duration = calculateDuration(years);
       var tx = await registrar.renew(this.domainName, duration);
       await sendHelper(tx);
-      loadingInstance.close();
+      loading.hideLoading();
     },
     async onResolverButtonClick(address) {
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#ContentContainer");
       await setup();
       var b = await isContractController(address);
       if (b) {
@@ -374,12 +368,11 @@ export default {
         await sendHelper(tx);
       }
 
-      loadingInstance.close();
+      loading.hideLoading();
     },
     async setTextRecord(newContent, key) {
       try {
-        var options = { target: document.querySelector("#ContentContainer") };
-        const loadingInstance = ElLoading.service(options);
+        loading.showLoading("#ContentContainer");
 
         await setup();
 
@@ -387,18 +380,18 @@ export default {
 
         const tx = await ens.setText(this.domainName, key, newContent);
         await sendHelper(tx);
-        loadingInstance.close();
+        loading.hideLoading();
         return true;
       } catch (error) {
         console.log(error);
         return false;
       } finally {
+        loading.hideLoading();
       }
     },
     async onETHAddressButtonClick(newAddress) {
       try {
-        var options = { target: document.querySelector("#ContentContainer") };
-        const loadingInstance = ElLoading.service(options);
+        loading.showLoading("#ContentContainer");
 
         await setup();
 
@@ -406,13 +399,14 @@ export default {
 
         const tx = await ens.setAddress(this.domainName, newAddress);
         await sendHelper(tx);
-        loadingInstance.close();
+        loading.hideLoading();
         this.ethAddress = newAddress;
         return true;
       } catch (error) {
         console.log(error);
         return false;
       } finally {
+        loading.hideLoading();
       }
     },
     async onContentButtonClick(newContent) {},
@@ -484,13 +478,66 @@ export default {
       }
     },
     async init() {
-      this.initSubdomain();
+      //You can get data from server or eth-chains
+
+      /**
+     //Get data from eth-chains.
+      this.initDomain();
+     */
+
+      //Get data from server
+      //this.initSubdomain();
+      await this.initSubdomainFromServer();
+    },
+    async initSubdomainFromServer() {
+      await setup();
+
+      var networkId = await getNetworkId();
+      this.account = await getAccount();
+      const subNodeLabel = namehash(this.domainName);
+
+      const node = namehash(getHostDomain(this.domainName));
+      console.log(node);
+      var ret = await getSubDomainInfoFromServer(
+        networkId,
+        this.domainName,
+        subNodeLabel,
+        node
+      );
+      console.log(ret);
+      if (!ret) {
+        this.domainEntry = null;
+        this.available = true;
+      } else {
+        this.available = false;
+        this.domainEntry = {
+          registrant: ret.owner,
+          expiryTime: ret.expires * 1000,
+        };
+
+        this.domainResolver = ret.resolver;
+        this.owner = ret.controller;
+        this.ethAddress = ret.ethAddress;
+
+        var record = JSON.parse(ret.record);
+        if (record) {
+          this.textRecordEmail = record["email"];
+          this.textRecordURL = record["url"];
+          this.textRecordAvatar = record["avatar"];
+          this.textRecordDescription = record["description"];
+          this.textRecordNotice = record["notice"];
+          this.textRecordKeywords = record["keywords"];
+          this.textRecordDiscord = record["com.discord"];
+          this.textRecordReddit = record["com.reddit"];
+          this.textRecordGithub = record["com.github"];
+          this.textRecordTwitter = record["com.twitter"];
+          this.textRecordTelegram = record["org.telegram"];
+        }
+      }
     },
 
     async initSubdomain() {
-      var options = { target: document.querySelector("#ContentContainer") };
-      const loadingInstance = ElLoading.service(options);
-
+      loading.showLoading("#ContentContainer");
       await setup();
 
       var registrar = await getRegistrar();
@@ -516,7 +563,7 @@ export default {
       this.textRecordTelegram = await ens.getText(this.domainName, "org.telegram");
 
       // Loading should be closed asynchronously
-      loadingInstance.close();
+      loading.hideLoading();
     },
   },
 };

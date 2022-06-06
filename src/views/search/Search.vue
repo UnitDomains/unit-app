@@ -3,6 +3,7 @@
     <div class="input-search">
       <InputSearch @onClick="onSearchClick"></InputSearch>
     </div>
+
     <div id="contentContainer" class="search-result">
       <DomainNameSpecificList
         :domainNameArray="domainNameSpecificArray"
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
+
 import { setup, getRegistrar, getENS } from "contracts/api";
 import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
 import {
@@ -39,14 +42,14 @@ import {
 
 import { getAddressValidation } from "contractUtils/address.js";
 
-import { ElLoading } from "element-plus";
-
 import axios from "http/http";
 import BASEURL from "http/api.js";
 
 import InputSearch from "components/input/InputSearch.vue";
 import DomainList from "components/domains/DomainList.vue";
 import DomainNameSpecificList from "components/domains/DomainNameSpecificList.vue";
+
+import loading from "components/ui/loading";
 
 export default {
   name: "Search",
@@ -67,7 +70,7 @@ export default {
   },
   async beforeRouteUpdate(to, from) {
     // 对路由变化做出响应...
-    this.searchText = to.params.searchText;
+    this.searchText = to.params.searchText.trim().toLowerCase();
 
     //from eth network
     //  await this.getSearchResults(this.searchText);
@@ -78,7 +81,7 @@ export default {
     await this.getNotAvailableResultFromServer(this.searchText);
   },
   async mounted() {
-    this.searchText = this.$route.params.searchText;
+    this.searchText = this.$route.params.searchText.trim().toLowerCase();
 
     //from eth network
     // await this.getSearchResults(this.searchText);
@@ -95,15 +98,14 @@ export default {
     },
 
     async getSearchResults(searchText) {
-      if (searchText == null || searchText.length == 0) return;
+      if (!searchText || searchText.length == 0) return;
 
       if (getAddressValidation(searchText)) {
         this.$router.push({ path: `/address/${searchText}` });
         return;
       }
 
-      var options = { target: document.querySelector("#contentContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#contentContainer");
 
       try {
         this.domainNameArray = [];
@@ -115,7 +117,7 @@ export default {
         var suffixArray = getSupportDomainNamesSuffixArray();
         for (const suffix of suffixArray) {
           var result = await this.getDomainNameAvailable(searchText + "." + suffix);
-          if (result != null) {
+          if (result) {
             console.log(result.expiryTime);
             this.domainNameArray.push({
               domainName: searchText + "." + suffix,
@@ -132,7 +134,7 @@ export default {
       } catch (error) {}
 
       // Loading should be closed asynchronously
-      loadingInstance.close();
+      loading.hideLoading();
     },
     async getDomainNameAvailable(domainName) {
       var registrar = await getRegistrar();
@@ -165,7 +167,7 @@ export default {
           },
         });
 
-        if (res.data != null && res.data.length > 0) {
+        if (res.data && res.data.length > 0) {
           for (const domainInfo of res.data) {
             this.domainNameSpecificArray.push({
               domainName: getJointName(domainInfo.name, domainInfo.baseNodeIndex),
@@ -205,7 +207,7 @@ export default {
         console.log(res);
 
         this.domainNameNotAvailableArray = [];
-        if (res.data != null && res.data.length > 0) {
+        if (res.data && res.data.length > 0) {
           for (const domainInfo of res.data) {
             this.domainNameNotAvailableArray.push({
               domainName: getJointName(domainInfo.name, domainInfo.baseNodeIndex),
@@ -220,6 +222,7 @@ export default {
     },
 
     async getSuggestResultFromServer(searchText) {
+      loading.showLoading("#contentContainer");
       try {
         await setup();
 
@@ -244,6 +247,8 @@ export default {
       } catch (err) {
         console.log(err);
       }
+
+      loading.hideLoading();
     },
     async getPriceInfoFromServer(searchText) {
       try {

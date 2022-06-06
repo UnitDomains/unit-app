@@ -1,8 +1,4 @@
-<script  setup>
-
-import UnitButton from 'components/ui/UnitButton.vue'
-
-</script>
+<script setup></script>
 
 <template>
   <div class="metaMaskBox">
@@ -18,7 +14,11 @@ import UnitButton from 'components/ui/UnitButton.vue'
           <span>{{ $t("MetaMask.NeedNote") }}</span>
         </div>
 
-        <UnitButton :caption="MetaMask.InstallMetaMask" @onClick="onInstallMetaMask" :enable="true"></UnitButton>
+        <UnitButton
+          :caption="MetaMask.InstallMetaMask"
+          @onClick="onInstallMetaMask"
+          :enable="true"
+        ></UnitButton>
       </el-col>
     </el-row>
   </div>
@@ -30,8 +30,7 @@ const urlChromeMetaMaskAddon =
   "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn";
 const urlFireFoxMetaMaskAddon =
   "https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/";
-const urlOperaMetaMaskAddon =
-  "https://addons.opera.com/en/extensions/details/metamask/";
+const urlOperaMetaMaskAddon = "https://addons.opera.com/en/extensions/details/metamask/";
 
 /**
  * 浏览器类型
@@ -59,7 +58,7 @@ export default {
 
   data() {
     return {
-      metaMaskImage: MetaMaskImage
+      metaMaskImage: MetaMaskImage,
     };
   },
   methods: {
@@ -68,8 +67,8 @@ export default {
       if (isChrome()) window.open(urlChromeMetaMaskAddon);
       else if (isFireFox()) window.open(urlFireFoxMetaMaskAddon);
       else if (isOpera()) window.open(urlOperaMetaMaskAddon);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -98,4 +97,3 @@ export default {
   padding: 5px;
 }
 </style>
-

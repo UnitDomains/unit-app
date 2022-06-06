@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 
 <template>
   <div id="ContentContainer" class="detail-panel-container">
@@ -30,7 +28,7 @@ import UnitButton from "components/ui/UnitButton.vue";
       </div>
     </div>
 
-    <div style="width: 100%" v-if="isOwner">
+    <div id="subdomainContainer" style="width: 100%" v-if="isOwner">
       <AddSubDomain @onOkButtonClick="onAddSubdomainsButtonClick"></AddSubDomain>
     </div>
 
@@ -66,13 +64,13 @@ import { getAccount } from "../../contracts/web3";
 
 import AddSubDomain from "components/name/AddSubDomain.vue";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 
 import AddressList from "components/address/AddressList.vue";
 
 import axios from "http/http";
 import BASEURL from "http/api.js";
-import { namehash } from "@ethersproject/hash";
+import { namehash } from "contracts/utils/namehash.js";
 
 export default {
   name: "Subdomains",
@@ -89,7 +87,7 @@ export default {
   computed: {
     //账户是否是域名的拥有者
     isOwner() {
-      if (this.owner != null) return this.owner == this.account;
+      if (this.owner) return this.owner == this.account;
       return true;
     },
 
@@ -134,8 +132,7 @@ export default {
     },
 
     async getDomainNameAvailable() {
-      var options = { target: document.querySelector("#subdomainContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#subdomainContainer");
 
       await setup();
 
@@ -156,12 +153,11 @@ export default {
       }
 
       // Loading should be closed asynchronously
-      loadingInstance.close();
+      loading.hideLoading();
     },
 
     async onAddSubdomainsButtonClick(newContent) {
-      var options = { target: document.querySelector("#subdomainContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#subdomainContainer");
       try {
         await setup();
 
@@ -176,12 +172,11 @@ export default {
         console.log(error);
         return false;
       } finally {
-        loadingInstance.close();
+        loading.hideLoading();
       }
     },
     async deleteSubdomain(subdomain) {
-      var options = { target: document.querySelector("#subdomainContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#subdomainContainer");
       try {
         await setup();
         await setupSubdomainRegistrar();
@@ -197,12 +192,11 @@ export default {
         console.log(error);
         return false;
       } finally {
-        loadingInstance.close();
+        loading.hideLoading();
       }
     },
     async getSubdomains() {
-      var options = { target: document.querySelector("#subdomainContainer") };
-      const loadingInstance = ElLoading.service(options);
+      loading.showLoading("#subdomainContainer");
       try {
         await setup();
 
@@ -219,7 +213,7 @@ export default {
         console.log(error);
         return false;
       } finally {
-        loadingInstance.close();
+        loading.hideLoading();
       }
     },
     async getSubdomainsFromServer() {

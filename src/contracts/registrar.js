@@ -368,7 +368,7 @@ export default class Registrar {
   async addTLD(newTLD) {
     try {
       const hasTLD = await this.isExistTLD(newTLD);
-      if (newTLD == null || newTLD == "" || hasTLD) {
+      if (!newTLD || hasTLD) {
         console.log("The TLD exists");
         return;
       }

@@ -1,29 +1,15 @@
-import {
-    createApp
-} from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import i18n from './locales/i18n'
+import i18n from "./locales/i18n";
 
-import router from './router'
+import router from "./router";
 
-//Element UI
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import { connect } from "contractUtils/connect.js";
 
+import UnitButton from "components/ui/UnitButton.vue";
 
+connect();
 
-
-
-import {
-    connect
-}
-from 'contractUtils/connect.js'
-
-connect()
-
-createApp(App)
-    .use(router)
-    .use(i18n)
-    .use(ElementPlus)
-    .mount('#app')
+const app = createApp(App);
+app.component("UnitButton", UnitButton).use(router).use(i18n).mount("#app");

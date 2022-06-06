@@ -89,18 +89,16 @@ import EthVal from "ethval";
 import { Contract, utils, BigNumber } from "ethers";
 
 import { calculateDuration, formatDate } from "utils/dates.js";
-import UnitButton from "components/ui/UnitButton.vue";
+
 
 export default {
   name: "DomainNameSpecificItem",
   components: {
-    UnitButton,
+ 
   },
   computed: {
     domainExpiryTime() {
-      return this.expiryTime == null
-        ? ""
-        : formatDate(new Date(this.expiryTime * 1000), false);
+      return !this.expiryTime ? "" : formatDate(new Date(this.expiryTime * 1000), false);
     },
     less5() {
       if (getDomain(this.domainName).length <= 5) return true;
@@ -155,7 +153,7 @@ export default {
       this.$router.push({ path: `/name/${this.domainName}/register` });
     },
     convertPriceString2Array(price) {
-      if (price == null || price.length == 0) return null;
+      if (!price || price.length == 0) return null;
       if (price[0] != "[" || price[price.length - 1] != "]") return null;
       price = price.substring(1, price.length - 1);
       console.log(price);
@@ -163,9 +161,9 @@ export default {
       return price.split(",");
     },
     getRegisterPrice(name) {
-      if (name == null || name.length == 0) return null;
+      if (!name || name.length == 0) return null;
       name = getDomain(name);
-      if (this.priceInfo == null) return null;
+      if (!this.priceInfo) return null;
 
       const registerArray = this.convertPriceString2Array(this.priceInfo.registerPrice);
 
@@ -181,9 +179,9 @@ export default {
     },
 
     getRentPrice(name) {
-      if (name == null || name.length == 0) return null;
+      if (!name || name.length == 0) return null;
       name = getDomain(name);
-      if (this.priceInfo == null) return null;
+      if (!this.priceInfo) return null;
 
       const rentrArray = this.convertPriceString2Array(this.priceInfo.rentPrice);
       var price = 0;

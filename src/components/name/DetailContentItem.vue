@@ -47,13 +47,9 @@
 </template>
 
 <script>
-import UnitButton from "components/ui/UnitButton.vue";
-
 export default {
   name: "DetailContentItem",
-  components: {
-    UnitButton,
-  },
+  components: {},
   props: {
     domainName: {
       type: String,

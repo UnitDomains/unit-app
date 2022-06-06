@@ -1,12 +1,8 @@
-<script  setup>
-
-import UnitButton from 'components/ui/UnitButton.vue'
-
-</script>
+<script setup></script>
 
 <template>
   <div>
-    <el-row style="text-align: center;">
+    <el-row style="text-align: center">
       <el-col :span="24">
         <h1>{{ $t("MetaMask.Need") }}</h1>
 
@@ -15,20 +11,18 @@ import UnitButton from 'components/ui/UnitButton.vue'
           type="info"
           :closable="false"
           show-icon
-          style="width:800px;margin:auto;margin-bottom:30px;"
+          style="width: 800px; margin: auto; margin-bottom: 30px"
           :description="$t('MetaMask.NeedNote')"
         ></el-alert>
 
-        <el-button
-          type="primary"
-          size="large"
-          @click="onMetaMaskInstalling()"
-        >{{ $t("MetaMask.InstallMetaMask") }}</el-button>
+        <el-button type="primary" size="large" @click="onMetaMaskInstalling()">{{
+          $t("MetaMask.InstallMetaMask")
+        }}</el-button>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
-        <metaMaskInfo style="width:800px;margin:auto;"></metaMaskInfo>
+        <metaMaskInfo style="width: 800px; margin: auto"></metaMaskInfo>
       </el-col>
     </el-row>
   </div>
@@ -41,8 +35,7 @@ const urlChromeMetaMaskAddon =
   "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn";
 const urlFireFoxMetaMaskAddon =
   "https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/";
-const urlOperaMetaMaskAddon =
-  "https://addons.opera.com/en/extensions/details/metamask/";
+const urlOperaMetaMaskAddon = "https://addons.opera.com/en/extensions/details/metamask/";
 
 /**
  * 浏览器类型
@@ -68,7 +61,7 @@ var isOpera = function () {
 export default {
   name: "MetaMaskDownload",
   components: {
-    metaMaskInfo: MetaMaskInfo
+    metaMaskInfo: MetaMaskInfo,
   },
   data() {
     return { isInstalling: false };
@@ -79,8 +72,8 @@ export default {
       if (isChrome()) window.open(urlChromeMetaMaskAddon);
       else if (isFireFox()) window.open(urlFireFoxMetaMaskAddon);
       else if (isOpera()) window.open(urlOperaMetaMaskAddon);
-    }
-  }
+    },
+  },
 };
 </script>
 

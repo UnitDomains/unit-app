@@ -1,7 +1,7 @@
-const SupportDomainNamesSuffix =
-  "about,area,beyond,book,cat,cell,dream,dog,east,enjoy,enter,everything,earth,focus,foot,friend,girl,go,good,boy,happy,high,hour,home,here,image,item,keep,key,local,lucky,main,meta,moon,nature,nice,north,verse,option,owner,person,player,point,position,power,rain,record,region,right,room,sea,side,spring,station,street,south,time,ten,unit,wind,yeah,west,well,world";
+//const SupportDomainNamesSuffix =
+//  "about,area,beyond,book,cat,cell,dream,dog,east,enjoy,enter,everything,earth,focus,foot,friend,girl,go,good,boy,happy,high,hour,home,here,image,item,keep,key,local,lucky,main,meta,moon,nature,nice,north,verse,option,owner,person,player,point,position,power,rain,record,region,right,room,sea,side,spring,station,street,south,time,ten,unit,wind,yeah,west,well,world";
 //const SupportDomainNamesSuffix = 'cat,dog,girl,boy,meta,ok,unit'
-//const SupportDomainNamesSuffix = 'cat,dog,unit'
+const SupportDomainNamesSuffix = "cat,unit";
 const SupportDomainNamesSuffixArray = SupportDomainNamesSuffix.split(",");
 
 export function getSupportDomainNamesSuffixArray() {
@@ -35,23 +35,24 @@ export function getDomainSuffix(domainName) {
  */
 export function getDomain(domainName) {
   var suffix = getDomainSuffix(domainName);
-  if (suffix == null) return domainName;
+  if (!suffix) return domainName;
   var lastIndex = domainName.lastIndexOf(".");
   var pre = domainName.substring(0, lastIndex);
 
   lastIndex = pre.lastIndexOf(".");
   var result;
-  if (lastIndex > 0) result = pre.substring(lastIndex);
+  if (lastIndex > 0) result = pre.substring(lastIndex + 1);
   else result = pre;
+
   return result;
 }
 
 export function getHostDomain(domainName) {
   var pre = getDomain(domainName);
+
   var suffix = getDomainSuffix(domainName);
 
-  if (pre == null || pre.length == 0 || suffix == null || suffix.length == 0)
-    return "";
+  if (!pre || pre.length == 0 || !suffix || suffix.length == 0) return "";
   return pre + "." + suffix;
 }
 
@@ -61,7 +62,7 @@ export function getHostDomain(domainName) {
  */
 export function getDomainIndex(domainName) {
   var suffix = getDomainSuffix(domainName);
-  if (suffix == null) return -1;
+  if (!suffix) return -1;
 
   for (var i = 0; i < SupportDomainNamesSuffixArray.length; i++) {
     if (SupportDomainNamesSuffixArray[i] == suffix) return i;

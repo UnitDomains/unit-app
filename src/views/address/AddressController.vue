@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 
 <template>
   <div class="address-account-container">
@@ -46,10 +44,9 @@ import moment from "moment";
 
 import createIcon from "@/blockies";
 
-import { ElLoading } from "element-plus";
+import loading from "components/ui/loading";
 
-import axios from "http/http";
-import BASEURL from "http/api.js";
+import { getControllerFromServer } from "server/domain.js";
 
 import AddressList from "components/address/AddressList.vue";
 
@@ -72,15 +69,14 @@ export default {
   async mounted() {
     await this.getRecordsFromServer();
   },
-
+  /*
   watch: {
     $route(to, from) {
       this.account = to.params.account;
       this.getRecordsFromServer();
-      // 对路由变化作出响应...
     },
   },
-
+*/
   beforeRouteUpdate(to, from, next) {
     this.account = to.params.account;
 
@@ -108,16 +104,12 @@ export default {
         var account = this.account;
         var networkId = await getNetworkId();
 
-        let res = await axios.get(BASEURL.domains + "controller", {
-          params: {
-            networkId: networkId,
-            address: account,
-            pageNo: self.pageNo,
-            pageSize: self.pageSize,
-          },
-        });
-
-        this.addressData = res.data;
+        this.addressData = await getControllerFromServer(
+          networkId,
+          account,
+          this.pageNo,
+          this.pageSize
+        );
       } catch (err) {}
     },
   },

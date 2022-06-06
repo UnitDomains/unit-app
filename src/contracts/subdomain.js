@@ -28,6 +28,12 @@ import { isEncodedLabelhash, labelhash } from "./utils/labelhash";
 import { namehash } from "./utils/namehash";
 
 import {
+  getEnsContractAddress,
+  getPriceContractAddress,
+  getSubdomainContractAddress,
+} from "./addressconfig";
+
+import {
   getDomain,
   getDomainSuffix,
   getDomainIndex,
@@ -35,9 +41,11 @@ import {
 } from "contractUtils/domainName.js";
 
 export class SubdomainRegistrar {
-  constructor({ ENS, provider }) {
+  constructor({ ENS, provider, networkId }) {
+    const subdomainContractAddress = getSubdomainContractAddress(networkId);
+    console.log(subdomainContractAddress);
     const _SubdomainRegistrarContract = getSubdomainRegistrar({
-      address: "0x2e064A0F2E180dC86Cc2f6cEb00391BbB5C4e806",
+      address: subdomainContractAddress,
       provider,
     });
     this.SubdomainRegistrarContract = _SubdomainRegistrarContract;
@@ -118,8 +126,10 @@ export class SubdomainRegistrar {
 
 export async function setupSubdomainRegistrar(ENS) {
   const provider = await getProvider();
+  const networkId = await getNetworkId();
   return new SubdomainRegistrar({
     ENS,
     provider,
+    networkId,
   });
 }

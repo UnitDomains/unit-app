@@ -173,22 +173,4 @@ const router = createRouter({
   }
 }*/
 
-/**
- * tmp对象是null
- * @param {*} tmp
- */
-/*var IsNotNull = function(tmp) {
-  if (!tmp && typeof tmp !== 'undefined' && tmp !== 0 && tmp != null) {
-    return true
-  }
-  return false
-}*/
-
-var IsNull = function (tmp) {
-  if (!tmp || typeof tmp == "undefined" || tmp == 0 || tmp == null) {
-    return true;
-  }
-  return false;
-};
-
 export default router;

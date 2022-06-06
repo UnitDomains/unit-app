@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 <template>
   <div id="RegisterContainer" class="register-name-panel">
     <div class="domain-name-frame">
@@ -33,7 +31,7 @@ import UnitButton from "components/ui/UnitButton.vue";
         {{ $t("singleName.messages.alreadyregistered") }}
       </div>
     </div>
-    <div v-else-if="domainNameAlreadyRegistered == 2">
+    <div v-else-if="domainNameAlreadyRegistered == 2" style="width: 100%">
       <div class="register-duration" v-show="registerDurationVisible">
         <RegisterDuration
           :domainName="domainName"
@@ -43,19 +41,19 @@ import UnitButton from "components/ui/UnitButton.vue";
         ></RegisterDuration>
       </div>
       <div class="register-line" v-show="registerDurationVisible"></div>
-      <div class="step-panel">
-        <div class="register-caption">{{ registerCaption }}</div>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="8">
-            <Step :type="1" :state="step1State"></Step>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="8">
-            <Step :type="2" :state="step2State"></Step>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="8">
-            <Step :type="3" :state="step3State"></Step>
-          </el-col>
-        </el-row>
+      <div class="register-step-caption">{{ registerCaption }}</div>
+      <div class="register-step-panel">
+        <div class="register-step-container">
+          <div class="register-step-item">
+            <Step :type="1" :state="step1State" :percent="circlePercent"></Step>
+          </div>
+          <div class="register-step-item">
+            <Step :type="2" :state="step2State" :percent="circlePercent"></Step>
+          </div>
+          <div class="register-step-item">
+            <Step :type="3" :state="step3State" :percent="circlePercent"></Step>
+          </div>
+        </div>
       </div>
 
       <div class="progress-panel" v-show="progressVisible">
@@ -116,6 +114,9 @@ import { getDomain, getDomainSuffix } from "contractUtils/domainName.js";
 import { sendHelper } from "contractUtils/transaction.js";
 import moment from "moment";
 
+import { getDomainInfoFromServer } from "server/domain.js";
+import { UserAccountStore } from "store/store.js";
+
 import Step from "components/step/Step.vue";
 
 import ProgressBar from "components/step/ProgressBar.vue";
@@ -128,6 +129,7 @@ export default {
   name: "RegisterName",
   components: {
     Step,
+
     ProgressBar,
     ProgressText,
     RegisterDuration,
@@ -163,6 +165,13 @@ export default {
     progressVisible() {
       if (this.stepNumber >= 1) return true;
       return false;
+    },
+    circlePercent() {
+      if (this.stepNumber == 1 && this.progressValue <= 30)
+        return (this.progressValue / 30) * 100;
+      if (this.stepNumber == 2 && this.progressValue > 30 && this.progressValue <= 70)
+        return ((this.progressValue - 30) / 60) * 100;
+      return ((this.progressValue - 70) / 30) * 100;
     },
 
     /**
@@ -248,7 +257,15 @@ export default {
   },
 
   async mounted() {
-    await this.getDomainNameAvailable();
+    /**
+    You can get info from server or eth-chains
+     */
+
+    //from eth-chains
+    //  await this.getDomainNameAvailableFromEthChains();
+
+    //from server
+    await this.getDomainNameAvailableFromServer();
   },
 
   methods: {
@@ -262,7 +279,32 @@ export default {
       this.$router.push({ path: `/name/${this.domainName}/subdomains` });
     },
 
-    async getDomainNameAvailable() {
+    /**
+     * Get data from server
+     */
+    async getDomainNameAvailableFromServer() {
+      var networkId = UserAccountStore.networkId;
+
+      /*
+      //Get data from eth-chains
+      await setup();
+      networkId = await getNetworkId();
+      */
+
+      var ret = await getDomainInfoFromServer(networkId, this.domainName);
+
+      if (!ret) {
+        this.domainNameAlreadyRegistered = 2;
+        await this.initProgressStore();
+      } else {
+        this.domainNameAlreadyRegistered = 1;
+      }
+    },
+
+    /**
+     * Get data from eth-chains
+     */
+    async getDomainNameAvailableFromEthChains() {
       await setup();
 
       var registrar = await getRegistrar();
@@ -278,7 +320,7 @@ export default {
     commitmentTimer() {
       this.pendingVisible = true;
       this.progressValue = 15;
-      if (this.commitmentId == null)
+      if (!this.commitmentId)
         this.commitmentId = window.setInterval(this.commitmentTimerHelper, 1000);
     },
     async commitmentTimerHelper() {
@@ -287,7 +329,7 @@ export default {
       var registrar = await getRegistrar();
       let a = await registrar.checkCommitment(this.domainName, savedStep.secret);
 
-      if (a > 0 && this.commitmentId != null) {
+      if (a > 0 && this.commitmentId) {
         window.clearInterval(this.commitmentId);
         this.commitmentId = null;
         this.pendingVisible = false;
@@ -298,7 +340,7 @@ export default {
     },
 
     waitOneMinuteTimer() {
-      if (this.waitOneMinuteId == null)
+      if (!this.waitOneMinuteId)
         this.waitOneMinuteId = window.setInterval(this.waitOneMinuteTimerHelper, 1000);
     },
 
@@ -312,7 +354,7 @@ export default {
         this.progressStore.setSecondsPassed(secondsPassed);
         this.progressValue = 30 + (secondsPassed / 60) * 40;
 
-        if (secondsPassed >= 60 && this.waitOneMinuteId != null) {
+        if (secondsPassed >= 60 && this.waitOneMinuteId) {
           //wait 60 second(a minute)
 
           console.log("waitOneMinuteId:" + this.waitOneMinuteId);
@@ -328,7 +370,7 @@ export default {
     registerTimer() {
       this.pendingVisible = true;
       this.progressValue = 80;
-      if (this.registerId == null)
+      if (!this.registerId)
         this.registerId = window.setInterval(this.registerTimerHelper, 1000);
     },
     async registerTimerHelper() {
@@ -336,7 +378,7 @@ export default {
       var savedStep = this.progressStore.getSavedStep();
       var registrar = await getRegistrar();
       let a = await registrar.getAvailable(this.domainName);
-      if (!a && this.registerId != null) {
+      if (!a && this.registerId) {
         window.clearInterval(this.registerId);
         this.registerId = null;
         this.pendingVisible = false;
@@ -544,6 +586,20 @@ export default {
   margin: 1em;
 }
 
+.register-step-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: top;
+  min-height: 50px;
+  margin: auto;
+}
+
+.register-step-item {
+  max-width: 25em;
+  height: 100%;
+}
+
 .register-duration {
   margin: 1em;
 }
@@ -555,22 +611,29 @@ export default {
   padding: 0px;
 }
 
-.step-panel {
+.register-step-panel {
   margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.register-step-caption {
+  margin: auto;
+}
 .progress-panel {
   width: 100%;
   margin: 10px;
 }
 
 .register-line {
+  height: 0;
+  border-bottom: 1px solid #dcdfe6;
   margin-left: 1em;
   margin-right: 1em;
-  width: 100%;
-  height: 2px;
-  box-shadow: 0px 1px 0px 0 rgba(46, 61, 73, 0.5);
-  text-align: left;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .account-balance-insufficient {

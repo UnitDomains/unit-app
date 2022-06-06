@@ -25,7 +25,7 @@ export default {
 
   methods: {
     onClick() {
-      if (this.searchText == null || this.searchText.trim().length == 0) {
+      if (!this.searchText || this.searchText.trim().length == 0) {
         return;
       }
       this.$emit("onClick", this.searchText);
@@ -46,6 +46,8 @@ export default {
   padding: 0 15px;
   color: #606266;
   font: 2em sans-serif;
+
+  text-transform: lowercase;
 }
 
 .custom-input-box:focus {

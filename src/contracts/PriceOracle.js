@@ -1,6 +1,6 @@
 import {
   getWeb3,
-  //getNetworkId,
+  getNetworkId,
   getProvider,
   getAccount,
   getSigner,
@@ -14,10 +14,17 @@ import { calculateDuration } from "utils/dates.js";
 
 import EthVal from "ethval";
 
+import {
+  getEnsContractAddress,
+  getPriceContractAddress,
+  getSubdomainContractAddress,
+} from "./addressconfig";
+
 export class LinearPremiumPriceOracle {
-  constructor({ provider }) {
+  constructor({ provider, networkId }) {
+    const priceContractAddress = getPriceContractAddress(networkId);
     const PriceOracleContract = getLinearPremiumPriceOracle({
-      address: "0xa98bE1bE7653fFa78F217125B251c4FBa97E099e",
+      address: priceContractAddress,
       provider,
     });
     this.PriceOracle = PriceOracleContract;
@@ -50,7 +57,7 @@ export class LinearPremiumPriceOracle {
 
     var pricesArray = prices.split(",");
 
-    if (pricesArray == null || pricesArray.length < 1) {
+    if (!pricesArray || pricesArray.length < 1) {
       console.log("prices format error");
       return;
     }
@@ -81,7 +88,7 @@ export class LinearPremiumPriceOracle {
 
     var pricesArray = prices.split(",");
 
-    if (pricesArray == null || pricesArray.length < 1) {
+    if (!pricesArray || pricesArray.length < 1) {
       console.log("prices format error");
       return;
     }
@@ -115,8 +122,10 @@ export class LinearPremiumPriceOracle {
 
 export async function setupPriceOracle() {
   const provider = await getProvider();
+  const networkId = await getNetworkId();
 
   return new LinearPremiumPriceOracle({
     provider,
+    networkId,
   });
 }

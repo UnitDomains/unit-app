@@ -1,6 +1,4 @@
-<script setup>
-import UnitButton from "components/ui/UnitButton.vue";
-</script>
+<script setup></script>
 <template>
   <div class="user-info-container" v-if="userAccountValidate">
     <div
@@ -42,29 +40,44 @@ import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
 
 import createIcon from "@/blockies";
 import { shortAddressFormat } from "@/utils/util.js";
+
+import { getReverseNameFromServer } from "server/reverse.js";
+import { inject } from "vue";
+
+import { UserAccountStore } from "store/store.js";
+
 export default {
   name: "UserInfo",
+
   computed: {
     userAccountValidate() {
-      return this.userAccount != null && this.userAccount != "";
+      return this.userAccountShort;
     },
     userAccountShort() {
-      if (this.reverseRecordName == null || this.reverseRecordName == "")
-        return shortAddressFormat(this.userAccount);
-      return this.reverseRecordName;
+      if (!UserAccountStore.reverseRecordName)
+        return shortAddressFormat(UserAccountStore.account);
+      return UserAccountStore.reverseRecordName;
+    },
+    networkName() {
+      return this.getNetWorkNameById(UserAccountStore.networkId);
+    },
+    blockImgURL() {
+      var address = UserAccountStore.account;
+      return createIcon({
+        seed: address.toLowerCase(),
+        size: 8,
+        scale: 5,
+        color: 0, //'#E1E1E1',
+        bgcolor: 0, // '#FFFFFF',
+        spotcolor: 0, //'#CFCFCF'
+      }).toDataURL();
     },
   },
   data() {
-    return {
-      networkName: "",
-      blockImgURL: "",
-      userAccount: "",
-      reverseRecordName: "",
-    };
+    return {};
   },
   async mounted() {
-    await this.getNetWorkName();
-    await this.getEthAccount();
+    // await this.getEthAccount();
   },
   methods: {
     onConnectClick() {
@@ -85,55 +98,52 @@ export default {
        * 0x5 5 Goerli Test Network
        * 0x2a 42 Kovan Test Network
        */
+      networkId = Number(networkId);
       switch (networkId) {
         case 0x1:
+        case 1:
           return "Ethereum Main";
         case 0x3:
+        case 3:
           return "Ropsten Test";
         case 0x4:
+        case 4:
           return "Rinkeby Test";
         case 0x5:
+        case 5:
           return "Goerli Test";
         case 0x2a:
+        case 42:
           return "Kovan Test";
 
         default:
           return "Test";
       }
     },
-    async getNetWorkName() {
-      try {
-        await setupWeb3();
-        var n = await getNetworkId();
 
-        this.networkName = this.getNetWorkNameById(n);
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async getEthAccount() {
       try {
-        await setupWeb3();
-        var address = await getAccount();
-        this.userAccount = address;
-        await this.getIcon(address);
-        this.reverseRecordName = await this.getReverseRecordName(address);
+        /**
+         * Eth Account can get from wallet
+         */
+        //  await setupWeb3();
+        //  var address = await getAccount();
+        //  var networkId = await getNetworkId();
+        //  this.userAccount = address;
+
+        var address = UserAccountStore.account;
+        var networkId = UserAccountStore.networkId;
+
+        this.reverseRecordName = await getReverseNameFromServer(networkId, address);
+
+        /*
+        //从服务器上获取失败，则从链上获取
+        if (!ret)
+          this.reverseRecordName = await this.getReverseRecordName(address);
+          */
       } catch (error) {
         console.log(error);
       }
-    },
-    async getIcon(address) {
-      this.userAccount = address;
-      var imgURL = createIcon({
-        seed: address.toLowerCase(),
-        size: 8,
-        scale: 5,
-        color: 0, //'#E1E1E1',
-        bgcolor: 0, // '#FFFFFF',
-        spotcolor: 0, //'#CFCFCF'
-      }).toDataURL();
-
-      return (this.blockImgURL = imgURL);
     },
 
     async getReverseRecordName(address) {
