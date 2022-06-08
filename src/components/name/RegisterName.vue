@@ -170,7 +170,7 @@ export default {
       if (this.stepNumber == 1 && this.progressValue <= 30)
         return (this.progressValue / 30) * 100;
       if (this.stepNumber == 2 && this.progressValue > 30 && this.progressValue <= 70)
-        return ((this.progressValue - 30) / 60) * 100;
+        return ((this.progressValue - 30) / 40) * 100;
       return ((this.progressValue - 70) / 30) * 100;
     },
 
