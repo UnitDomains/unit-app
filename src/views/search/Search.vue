@@ -69,32 +69,48 @@ export default {
     };
   },
   async beforeRouteUpdate(to, from) {
+    console.log(to);
     // 对路由变化做出响应...
-    this.searchText = to.params.searchText.trim().toLowerCase();
+    this.searchText = this.getSearchText(to.params.searchText.trim().toLowerCase());
 
     //from eth network
     //  await this.getSearchResults(this.searchText);
 
     //from data server
-    await this.getSpecificResultFromServer(this.searchText);
-    await this.getSuggestResultFromServer(this.searchText);
-    await this.getNotAvailableResultFromServer(this.searchText);
+    if (this.searchText) {
+      await this.getSpecificResultFromServer(this.searchText);
+      await this.getSuggestResultFromServer(this.searchText);
+      await this.getNotAvailableResultFromServer(this.searchText);
+    }
   },
   async mounted() {
-    this.searchText = this.$route.params.searchText.trim().toLowerCase();
+    this.searchText = this.getSearchText(
+      this.$route.params.searchText.trim().toLowerCase()
+    );
 
     //from eth network
     // await this.getSearchResults(this.searchText);
 
     //from data server
-    await this.getSpecificResultFromServer(this.searchText);
-    await this.getSuggestResultFromServer(this.searchText);
-    await this.getNotAvailableResultFromServer(this.searchText);
+
+    if (this.searchText) {
+      await this.getSpecificResultFromServer(this.searchText);
+      await this.getSuggestResultFromServer(this.searchText);
+      await this.getNotAvailableResultFromServer(this.searchText);
+    }
   },
   methods: {
     onSearchClick(searchText) {},
     onDomainItemClick(item) {
       this.$router.push({ path: `/name/${item.domainName}/register` });
+    },
+
+    getSearchText(text) {
+      var domain = getHostDomain(text);
+      if (!domain) {
+        domain = getDomain(text);
+      }
+      return domain;
     },
 
     async getSearchResults(searchText) {

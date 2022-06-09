@@ -1,5 +1,5 @@
 //const SupportDomainNamesSuffix =
-//  "about,area,beyond,book,cat,cell,dream,dog,east,enjoy,enter,everything,earth,focus,foot,friend,girl,go,good,boy,happy,high,hour,home,here,image,item,keep,key,local,lucky,main,meta,moon,nature,nice,north,verse,option,owner,person,player,point,position,power,rain,record,region,right,room,sea,side,spring,station,street,south,time,ten,unit,wind,yeah,west,well,world";
+//  "about,area,beyond,book,cat,cell,dream,dog,east,enjoy,enter,everything,earth,focus,foot,friend,girl,go,good,boy,happy,high,hour,home,here,image,item,keep,key,local,lucky,main,meta,metaverse,moon,nature,nice,north,verse,option,owner,person,player,point,position,power,rain,record,region,right,room,sea,side,spring,station,street,south,time,unit,wind,yeah,west,well,world";
 //const SupportDomainNamesSuffix = 'cat,dog,girl,boy,meta,ok,unit'
 const SupportDomainNamesSuffix = "cat,unit";
 const SupportDomainNamesSuffixArray = SupportDomainNamesSuffix.split(",");
@@ -35,8 +35,13 @@ export function getDomainSuffix(domainName) {
  */
 export function getDomain(domainName) {
   var suffix = getDomainSuffix(domainName);
-  if (!suffix) return domainName;
-  var lastIndex = domainName.lastIndexOf(".");
+  var lastIndex;
+  if (!suffix) {
+    lastIndex = domainName.lastIndexOf(".");
+    if (lastIndex >= 0) return domainName.substring(lastIndex + 1);
+    return domainName;
+  }
+  lastIndex = domainName.lastIndexOf(".");
   var pre = domainName.substring(0, lastIndex);
 
   lastIndex = pre.lastIndexOf(".");

@@ -90,12 +90,9 @@ import { Contract, utils, BigNumber } from "ethers";
 
 import { calculateDuration, formatDate } from "utils/dates.js";
 
-
 export default {
   name: "DomainNameSpecificItem",
-  components: {
- 
-  },
+  components: {},
   computed: {
     domainExpiryTime() {
       return !this.expiryTime ? "" : formatDate(new Date(this.expiryTime * 1000), false);
@@ -242,6 +239,7 @@ export default {
 
 .domain-specific-name-suffix {
   color: darkblue;
+  margin-right: 1em;
 }
 
 .domain-state {
