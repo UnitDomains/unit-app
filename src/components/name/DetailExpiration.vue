@@ -122,13 +122,13 @@ export default {
       this.durationChangedCompleted = false;
     },
 
-    async onDurationChange(years, rentPrice, gasPrice) {
+    async onDurationChange(years, price) {
       this.years = years;
 
       //   this.rentPrice = rentPrice
       //   this.gasPrice = gasPrice
 
-      this.totalFees = new EthVal(rentPrice).add(new EthVal(gasPrice));
+      this.totalFees = price.totalFast;
 
       var accountBalance = new EthVal(await getAccountBalance());
       console.log(this.totalFees.gt(accountBalance));

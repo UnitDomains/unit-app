@@ -34,14 +34,15 @@ const Store = {
 };
 
 export default class ProgressStore {
-  constructor({ domainName, networkId }) {
+  constructor({ domainName, account, networkId }) {
     this.domainName = domainName;
     this.networkId = networkId;
+    this.account = account;
     this.getSavedStep();
   }
 
   remove() {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
     Store.remove(label);
     return this.getSavedStep();
   }
@@ -64,7 +65,7 @@ export default class ProgressStore {
   }
 
   getSavedStep() {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
     let savedStep = Store.get(label);
 
     if (!savedStep) {
@@ -75,7 +76,7 @@ export default class ProgressStore {
   }
 
   setYears(years) {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
     let savedStep = Store.get(label);
 
     if (savedStep) {
@@ -87,7 +88,7 @@ export default class ProgressStore {
   }
 
   setStep(step) {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
     let savedStep = Store.get(label);
 
     if (savedStep) {
@@ -99,7 +100,8 @@ export default class ProgressStore {
   }
 
   setCommitmentExpirationDate(commitmentExpirationDate) {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
+
     let savedStep = Store.get(label);
 
     if (savedStep) {
@@ -111,7 +113,7 @@ export default class ProgressStore {
   }
 
   setSecondsPassed(secondsPassed) {
-    const label = `${this.networkId}-${this.domainName}`;
+    const label = `${this.networkId}-${this.account}-${this.domainName}`;
     let savedStep = Store.get(label);
 
     if (savedStep) {
@@ -123,9 +125,10 @@ export default class ProgressStore {
   }
 }
 
-export async function setupProgressStore(domainName, networkId) {
+export async function setupProgressStore(domainName, account, networkId) {
   return new ProgressStore({
     domainName,
+    account,
     networkId,
   });
 }

@@ -19,7 +19,7 @@
       <div class="price-fee">{{ rentPriceEth }} ETH</div>
     </div>
 
-    <TotalFees :rentPrice="rentPrice" :gasPrice="gasPrice"></TotalFees>
+    <TotalFees :price="price"></TotalFees>
   </div>
 </template>
 
@@ -49,11 +49,7 @@ export default {
       type: Number,
       default: 1,
     },
-    rentPrice: {
-      type: Object,
-      default: null,
-    },
-    gasPrice: {
+    price: {
       type: Object,
       default: null,
     },
@@ -66,7 +62,8 @@ export default {
   },
   computed: {
     rentPriceEth() {
-      if (this.rentPrice) return new EthVal(this.rentPrice).toEth().toFixed(4).toString();
+      if (this.price && this.price.rentPrice)
+        return new EthVal(this.price.rentPrice).toEth().toFixed(4).toString();
       return "";
     },
   },

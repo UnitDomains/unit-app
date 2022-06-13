@@ -10,21 +10,13 @@
 </template>
 
 <script>
-const GWEI = 1000000000;
-const COMMIT_GAS_WEI = 42000;
-const REGISTER_GAS_WEI = 240000;
-const TOGAL_GAS_WEI = COMMIT_GAS_WEI + REGISTER_GAS_WEI;
 import EthVal from "ethval";
 
 export default {
   name: "TotalFees",
   components: {},
   props: {
-    rentPrice: {
-      type: Object,
-      default: null,
-    },
-    gasPrice: {
+    price: {
       type: Object,
       default: null,
     },
@@ -36,26 +28,26 @@ export default {
   },
   computed: {
     rentPriceEth() {
-      if (this.rentPrice) return new EthVal(this.rentPrice).toEth().toFixed(4).toString();
-      return "";
+      if (this.price && this.price.rentAndRegisterPrices)
+        return new EthVal(this.price.rentAndRegisterPrices).toEth().toFixed(4).toString();
+      return "0";
     },
     gasPriceGwei() {
-      if (this.gasPrice) return new EthVal(this.gasPrice).toGwei().toFixed(2).toString();
-      return "";
+      //   console.log(new EthVal(this.gasPrice).toEth().toFixed(4).toString());
+      if (this.price)
+        return new EthVal(this.price.gasPriceToGweiFast).toGwei().toFixed(2).toString();
+      return "0";
     },
     gasPriceEth() {
-      if (this.gasPrice) return new EthVal(this.gasPrice).toEth().toFixed(7).toString();
-      return "";
+      if (this.price)
+        return new EthVal(this.price.registerGasFast).toEth().toFixed(6).toString();
+      return "0";
     },
 
     totalPrice() {
-      if (this.rentPrice && this.gasPrice)
-        return new EthVal(this.rentPrice)
-          .add(new EthVal(this.gasPrice))
-          .toEth()
-          .toFixed(4)
-          .toString();
-      return "";
+      if (this.price)
+        return new EthVal(this.price.totalFast).toEth().toFixed(6).toString();
+      return "0";
     },
   },
 

@@ -11,6 +11,15 @@
         type="primary"
       ></UnitButton>
     </div>
+
+    <div class="manager-panel">
+      <UnitButton
+        caption="GetPrice"
+        @onClick="onGetPrice"
+        :enable="true"
+        type="primary"
+      ></UnitButton>
+    </div>
     <div class="manager-panel">
       <input
         class="manager-input-box"
@@ -79,6 +88,8 @@ import { emptyAddress } from "contracts/utils";
 import { calculateDuration } from "utils/dates.js";
 
 import { normalize } from "contracts/utils/eth-ens-namehash";
+
+import { getETHPriceFromMarket } from "server/market.js";
 
 import {
   getAllRentPrices,
@@ -189,6 +200,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async onGetPrice() {
+      let res = await getETHPriceFromMarket();
+      console.log(res);
     },
   },
 };

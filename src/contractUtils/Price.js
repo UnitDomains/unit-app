@@ -11,6 +11,11 @@ const { ethers } = require("ethers");
 
 import { getDomain, getDomainIndex } from "contractUtils/domainName.js";
 
+const GWEI = 1000000000;
+const COMMIT_GAS_WEI = 42000;
+const REGISTER_GAS_WEI = 240000;
+const TOGAL_GAS_WEI = COMMIT_GAS_WEI + REGISTER_GAS_WEI;
+
 export async function getAccountBalance() {
   return await getBalance();
 }
@@ -84,6 +89,42 @@ export async function getRentPrice(domainName, years) {
   return {
     gas: new EthVal(gasPrice),
     rent: new EthVal(rentPrice),
+  };
+}
+
+export async function getTotalPrice(rentPrice, registerPrice) {
+  const gasPrice = await getGasPrice();
+
+  const r1 = new EthVal(registerPrice ?? 0);
+  const r2 = new EthVal(rentPrice ?? 0);
+  const rentAndRegisterPrices = r2.add(r1);
+
+  const ethVal = rentAndRegisterPrices;
+
+  const registerGasSlow = new EthVal(
+    `${TOGAL_GAS_WEI * gasPrice.slow}`
+  ).toEth();
+  const registerGasFast = new EthVal(
+    `${TOGAL_GAS_WEI * gasPrice.fast}`
+  ).toEth();
+
+  const gasPriceToGweiSlow = new EthVal(`${gasPrice.slow}`).toGwei();
+  const gasPriceToGweiFast = new EthVal(`${gasPrice.fast}`).toGwei();
+  const totalSlow = ethVal.add(registerGasSlow);
+  const totalFast = ethVal.add(registerGasFast);
+  // console.log(totalFast);
+  // console.log(gasPriceToGweiFast);
+
+  return {
+    rentPrice,
+    registerPrice,
+    rentAndRegisterPrices,
+    totalSlow,
+    totalFast,
+    registerGasSlow,
+    registerGasFast,
+    gasPriceToGweiSlow,
+    gasPriceToGweiFast,
   };
 }
 

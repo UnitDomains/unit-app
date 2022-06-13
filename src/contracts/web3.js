@@ -17,6 +17,7 @@ function getWeb3Provider(providerOrUrl) {
 }
 
 function handleAccountsChanged(accounts) {
+  console.log(accounts);
   if (accounts.length === 0) {
     // MetaMask is locked or the user has not connected any accounts
     console.log("Please connect to MetaMask.");
@@ -163,18 +164,39 @@ export async function getNetwork() {
   return network;
 }
 
+/*
 export async function getGasPrice() {
   const provider = await getWeb3();
-  const graPrice = await provider.getGasPrice();
-  return graPrice;
+  const gasPrice = await provider.getGasPrice();
+
+  return gasPrice;
+}
+*/
+
+export async function getGasPrice() {
+  const provider = await getProvider();
+  const blockDetails = await provider.getBlock("latest");
+  if (blockDetails.baseFeePerGas) {
+    const baseFeeWei = ethers.utils.formatUnits(
+      blockDetails.baseFeePerGas,
+      "wei"
+    );
+    const price = {
+      slow: baseFeeWei + 2 * Math.pow(10, 9),
+      fast: baseFeeWei * 1.1 + 2 * Math.pow(10, 9),
+    };
+    return price;
+  } else {
+    return { slow: 0, fast: 0 };
+  }
 }
 
 export async function getBalance() {
   const provider = await getWeb3();
   const signer = await provider.getSigner();
   const address = await signer.getAddress();
-  const graPrice = await provider.getBalance(address);
-  return graPrice;
+  const balance = await provider.getBalance(address);
+  return balance;
 }
 
 export async function getBlock(number = "latest") {

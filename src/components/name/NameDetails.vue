@@ -1,30 +1,16 @@
 <script setup></script>
 <template>
   <div id="ContentContainer" class="detail-panel-container">
-    <div class="domain-name-frame">
-      <div class="domain-name-frame-title">{{ domainName }}</div>
-      <div class="domain-name-frame-toolbar">
-        <UnitButton
-          :caption="$t('singleName.tabs.register')"
-          @onClick="onNameRegisterButtonClick"
-          v-if="!isSubdomain"
-          :enable="true"
-        ></UnitButton>
-
-        <UnitButton
-          :caption="$t('singleName.tabs.details')"
-          @onClick="onNameDetailsButtonClick"
-          :enable="true"
-          type="primary"
-        ></UnitButton>
-
-        <UnitButton
-          :caption="$t('singleName.tabs.subdomains')"
-          @onClick="onNameSubdomainsButtonClick"
-          :enable="true"
-        ></UnitButton>
-      </div>
-    </div>
+    <Tabs
+      :domainName="domainName"
+      :tabTitle="[
+        $t('singleName.tabs.register'),
+        $t('singleName.tabs.details'),
+        $t('singleName.tabs.subdomains'),
+      ]"
+      active="1"
+      @onTabClick="onTabClick"
+    ></Tabs>
 
     <div class="detail-panel" v-if="available">
       <DetailItemReadonly :title="$t('c.parent')" :content="parent"></DetailItemReadonly>
@@ -263,11 +249,13 @@ import DetailAddressItem from "components/name/DetailAddressItem.vue";
 import DetailItemReadonly from "components/name/DetailItemReadonly.vue";
 import DetailContentItem from "components/name/DetailContentItem.vue";
 
+import Tabs from "components/ui/Tabs.vue";
+
 import TEXT_PLACEHOLDER_RECORDS from "contractUtils/constants/textRecords";
 
 export default {
   name: "NameDetails",
-  components: {
+  components: {Tabs,
     DetailExpiration,
     DetailAddressItem,
     DetailItemReadonly,
@@ -352,16 +340,19 @@ export default {
   },
 
   methods: {
-    onNameRegisterButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/register` });
+    onTabClick(index) {
+      if (index === 0) {
+        //register
+        this.$router.push({ path: `/name/${this.domainName}/register` });
+      } else if (index === 1) {
+        //detail
+        this.$router.push({ path: `/name/${this.domainName}/details` });
+      }
+      else if (index === 2) {
+        //subdomain
+         this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+      }
     },
-    onNameDetailsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/details` });
-    },
-    onNameSubdomainsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/subdomains` });
-    },
-
     //注册人转让
     async onRegistrantButtonClick(newAddress) {
       loading.showLoading("#ContentContainer");

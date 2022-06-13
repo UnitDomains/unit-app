@@ -60,6 +60,14 @@ function handleAccountsChanged(accounts) {
   console.log(UserAccountStore);
 }
 
+function handleChainDisconnect(error) {
+  console.log(error);
+}
+
+function handleChainConnect(ConnectInfo) {
+  console.log(ConnectInfo);
+}
+
 export const setWeb3Provider = async (provider) => {
   if (!provider) return;
   //web3ProviderReactive(provider)
@@ -106,6 +114,8 @@ export const connect = async () => {
 
     ethereum.on("chainChanged", handleChainChanged);
     ethereum.on("accountsChanged", handleAccountsChanged);
+    ethereum.on("disconnect", handleChainDisconnect);
+    ethereum.on("connect", handleChainConnect);
 
     if (!isSupportedNetwork(networkId)) {
       //    globalErrorReactive('Unsupported Network')

@@ -34,7 +34,7 @@ import {
   getSigner,
 } from "contracts/web3";
 
-import { disconnect } from "contractUtils/connect.js";
+import { connect, disconnect } from "contractUtils/connect.js";
 
 import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
 
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     onConnectClick() {
-      alert("Install wallet and connect");
+      connect();
     },
     onDisconnectClick() {
       disconnect();

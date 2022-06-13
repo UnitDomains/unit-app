@@ -2,33 +2,18 @@
 
 <template>
   <div id="ContentContainer" class="detail-panel-container">
-    <div class="domain-name-frame">
-      <div class="domain-name-frame-title">{{ domainName }}</div>
-      <div class="domain-name-frame-toolbar">
-        <UnitButton
-          :caption="$t('singleName.tabs.register')"
-          @onClick="onNameRegisterButtonClick"
-          v-if="!isSubdomain"
-          :enable="true"
-        ></UnitButton>
+    <Tabs
+      :domainName="domainName"
+      :tabTitle="[
+        $t('singleName.tabs.register'),
+        $t('singleName.tabs.details'),
+        $t('singleName.tabs.subdomains'),
+      ]"
+      active="2"
+      @onTabClick="onTabClick"
+    ></Tabs>
 
-        <UnitButton
-          :caption="$t('singleName.tabs.details')"
-          @onClick="onNameDetailsButtonClick"
-          :enable="true"
-        >
-        </UnitButton>
-
-        <UnitButton
-          :caption="$t('singleName.tabs.subdomains')"
-          @onClick="onNameSubdomainsButtonClick"
-          :enable="true"
-          type="primary"
-        ></UnitButton>
-      </div>
-    </div>
-
-    <div id="subdomainContainer" style="width: 100%" v-if="isOwner">
+    <div id="subdomainContainer" style="width: 100%" v-if="canAddSubdomain">
       <AddSubDomain @onOkButtonClick="onAddSubdomainsButtonClick"></AddSubDomain>
     </div>
 
@@ -58,15 +43,21 @@ import {
 import { calculateDuration } from "utils/dates.js";
 import { sendHelper } from "contractUtils/transaction.js";
 import { getRentPrice, getAccountBalance } from "contractUtils/Price.js";
-import { getDomain, getDomainSuffix } from "contractUtils/domainName.js";
+import { getDomain, getDomainSuffix, getHostDomain } from "contractUtils/domainName.js";
 import moment from "moment";
 import { getAccount } from "../../contracts/web3";
+
+import { UserAccountStore } from "store/store.js";
+
+import { getDomainInfoFromServer, getSubDomainInfoFromServer } from "server/domain.js";
 
 import AddSubDomain from "components/name/AddSubDomain.vue";
 
 import loading from "components/ui/loading";
 
 import AddressList from "components/address/AddressList.vue";
+
+import Tabs from "components/ui/Tabs.vue";
 
 import axios from "http/http";
 import BASEURL from "http/api.js";
@@ -75,6 +66,7 @@ import { namehash } from "contracts/utils/namehash.js";
 export default {
   name: "Subdomains",
   components: {
+    Tabs,
     AddSubDomain,
     AddressList,
   },
@@ -85,8 +77,9 @@ export default {
     },
   },
   computed: {
-    //账户是否是域名的拥有者
-    isOwner() {
+    canAddSubdomain() {
+      console.log(this.available);
+      if (this.available) return false;
       if (this.owner) return this.owner == this.account;
       return true;
     },
@@ -114,14 +107,17 @@ export default {
   },
 
   methods: {
-    onNameRegisterButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/register` });
-    },
-    onNameDetailsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/details` });
-    },
-    onNameSubdomainsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+    onTabClick(index) {
+      if (index === 0) {
+        //register
+        this.$router.push({ path: `/name/${this.domainName}/register` });
+      } else if (index === 1) {
+        //detail
+        this.$router.push({ path: `/name/${this.domainName}/details` });
+      } else if (index === 2) {
+        //subdomain
+        this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+      }
     },
     async onPageClick(page) {
       this.pageNo = page;
@@ -220,18 +216,32 @@ export default {
       try {
         const label = namehash(this.domainName);
 
-        var networkId = await getNetworkId();
-        let res = await axios.get(BASEURL.domains + "subdomains", {
-          params: {
-            networkId: networkId,
-            label: label,
-            pageNo: self.pageNo,
-            pageSize: self.pageSize,
-          },
-        });
+        //        var networkId = await getNetworkId();
 
-        this.addressData = res.data;
-        console.log(res.data);
+        var networkId = UserAccountStore.networkId;
+        var hostDomain = getHostDomain(this.domainName);
+        console.log(hostDomain);
+        if (hostDomain) {
+          var ret = await getDomainInfoFromServer(networkId, hostDomain);
+
+          if (ret) {
+            this.available = false;
+          } else this.available = true;
+        } else {
+          this.available = true;
+        }
+        this.addressData = null;
+
+        if (!this.available) {
+          let res = await getSubDomainInfoFromServer(
+            networkId,
+            label,
+            self.pageNo,
+            self.pageSize
+          );
+
+          this.addressData = res;
+        }
       } catch (err) {}
     },
   },

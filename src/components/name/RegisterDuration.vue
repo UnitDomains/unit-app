@@ -3,8 +3,7 @@
     <DurationFees
       :domainName="domainName"
       :years="years"
-      :rentPrice="rentPrice"
-      :gasPrice="gasPrice"
+      :price="price"
       @onDurationChange="onDurationChange"
     ></DurationFees>
   </div>
@@ -12,7 +11,7 @@
 
 <script>
 import EthVal from "ethval";
-import { getRegisterPrice } from "contractUtils/Price.js";
+import { getRegisterPrice, getTotalPrice } from "contractUtils/Price.js";
 import { getDomain, getDomainIndex } from "contractUtils/domainName.js";
 import { getBlock, getNetworkId, getAccount, getGasPrice } from "contracts/web3.js";
 import { calculateDuration, formatDate } from "utils/dates.js";
@@ -46,14 +45,13 @@ export default {
     return {
       stepNumber: 0,
       chainSvg: ChainSvg,
-      rentPrice: null,
-      gasPrice: null,
+      price: null,
     };
   },
   computed: {},
 
   mounted() {
-    this.getPrice(1);
+    this.getPriceFromServer(1);
   },
 
   methods: {
@@ -82,18 +80,17 @@ export default {
       var networkId = await getNetworkId();
       var registerPrice = await getPriceRegisterFromServer(networkId, this.domainName);
 
-      var rentPrice = await getPriceRentFromServer(networkId, this.domainName);
+      var rentPriceTemp = await getPriceRentFromServer(networkId, this.domainName);
 
       var duration = calculateDuration(years);
 
+      var r1 = new EthVal(registerPrice ?? 0);
+      const rentPrice = new EthVal(rentPriceTemp).mul(duration);
+
       if (rentPrice) {
-        this.gasPrice = await getGasPrice();
-        var r1 = new EthVal(registerPrice ?? 0);
-        var r2 = new EthVal(rentPrice).mul(duration);
+        this.price = await getTotalPrice(rentPrice, registerPrice);
 
-        this.rentPrice = r2.add(r1);
-
-        this.$emit("onDurationChange", years, this.rentPrice, this.gasPrice);
+        this.$emit("onDurationChange", years, this.price);
       }
     },
 

@@ -1,30 +1,16 @@
 <script setup></script>
 <template>
   <div id="RegisterContainer" class="register-name-panel">
-    <div class="domain-name-frame">
-      <div class="domain-name-frame-title">{{ domainName }}</div>
-      <div class="domain-name-frame-toolbar">
-        <UnitButton
-          :caption="$t('singleName.tabs.register')"
-          @onClick="onNameRegisterButtonClick"
-          :enable="true"
-          type="primary"
-        ></UnitButton>
-
-        <UnitButton
-          :caption="$t('singleName.tabs.details')"
-          @onClick="onNameDetailsButtonClick"
-          :enable="true"
-        >
-        </UnitButton>
-
-        <UnitButton
-          :caption="$t('singleName.tabs.subdomains')"
-          @onClick="onNameSubdomainsButtonClick"
-          :enable="true"
-        ></UnitButton>
-      </div>
-    </div>
+    <Tabs
+      :domainName="domainName"
+      :tabTitle="[
+        $t('singleName.tabs.register'),
+        $t('singleName.tabs.details'),
+        $t('singleName.tabs.subdomains'),
+      ]"
+      active="0"
+      @onTabClick="onTabClick"
+    ></Tabs>
 
     <div v-if="domainNameAlreadyRegistered == 1">
       <div class="already-registered-title">
@@ -122,6 +108,7 @@ import Step from "components/step/Step.vue";
 import ProgressBar from "components/step/ProgressBar.vue";
 import ProgressText from "components/step/ProgressText.vue";
 import RegisterDuration from "components/name/RegisterDuration.vue";
+import Tabs from "components/ui/Tabs.vue";
 
 import { setupProgressStore } from "contractUtils/ProgressStore.js";
 
@@ -129,7 +116,7 @@ export default {
   name: "RegisterName",
   components: {
     Step,
-
+    Tabs,
     ProgressBar,
     ProgressText,
     RegisterDuration,
@@ -242,7 +229,7 @@ export default {
       stepState: 0,
       progressValue: 0,
 
-      rentPrice: null,
+      price: null,
       gasPrice: null,
       accountBalanceInsufficientVisible: false, //'余额不足'信息可见性
       pendingVisible: false, //'正在打包'信息可见性
@@ -269,14 +256,17 @@ export default {
   },
 
   methods: {
-    onNameRegisterButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/register` });
-    },
-    onNameDetailsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/details` });
-    },
-    onNameSubdomainsButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+    onTabClick(index) {
+      if (index === 0) {
+        //register
+        this.$router.push({ path: `/name/${this.domainName}/register` });
+      } else if (index === 1) {
+        //detail
+        this.$router.push({ path: `/name/${this.domainName}/details` });
+      } else if (index === 2) {
+        //subdomain
+        this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+      }
     },
 
     /**
@@ -370,6 +360,7 @@ export default {
     registerTimer() {
       this.pendingVisible = true;
       this.progressValue = 80;
+
       if (!this.registerId)
         this.registerId = window.setInterval(this.registerTimerHelper, 1000);
     },
@@ -389,8 +380,9 @@ export default {
 
     async initProgressStore() {
       var networkId = await getNetworkId();
+      var account = await getAccount();
 
-      this.progressStore = await setupProgressStore(this.domainName, networkId);
+      this.progressStore = await setupProgressStore(this.domainName, account, networkId);
       //    this.progressStore.remove()
 
       var savedStep = this.progressStore.getSavedStep();
@@ -408,25 +400,27 @@ export default {
         savedStep = this.progressStore.remove();
       }
 
-      this.stepNumber = savedStep.step;
+      if (savedStep) {
+        this.stepNumber = savedStep.step;
 
-      switch (this.stepNumber) {
-        case 1:
-          {
-            this.commitmentTimer();
-          }
-          break;
-        case 2:
-          {
-            this.waitOneMinuteTimer();
-          }
+        switch (this.stepNumber) {
+          case 1:
+            {
+              this.commitmentTimer();
+            }
+            break;
+          case 2:
+            {
+              this.waitOneMinuteTimer();
+            }
 
-          break;
-        case 3:
-          {
-            this.registerTimer();
-          }
-          break;
+            break;
+          case 3:
+            {
+              this.registerTimer();
+            }
+            break;
+        }
       }
     },
     setStep(step) {
@@ -453,11 +447,10 @@ export default {
       this.requestRegistrarButtonEnable = false;
     },
 
-    async onDurationChange(years, rentPrice, gasPrice) {
-      this.rentPrice = rentPrice;
-      this.gasPrice = gasPrice;
+    async onDurationChange(years, price) {
+      this.price = price;
 
-      var totalFees = new EthVal(rentPrice).add(new EthVal(gasPrice));
+      var totalFees = price.totalFast;
 
       var accountBalance = new EthVal(await getAccountBalance());
       console.log(totalFees.gt(accountBalance));
@@ -495,9 +488,12 @@ export default {
           await registrar.getMaximumCommitmentAge(),
           "second"
         );
+        console.log(commitmentExpirationDate);
         this.progressStore.setCommitmentExpirationDate(commitmentExpirationDate);
 
         this.progressStore.setStep(this.stepNumber);
+
+        console.log(this.progressStore);
 
         this.commitmentTimer();
         this.requestRegistrarButtonEnable = true;
