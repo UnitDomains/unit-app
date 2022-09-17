@@ -1,6 +1,4 @@
 <script setup>
-import { Check } from "@element-plus/icons-vue";
-
 import UserInfoVue from "components/userInfo/UserInfo.vue";
 </script>
 
@@ -121,7 +119,7 @@ import {
 import { setup, getRegistrar, getENS } from "contracts/api";
 
 import logoSVG from "images/logo.svg";
-import { ElSelect } from "element-plus";
+
 import { sendHelper } from "../contractUtils/transaction";
 
 export default {

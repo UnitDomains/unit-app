@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+const ErrorContainer = () => import("../views/errors/ErrorContainer.vue");
 const ServerError = () => import("../views/errors/ServerError.vue");
 const NotFound = () => import("../views/errors/NotFound.vue");
 const ContractError = () => import("../views/errors/ContractError.vue");
 const MetaMaskError = () => import("../views/errors/MetaMaskError.vue");
+const NotSupportNetwork = () => import("../views/errors/NotSupportNetwork.vue");
 
 const Welcome = () => import("../views/Welcome.vue");
 const About = () => import("../views/About.vue");
@@ -90,29 +92,26 @@ const routes = [
   },
 
   {
-    path: "/servererror",
-    name: "servererror",
-    component: ServerError,
-    beforeEnter: (to, from, next) => {
-      next();
-    },
-  },
-  {
-    path: "/contracterror",
-    name: "contracterror",
-    component: ContractError,
-    beforeEnter: (to, from, next) => {
-      next();
-    },
-  },
-
-  {
-    path: "/metamaskerror",
-    name: "metamaskerror",
-    component: MetaMaskError,
-    beforeEnter: (to, from, next) => {
-      next();
-    },
+    path: "/error",
+    component: ErrorContainer,
+    children: [
+      {
+        path: "servererror",
+        component: ServerError,
+      },
+      {
+        path: "contracterror",
+        component: ContractError,
+      },
+      {
+        path: "notsupportnetwork",
+        component: NotSupportNetwork,
+      },
+      {
+        path: "metamaskerror",
+        component: MetaMaskError,
+      },
+    ],
   },
 
   {

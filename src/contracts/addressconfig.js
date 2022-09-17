@@ -3,24 +3,21 @@ import has from "lodash/has";
 const CONTRACT_ADDRESS = {
   //Mainnet
   1: {
-    registry: "",
+    registry: "0x0000000009165d4dB3321a666Fe86A59c415FfCE",
+    price: "0xf6e6CD1fdF114c4b4B82eeF5C0814E18BC7DBD39",
+    subdomain: "0xD85E2A312B88BDbb76DbE8012Eb4Ac0119f0E93B",
   },
   //Ropsten test network
-  3: {
-    registry: "",
-  },
+  3: {},
   //Rinkeby test network
-  4: {
-    registry: "0x02a47E4afd937312D697664b0a017803d5C34e9f",
-    price: "0xF330D6ad261AA1AAf48BD010aAcBe957D005eEF0",
-    subdomain: "0xD831742434d2aaeC712062F68638F67D76F2FbaB",
-  },
+  4: {},
+  //Goerli test network
   5: {
-    registry: "",
+    // registry: "0x0000000009165d4dB3321a666Fe86A59c415FfCE",
+    // price: "0x017e9eeA60BE8B396E5208E94905B812f6B6D234",
+    // subdomain: "0xD85E2A312B88BDbb76DbE8012Eb4Ac0119f0E93B",
   },
-  1337: {
-    registry: "",
-  },
+  1337: {},
 };
 
 function getContractAddress(networkId, key) {
@@ -32,7 +29,7 @@ function getContractAddress(networkId, key) {
     return CONTRACT_ADDRESS[networkId][key];
   }
 
-  return "";
+  throw new Error(`Unsupported network ${networkId}`);
 }
 
 export function getEnsContractAddress(networkId) {

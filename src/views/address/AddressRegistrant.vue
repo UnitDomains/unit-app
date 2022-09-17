@@ -47,6 +47,7 @@ import createIcon from "@/blockies";
 import loading from "components/ui/loading";
 
 import { getRegistrantFromServer } from "server/domain.js";
+import { processError } from "utils/processError.js";
 
 import AddressList from "components/address/AddressList.vue";
 
@@ -116,6 +117,7 @@ export default {
         );
       } catch (err) {
         console.log(err);
+        processError(err, this.$router);
       }
     },
   },

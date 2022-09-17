@@ -42,6 +42,8 @@ import {
 
 import { getAddressValidation } from "contractUtils/address.js";
 
+import { processError } from "utils/processError.js";
+
 import axios from "http/http";
 import BASEURL from "http/api.js";
 
@@ -262,6 +264,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
+        processError(err, this.$router);
       }
 
       loading.hideLoading();

@@ -21,10 +21,22 @@ import FooterVue from "./views/Footer.vue";
 </template>
 
 <script>
+import { connect } from "contractUtils/connect.js";
 import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
 
 export default {
   setup() {},
+  async mounted() {
+    try {
+      await connect();
+    } catch (err) {
+      console.log(err);
+
+      if (err.message.indexOf("Unsupported network") >= 0) {
+        this.$router.push({ path: "/error/notsupportnetwork" });
+      }
+    }
+  },
 };
 </script>
 

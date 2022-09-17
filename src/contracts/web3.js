@@ -7,7 +7,6 @@ let address;
 let signer;
 
 /**
- * 连接 MetaMask
  * @param {*} providerOrUrl
  * @returns
  */

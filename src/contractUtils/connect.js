@@ -99,46 +99,42 @@ export const setWeb3Provider = async (provider) => {
 };
 
 export const connect = async () => {
-  try {
-    await setup();
+  await setup();
 
-    const provider = await getProvider();
+  const provider = await getProvider();
 
-    if (provider !== window.ethereum) {
-      console.error("Do you have multiple wallets installed?");
-    }
-
-    if (!provider) throw "Please install a wallet";
-
-    const networkId = await getNetworkId();
-
-    ethereum.on("chainChanged", handleChainChanged);
-    ethereum.on("accountsChanged", handleAccountsChanged);
-    ethereum.on("disconnect", handleChainDisconnect);
-    ethereum.on("connect", handleChainConnect);
-
-    if (!isSupportedNetwork(networkId)) {
-      //    globalErrorReactive('Unsupported Network')
-      return;
-    }
-
-    //networkIdReactive(await getNetworkId())
-    //networkReactive(await getNetwork())
-
-    // await setWeb3Provider(provider);
-
-    //  if (accountsReactive ? . [0]) {
-    //      reverseRecordReactive(await getReverseRecord(accountsReactive ? . [0]))
-    //  }
-
-    //    isReadOnlyReactive(isReadOnly())
-
-    //    setupAnalytics()
-
-    //    isAppReadyReactive(true)
-  } catch (e) {
-    console.error("setup error: ", e);
+  if (provider !== window.ethereum) {
+    console.error("Do you have multiple wallets installed?");
   }
+
+  if (!provider) throw "Please install a wallet";
+
+  const networkId = await getNetworkId();
+
+  ethereum.on("chainChanged", handleChainChanged);
+  ethereum.on("accountsChanged", handleAccountsChanged);
+  ethereum.on("disconnect", handleChainDisconnect);
+  ethereum.on("connect", handleChainConnect);
+
+  if (!isSupportedNetwork(networkId)) {
+    //    globalErrorReactive('Unsupported Network')
+    return;
+  }
+
+  //networkIdReactive(await getNetworkId())
+  //networkReactive(await getNetwork())
+
+  // await setWeb3Provider(provider);
+
+  //  if (accountsReactive ? . [0]) {
+  //      reverseRecordReactive(await getReverseRecord(accountsReactive ? . [0]))
+  //  }
+
+  //    isReadOnlyReactive(isReadOnly())
+
+  //    setupAnalytics()
+
+  //    isAppReadyReactive(true)
 };
 
 export const disconnect = async function () {
