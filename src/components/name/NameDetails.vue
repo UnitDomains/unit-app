@@ -255,7 +255,8 @@ import TEXT_PLACEHOLDER_RECORDS from "contractUtils/constants/textRecords";
 
 export default {
   name: "NameDetails",
-  components: {Tabs,
+  components: {
+    Tabs,
     DetailExpiration,
     DetailAddressItem,
     DetailItemReadonly,
@@ -347,10 +348,9 @@ export default {
       } else if (index === 1) {
         //detail
         this.$router.push({ path: `/name/${this.domainName}/details` });
-      }
-      else if (index === 2) {
+      } else if (index === 2) {
         //subdomain
-         this.$router.push({ path: `/name/${this.domainName}/subdomains` });
+        this.$router.push({ path: `/name/${this.domainName}/subdomains` });
       }
     },
     //注册人转让

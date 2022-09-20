@@ -73,7 +73,9 @@
     "year_2": "years",
     "appCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
-    "termsofservice": "Terms of Service"
+    "termsofservice": "Terms of Service",
+    "names": "Names",
+    "owners": "Owners"
   },
   "certificate": {
     "button": "Request SSL certificate",
@@ -102,13 +104,13 @@
       "manage": {
         "text1": "Поскольку вы являетесь владельцем, вы можете сейчас управлять именем.",
         "text2": "Поскольку вы не являетесь владельцем, вы можете только просматривать данные об имени в менеджере.",
-        "title": "Поздравляем! Вы успешно внесли этот DNS домен в ENS реестр."
+        "title": "Поздравляем! Вы успешно внесли этот DNS домен в ENS(unit.domains) реестр."
       },
       "proof": {
         "text1": "Адрес в DNS текстовой записи является вашим адресом.",
         "text2": "Если вы знаете, что являетесь владельцем этого домена, то добавьте к его TXT записи ваш Ethereum адрес и обновите эту страницу чтобы произвести проверку DNSSEC ещё раз.",
-        "title1": "Вы владелец этого адреса. Добавьте сейчас ваш домен к Реестру ENS.",
-        "title2": "Похоже, что вы не являетесь владельцем DNS этого домена, но любой человек может добавить этот домен в ENS Реестр."
+        "title1": "Вы владелец этого адреса. Добавьте сейчас ваш домен к Реестру ENS(unit.domains).",
+        "title2": "Похоже, что вы не являетесь владельцем DNS этого домена, но любой человек может добавить этот домен в ENS(unit.domains) Реестр."
       }
     },
     "viewinmanager": "Просмотреть в Менеджере"
@@ -132,18 +134,18 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "Приложение ENS App является графическим интерфейсом пользователя для обычных пользователей. Оно позволяет вам найти любое имя, управлять его адресом или тем, куда он направляет и создавать поддомены для каждого из имён.",
-      "title": "Как пользоваться ENS"
+      "body": "Приложение ENS(unit.domains) App является графическим интерфейсом пользователя для обычных пользователей. Оно позволяет вам найти любое имя, управлять его адресом или тем, куда он направляет и создавать поддомены для каждого из имён.",
+      "title": "Как пользоваться ENS(unit.domains)"
     },
     "whatisens": {
-      "body": "Ethereum Name Service является распределённой, открытой и исчерпывающий системой имён на блокчейне Ethereum. ENS устраняет необходимость копировать или набирать длинные адреса.",
+      "body": "Ethereum Name Service является распределённой, открытой и исчерпывающий системой имён на блокчейне Ethereum. ENS(unit.domains) устраняет необходимость копировать или набирать длинные адреса.",
       "title": "Что это"
     },
     "website": {
       "about": {
         "p0": "Unit domains is a distributed, open and scalable domain name system based on Ethereum blockchain. The domain name system allows people to replace long blockchain addresses with short domain names instead of copying or entering lengthy blockchain addresses.",
         "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
-        "p2": "The unit domains smart contract is based on ENS（ https://ens.domains/ ）And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
+        "p2": "The unit domains smart contract is based on ENS(https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
       }
     }
   },
@@ -230,7 +232,7 @@
     ]
   },
   "registrymigration": {
-    "donotaccept": "*Если вы занимаетесь торговлей ENS именами, не принимайте данное имя!",
+    "donotaccept": "*Если вы занимаетесь торговлей ENS(unit.domains) именами, не принимайте данное имя!",
     "messages": {
       "controller": "Это имя контролируется контрактом и не может быть мигрировано автоматически. Пожалуйста, перезапустите ваш контракт для использования с новым реестром перед тем как установите контроллер.",
       "default": "Это имя должно быть перенесено в новый Реестр. Только родитель данного имени ({ parent}) может это сделать",
@@ -245,8 +247,8 @@
       "title": "Register {name}"
     },
     "renewal": {
-      "description": "Your ENS name is expiring soon, please renew it",
-      "title": "Renew your ENS domain {name}"
+      "description": "Your ENS(unit.domains) name is expiring soon, please renew it",
+      "title": "Renew your ENS(unit.domains) domain {name}"
     }
   },
   "search": {
@@ -315,7 +317,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS name when you connect to them with your Ethereum account. ",
+        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS(unit.domains) name when you connect to them with your Ethereum account. ",
         "title": "1. Set a reverse record"
       },
       "step2": {
@@ -323,7 +325,7 @@
         "title": "2. Set other records"
       },
       "step3": {
-        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
+        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS(unit.domains) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
         "title": "3. Set a content hash of a decentralized website"
       },
       "title": "Learn how to manage your name."
@@ -341,10 +343,10 @@
       "messages": {
         "explanation": "Обратная Резолюция преобразовывает адрес в имя. Это позволяет Dapps показывать в их интерфейсах '{name}' вместо длинного адреса '{account}'. Если вы хотите установить преобразование для другого аккаунта, пожалуйста, переключитите аккаунты в браузере dapp.",
         "explanation2": "You can only select names you set this Ethereum Address as.",
-        "noForwardRecordAavilable": "You either do not own any ENS names, or your ENS names have no ETH records set to this address.",
+        "noForwardRecordAavilable": "You either do not own any ENS(unit.domains) names, or your ENS(unit.domains) names have no ETH records set to this address.",
         "notSet": "Обратная запись: не установлена",
         "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Select your ENS name",
+        "selectPlaceholder": "Select your ENS(unit.domains) name",
         "setTo": "Обратная запись: Установлена на",
         "setToDifferent": "Обратная запись: Установлена на другое имя:"
       },

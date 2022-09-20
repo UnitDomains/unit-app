@@ -1,34 +1,32 @@
 <template>
-  <div>
+  <div class="welcome-container">
     <el-row class="welcome-title">
-      <h1>{{ $t('c.appCaption') }}</h1>
+      <h1>{{ $t("c.appCaption") }}</h1>
     </el-row>
 
     <div class="input-search">
       <InputSearch @onClick="onSearchClick"></InputSearch>
     </div>
+
+    <div class="divider"></div>
+    <div><DomainsSummaryContainer></DomainsSummaryContainer></div>
   </div>
 </template>
 
 <script>
+import DomainsSummaryContainer from "components/summary/DomainsSummaryContainer.vue";
 
-
-
-
-import InputSearch from 'components/input/InputSearch.vue'
+import InputSearch from "components/input/InputSearch.vue";
 
 export default {
   name: "Welcome",
   components: {
-    InputSearch
+    InputSearch,
+    DomainsSummaryContainer,
   },
   data() {
     return {
-
-
-
-
-      screenWidth: document.body.clientWidth // 屏幕宽度
+      screenWidth: document.body.clientWidth, // 屏幕宽度
     };
   },
   computed: {
@@ -40,7 +38,6 @@ export default {
     deckWidth: function () {
       return Math.floor((this.screenWidth - 20) / 380) * 380;
     },
-
   },
 
   mounted() {
@@ -50,25 +47,20 @@ export default {
         this.screenWidth = document.body.clientWidth;
       })();
     };
-
-
   },
 
   methods: {
     onSearchClick(searchText) {
-
       //this.$router.push({ path: `/search/${searchText}` })
     },
-
-
-
-
-
-  }
+  },
 };
 </script>
 
 <style scoped>
+@import "~@/assets/css/document.css";
+.welcome-container {
+}
 .welcome-title {
   clear: both;
   display: block;
@@ -79,8 +71,6 @@ export default {
 .input-search {
   text-align: center;
   padding: 4em;
-
+  padding-bottom: 10em;
 }
 </style>
-
-

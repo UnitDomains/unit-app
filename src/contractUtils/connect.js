@@ -1,5 +1,5 @@
 import { setup, getRegistrar, getENS } from "contracts/api";
-
+import { utils } from "ethers";
 import {
   getBlock,
   getNetworkId,
@@ -54,7 +54,7 @@ function handleAccountsChanged(accounts) {
     // MetaMask is locked or the user has not connected any accounts
     console.log("Please connect to MetaMask.");
   } else if (accounts[0] !== UserAccountStore.account) {
-    UserAccountStore.changeAccount(ethers.utils.getAddress(accounts[0]));
+    UserAccountStore.changeAccount(utils.getAddress(accounts[0]));
   }
 
   console.log(UserAccountStore);

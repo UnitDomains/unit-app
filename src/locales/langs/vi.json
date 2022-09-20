@@ -69,7 +69,9 @@
     "year": "năm",
     "appCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
-    "termsofservice": "Terms of Service"
+    "termsofservice": "Terms of Service",
+    "names": "Names",
+    "owners": "Owners"
   },
   "certificate": {
     "button": "Request SSL certificate",
@@ -98,13 +100,13 @@
       "manage": {
         "text1": "Bạn có thể quản lý tên miền này ngay bây giờ do bạn đã là chủ sở hữu",
         "text2": "Bạn chỉ có thể xem tên miền này trong trình quản lý do hiện tại bạn không phải là chủ sở hữu",
-        "title": "Xin chúc mừng! Bạn vừa thêm thành công tên miền DNS này vào Trình đăng ký ENS"
+        "title": "Xin chúc mừng! Bạn vừa thêm thành công tên miền DNS này vào Trình đăng ký ENS(unit.domains)"
       },
       "proof": {
         "text1": "Địa chỉ xuất hiện trong bản ghi file txt của DNS cũng là địa chỉ của bạn",
         "text2": "Nếu bạn biết mình sở hữu tên miền này, hãy thay đổi bản ghi TXT để lưu trữ Địa chỉ Ethereum của bạn và tải lại trang để tiến hành xác minh lại DNSSEC ",
-        "title1": "Bạn là chủ sở hữu của địa chỉ này. Hãy thêm tên miền của bạn vào Trình đăng ký ENS ngay",
-        "title2": "Bạn không phải là Người sở hữu DNS của tên miền này, nhưng bất kì ai cũng có thể thêm tên miền này vào trình Đăng ký ENS"
+        "title1": "Bạn là chủ sở hữu của địa chỉ này. Hãy thêm tên miền của bạn vào Trình đăng ký ENS(unit.domains) ngay",
+        "title2": "Bạn không phải là Người sở hữu DNS của tên miền này, nhưng bất kì ai cũng có thể thêm tên miền này vào trình Đăng ký ENS(unit.domains)"
       }
     },
     "viewinmanager": "Xem trong Trình quản lý"
@@ -128,18 +130,18 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "ENS App là một giao diện cho người dùng không rành về kỹ thuật . Cho phép bạn tìm bất cứ tên nào, quản lý địa chỉ, tính năng và tạo tên miền con của mỗi tên.",
-      "title": "Cách dùng  ENS "
+      "body": "ENS(unit.domains) App là một giao diện cho người dùng không rành về kỹ thuật . Cho phép bạn tìm bất cứ tên nào, quản lý địa chỉ, tính năng và tạo tên miền con của mỗi tên.",
+      "title": "Cách dùng  ENS(unit.domains) "
     },
     "whatisens": {
       "body": "Ethereum Name Service là một dịch vụ phân tán, mã nguồn mở, có thể mở rộng hệ thống tên dựa trên nền chuỗi khối Ethereum.\nENS giúp hạn chế việc copy hay đánh các địa chỉ quá dài.",
-      "title": "ENS là gì"
+      "title": "ENS(unit.domains) là gì"
     },
     "website": {
       "about": {
         "p0": "Unit domains is a distributed, open and scalable domain name system based on Ethereum blockchain. The domain name system allows people to replace long blockchain addresses with short domain names instead of copying or entering lengthy blockchain addresses.",
         "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
-        "p2": "The unit domains smart contract is based on ENS（ https://ens.domains/ ）And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
+        "p2": "The unit domains smart contract is based on ENS(https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
       }
     }
   },
@@ -227,7 +229,7 @@
 
   },
   "registrymigration": {
-    "donotaccept": "*Đừng chấp nhận tên miền này khi bạn giao dịch ENS!",
+    "donotaccept": "*Đừng chấp nhận tên miền này khi bạn giao dịch ENS(unit.domains)!",
     "messages": {
       "controller": "Tên miền này thuộc quyền điều khiển của một hợp đồng và không thể tự chuyển đổi. Hãy khởi động lại hợp đồng để dùng quyền đăng ký mới trước khi ấn định quyền điều khiển mới",
       "default": "Tên miền này cần được chuyển đổi tới Trình đăng ký mới. Chỉ những tên miền gốc của tên miền này ({parent}) có thể làm vậy",
@@ -242,8 +244,8 @@
       "title": "Register {name}"
     },
     "renewal": {
-      "description": "Your ENS name is expiring soon, please renew it",
-      "title": "Renew your ENS domain {name}"
+      "description": "Your ENS(unit.domains) name is expiring soon, please renew it",
+      "title": "Renew your ENS(unit.domains) domain {name}"
     }
   },
   "search": {
@@ -312,7 +314,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS name when you connect to them with your Ethereum account. ",
+        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS(unit.domains) name when you connect to them with your Ethereum account. ",
         "title": "1. Set a reverse record"
       },
       "step2": {
@@ -320,7 +322,7 @@
         "title": "2. Set other records"
       },
       "step3": {
-        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
+        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS(unit.domains) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
         "title": "3. Set a content hash of a decentralized website"
       },
       "title": "Learn how to manage your name."
@@ -338,10 +340,10 @@
       "messages": {
         "explanation": "Trình Phân giải đảo chiều dịch địa chỉ thành tên miền. Nó cho phép các DApps hiển thị giao diện '{name}' chứ không phải những địa chỉ dài dòng '{account}'. Nếu bạn muốn cài đặt việc đảo chiều đến một tài khoản khác, hãy chuyển tài khoản trong trình duyệt dapp của mình",
         "explanation2": "You can only select names you set this Ethereum Address as.",
-        "noForwardRecordAavilable": "You either do not own any ENS names, or your ENS names have no ETH records set to this address.",
+        "noForwardRecordAavilable": "You either do not own any ENS(unit.domains) names, or your ENS(unit.domains) names have no ETH records set to this address.",
         "notSet": "Bản ghi đảo chiều: chưa ấn định",
         "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Select your ENS name",
+        "selectPlaceholder": "Select your ENS(unit.domains) name",
         "setTo": "Bản ghi đảo chiều: ấn định cho",
         "setToDifferent": "Bản ghi đảo chiều: Ấn định cho tên miền khác"
       },
