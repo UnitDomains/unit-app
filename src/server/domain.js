@@ -82,6 +82,7 @@ export async function getSubDomainInfoFromServer(
   subNodeLabel,
   node
 ) {
+  console.log(subNodeLabel);
   try {
     let res = await axios.get(BASEURL.domains + "subdomain", {
       params: {
@@ -89,6 +90,31 @@ export async function getSubDomainInfoFromServer(
         subDomain: domainName,
         subNodeLabel: subNodeLabel,
         node: node,
+      },
+    });
+
+    if (res && res.data) return res.data;
+    return null;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export async function getSubdomainsPageFromServer(
+  networkId,
+  label,
+  pageNo,
+  pageSize
+) {
+  console.log(subNodeLabel);
+  try {
+    let res = await axios.get(BASEURL.domains + "subdomains", {
+      params: {
+        networkId: networkId,
+        label: label,
+        pageNo: pageNo,
+        pageSize: pageSize,
       },
     });
 

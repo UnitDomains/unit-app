@@ -1,8 +1,8 @@
 <template>
   <div class="welcome-container">
-    <el-row class="welcome-title">
+    <div class="welcome-title">
       <h1>{{ $t("c.appCaption") }}</h1>
-    </el-row>
+    </div>
 
     <div class="input-search">
       <InputSearch @onClick="onSearchClick"></InputSearch>

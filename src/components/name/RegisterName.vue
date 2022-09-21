@@ -284,6 +284,7 @@ export default {
       var ret = await getDomainInfoFromServer(networkId, this.domainName);
 
       if (!ret) {
+        await setup();
         this.domainNameAlreadyRegistered = 2;
         await this.initProgressStore();
       } else {

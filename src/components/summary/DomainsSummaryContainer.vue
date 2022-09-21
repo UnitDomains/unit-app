@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     async initDomainSummaryFromServer() {
-      await setup();
+      //await setup();
       var networkId = await getNetworkId();
       this.domainNamesCount = await getDomainNamesCountFromServer(networkId);
       this.domainOwnersCount = await getDomainOwnersCount(networkId);

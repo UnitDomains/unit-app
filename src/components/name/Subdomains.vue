@@ -49,7 +49,11 @@ import { getAccount } from "../../contracts/web3";
 
 import { UserAccountStore } from "store/store.js";
 
-import { getDomainInfoFromServer, getSubDomainInfoFromServer } from "server/domain.js";
+import {
+  getDomainInfoFromServer,
+  getSubDomainInfoFromServer,
+  getSubdomainsPageFromServer,
+} from "server/domain.js";
 
 import AddSubDomain from "components/name/AddSubDomain.vue";
 
@@ -78,9 +82,11 @@ export default {
   },
   computed: {
     canAddSubdomain() {
-      console.log(this.available);
       if (this.available) return false;
+      if (!this.owner) return false;
+      if (!this.account) return false;
       if (this.owner) return this.owner == this.account;
+
       return true;
     },
 
@@ -217,23 +223,26 @@ export default {
         const label = namehash(this.domainName);
 
         //        var networkId = await getNetworkId();
+        this.account = await getAccount();
 
         var networkId = UserAccountStore.networkId;
         var hostDomain = getHostDomain(this.domainName);
-        console.log(hostDomain);
+
         if (hostDomain) {
           var ret = await getDomainInfoFromServer(networkId, hostDomain);
 
           if (ret) {
+            this.owner = ret.owner;
             this.available = false;
           } else this.available = true;
         } else {
           this.available = true;
         }
+
         this.addressData = null;
 
         if (!this.available) {
-          let res = await getSubDomainInfoFromServer(
+          let res = await getSubdomainsPageFromServer(
             networkId,
             label,
             self.pageNo,

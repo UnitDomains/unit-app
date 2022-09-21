@@ -72,7 +72,7 @@ export default {
   },
   async beforeRouteUpdate(to, from) {
     console.log(to);
-    // 对路由变化做出响应...
+
     this.searchText = this.getSearchText(to.params.searchText.trim().toLowerCase());
 
     //from eth network
@@ -171,10 +171,12 @@ export default {
     async getSpecificResultFromServer(searchText) {
       try {
         this.domainNameSpecificArray = [];
+
         var baseNodeIndex = getDomainIndex(searchText);
+
         if (baseNodeIndex < 0) return;
 
-        await setup();
+        // await setup();
 
         var networkId = await getNetworkId();
 
@@ -211,7 +213,7 @@ export default {
 
     async getNotAvailableResultFromServer(searchText) {
       try {
-        await setup();
+        //await setup();
 
         var networkId = await getNetworkId();
 
@@ -242,9 +244,10 @@ export default {
     async getSuggestResultFromServer(searchText) {
       loading.showLoading("#contentContainer");
       try {
-        await setup();
+        //await setup();
 
         var networkId = await getNetworkId();
+        console.log(networkId);
 
         let res = await axios.get(BASEURL.search + "suggest", {
           params: {
