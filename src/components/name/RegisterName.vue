@@ -85,6 +85,7 @@
         ></UnitButton>
       </div>
     </div>
+    <Empty v-if="loadingVisible"></Empty>
   </div>
 </template>
 
@@ -109,6 +110,7 @@ import ProgressBar from "components/step/ProgressBar.vue";
 import ProgressText from "components/step/ProgressText.vue";
 import RegisterDuration from "components/name/RegisterDuration.vue";
 import Tabs from "components/ui/Tabs.vue";
+import Empty from "components/ui/Empty.vue";
 
 import { setupProgressStore } from "contractUtils/ProgressStore.js";
 
@@ -120,6 +122,7 @@ export default {
     ProgressBar,
     ProgressText,
     RegisterDuration,
+    Empty,
   },
   props: {
     domainName: {
@@ -240,6 +243,8 @@ export default {
       waitOneMinuteId: null,
       commitmentId: null,
       registerId: null,
+
+      loadingVisible: true,
     };
   },
 
@@ -273,6 +278,7 @@ export default {
      * Get data from server
      */
     async getDomainNameAvailableFromServer() {
+      this.loadingVisible = true;
       var networkId = UserAccountStore.networkId;
 
       /*
@@ -285,11 +291,13 @@ export default {
 
       if (!ret) {
         await setup();
+
         this.domainNameAlreadyRegistered = 2;
         await this.initProgressStore();
       } else {
         this.domainNameAlreadyRegistered = 1;
       }
+      this.loadingVisible = false;
     },
 
     /**

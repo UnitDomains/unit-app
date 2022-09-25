@@ -147,6 +147,19 @@
         "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
         "p2": "The unit domains smart contract is based on ENS(https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
       }
+    },
+    "welcome": {
+      "statistics": "Statistics",
+      "features": {
+        "title": "Features",
+        "f0": "Convert hard-to-write and hard-to-remember addresses into easy-to-write and easy-to-remember domain names that are easy to share",
+        "f1": "Supports multiple suffixes, including meta, unit, area, etc.",
+        "f2": "Create a decentralized digital identity and travel the Web3 world",
+        "f3": "NTF domain names that can be traded on the market",
+        "f4": "Easier transactions without worrying about sending to the wrong address",
+        "f5": "Support unlimited subdomains, different subdomains are used for different fields"
+      },
+      "more": "more..."
     }
   },
   "howtouse": {

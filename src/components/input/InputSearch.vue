@@ -11,25 +11,62 @@
         <span>{{ $t("search.button") }}</span>
       </div>
     </div>
+
+    <ModalDialog
+      title="Info"
+      :content="dialogContent"
+      :footer="true"
+      :cancelVisible="false"
+      cancelText="Cancel"
+      okText="OK"
+      @close="onClose"
+      @cancel="onCancel"
+      @ok="onConfirm"
+      v-show="dialogVisible"
+    ></ModalDialog>
   </div>
 </template>
 
 <script>
+import { getAddressValidation, getSearchTermType } from "contracts/utils/address.js";
+import ModalDialog from "../ui/ModalDialog.vue";
 export default {
   name: "InputSearch",
+  components: {
+    ModalDialog,
+  },
   data() {
     return {
       searchText: "",
+      dialogVisible: false,
+      dialogContent: "",
     };
   },
 
   methods: {
     onClick() {
-      if (!this.searchText || this.searchText.trim().length == 0) {
+      var s = getSearchTermType(this.searchText);
+      if (s === "invalid") {
+        this.dialogVisible = true;
+        this.dialogContent = "Invalid characters";
+        return;
+      } else if (s === "unsupported") {
+        this.dialogVisible = true;
+        this.dialogContent = "Unsupported characters";
         return;
       }
+
       this.$emit("onClick", this.searchText);
       this.$router.push({ path: `/search/${this.searchText}` });
+    },
+    onClose() {
+      this.dialogVisible = false;
+    },
+    onCancel() {
+      this.dialogVisible = false;
+    },
+    onConfirm() {
+      this.dialogVisible = false;
     },
   },
 };

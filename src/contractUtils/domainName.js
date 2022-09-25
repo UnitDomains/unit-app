@@ -9,7 +9,6 @@ export function getSupportDomainNamesSuffixArray() {
 }
 
 /**
- * 域名后缀是否合法
  * @param {}} suffix
  * @returns
  */
@@ -26,7 +25,7 @@ export function getDomainSuffix(domainName) {
   if (lastIndex < 0) return null;
   var suffix = domainName.substring(lastIndex + 1);
 
-  console.log(suffix);
+  // console.log(suffix);
   if (!validateDomainSuffix(suffix)) return null;
   return suffix;
 }

@@ -180,7 +180,7 @@ import { calculateDuration } from "utils/dates.js";
 import { getRentPrice, getAccountBalance } from "contractUtils/Price.js";
 import { getDomain, getDomainSuffix, getHostDomain } from "contractUtils/domainName.js";
 import moment from "moment";
-import { getAddressValidation } from "contractUtils/address.js";
+import { getAddressValidation } from "contracts/utils/address.js";
 
 import { sendHelper } from "contractUtils/transaction.js";
 

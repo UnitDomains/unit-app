@@ -60,7 +60,7 @@ import { calculateDuration, formatDate } from "utils/dates.js";
 import { getRentPrice, getAccountBalance } from "contractUtils/Price.js";
 import { getDomain, getDomainSuffix } from "contractUtils/domainName.js";
 import moment from "moment";
-import { getAddressValidation } from "contractUtils/address.js";
+import { getAddressValidation } from "contracts/utils/address.js";
 
 import NameDetailItem from "components/name/NameDetailItem.vue";
 

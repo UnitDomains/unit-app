@@ -45,7 +45,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  padding: 5em;
+  padding: 10em;
 }
 .domains-summary-item {
   justify-content: center;

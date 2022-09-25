@@ -143,6 +143,19 @@
         "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
         "p2": "The unit domains smart contract is based on ENS（(https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
       }
+    },
+    "welcome": {
+      "statistics": "통계",
+      "features": {
+        "title": "특징",
+        "f0": "쓰기 어렵고 기억하기 어려운 주소를 공유하기 쉬운 쓰기 쉽고 기억하기 쉬운 도메인 이름으로 변환",
+        "f1": "메타, 단위, 영역 등을 포함한 여러 접미사를 지원합니다.",
+        "f2": "탈중앙화된 디지털 아이덴티티를 만들고 Web3 세계를 여행하세요.",
+        "f3": "시장에서 거래 가능한 NTF 도메인 이름",
+        "f4": "잘못된 주소로 보낼 걱정 없이 더 쉽게 거래",
+        "f5": "무제한 하위 도메인 지원, 다른 필드에 다른 하위 도메인이 사용됨"
+      },
+      "more": "상세한..."
     }
   },
   "howtouse": {

@@ -11,14 +11,49 @@
         @onDomainItemClick="onDomainItemClick"
       ></DomainNameSpecificList>
 
-      <div class="divider" v-show="domainNameSpecificArray.length > 0"></div>
+      <div
+        class="view-type-toolbar-container"
+        v-if="domainNameSuggestArray.length > 0 || domainNameNotAvailableArray.length > 0"
+      >
+        <div class="view-type-toolbar">
+          <img
+            v-show="viewType != 0"
+            :src="listViewSvg"
+            alt="listViewSvg"
+            v-on:click="ChangeViewType(0)"
+          />
+          <img
+            v-show="viewType == 0"
+            :src="selectedListView"
+            alt="selectedListView"
+            v-on:click="ChangeViewType(0)"
+          />
+
+          <img
+            v-show="viewType != 1"
+            :src="itemViewSvg"
+            alt="itemViewSvg"
+            v-on:click="ChangeViewType(1)"
+          />
+          <img
+            v-show="viewType == 1"
+            :src="selectedItemView"
+            alt="selectedItemView"
+            v-on:click="ChangeViewType(1)"
+          />
+        </div>
+      </div>
+
+      <div class="divider" v-show="domainNameSuggestArray.length > 0"></div>
       <DomainList
+        :viewType="viewType"
         :domainNameArray="domainNameSuggestArray"
         @onDomainItemClick="onDomainItemClick"
       ></DomainList>
 
-      <div class="divider" v-show="domainNameSuggestArray.length > 0"></div>
+      <div class="divider" v-show="domainNameNotAvailableArray.length > 0"></div>
       <DomainList
+        :viewType="viewType"
         :domainNameArray="domainNameNotAvailableArray"
         @onDomainItemClick="onDomainItemClick"
       ></DomainList>
@@ -40,7 +75,7 @@ import {
   getHostDomain,
 } from "contractUtils/domainName.js";
 
-import { getAddressValidation } from "contractUtils/address.js";
+import { getAddressValidation, getSearchTermType } from "contracts/utils/address.js";
 
 import { processError } from "utils/processError.js";
 
@@ -52,6 +87,12 @@ import DomainList from "components/domains/DomainList.vue";
 import DomainNameSpecificList from "components/domains/DomainNameSpecificList.vue";
 
 import loading from "components/ui/loading";
+
+import ItemView from "icons/ItemView.svg";
+import ListView from "icons/ListView.svg";
+
+import SelectedItemView from "icons/SelectedItemView.svg";
+import SelectedListView from "icons/SelectedListView.svg";
 
 export default {
   name: "Search",
@@ -68,19 +109,37 @@ export default {
       domainNameSuggestArray: [],
       domainNameNotAvailableArray: [],
       priceInfo: null,
+      viewType: 1,
+      itemViewSvg: ItemView,
+      listViewSvg: ListView,
+      selectedItemView: SelectedItemView,
+      selectedListView: SelectedListView,
     };
   },
   async beforeRouteUpdate(to, from) {
-    console.log(to);
-
-    this.searchText = this.getSearchText(to.params.searchText.trim().toLowerCase());
-
     //from eth network
     //  await this.getSearchResults(this.searchText);
 
     //from data server
-    if (this.searchText) {
+    console.log(to);
+
+    this.searchText = this.getSearchText(to.params.searchText.trim().toLowerCase());
+    console.log(this.searchText);
+
+    this.domainNameSpecificArray = [];
+    this.domainNameSuggestArray = [];
+    this.domainNameNotAvailableArray = [];
+
+    var s = getSearchTermType(this.searchText);
+    if (s === "address") {
+      this.$router.push({ path: `/address/${this.searchText}` });
+    } else if (s === "supported") {
+      console.log("supported");
       await this.getSpecificResultFromServer(this.searchText);
+    } else if (s === "search") {
+      console.log("search");
+      // await this.getSpecificResultFromServer(this.searchText);
+
       await this.getSuggestResultFromServer(this.searchText);
       await this.getNotAvailableResultFromServer(this.searchText);
     }
@@ -89,19 +148,29 @@ export default {
     this.searchText = this.getSearchText(
       this.$route.params.searchText.trim().toLowerCase()
     );
-
     //from eth network
-    // await this.getSearchResults(this.searchText);
+    //  await this.getSearchResults(this.searchText);
 
     //from data server
 
-    if (this.searchText) {
+    var s = getSearchTermType(this.searchText);
+    if (s === "address") {
+      this.$router.push({ path: `/address/${this.searchText}` });
+    } else if (s === "supported") {
       await this.getSpecificResultFromServer(this.searchText);
+    } else if (s === "search") {
+      console.log("search 1");
+      // await this.getSpecificResultFromServer(this.searchText);
       await this.getSuggestResultFromServer(this.searchText);
       await this.getNotAvailableResultFromServer(this.searchText);
     }
   },
   methods: {
+    ChangeViewType(viewType) {
+      if (viewType == this.viewType) return;
+      console.log(viewType);
+      this.viewType = viewType;
+    },
     onSearchClick(searchText) {},
     onDomainItemClick(item) {
       this.$router.push({ path: `/name/${item.domainName}/register` });
@@ -169,6 +238,7 @@ export default {
       }
     },
     async getSpecificResultFromServer(searchText) {
+      //   loading.showLoading("#contentContainer");
       try {
         this.domainNameSpecificArray = [];
 
@@ -209,9 +279,11 @@ export default {
       } catch (err) {
         console.log(err);
       }
+      //   loading.hideLoading();
     },
 
     async getNotAvailableResultFromServer(searchText) {
+      loading.showLoading("#contentContainer");
       try {
         //await setup();
 
@@ -239,6 +311,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
+      loading.hideLoading();
     },
 
     async getSuggestResultFromServer(searchText) {
@@ -303,5 +376,14 @@ export default {
 .search-result {
   padding-bottom: 10px;
   margin: 0px;
+}
+.view-type-toolbar-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0em;
+}
+.view-type-toolbar {
+  margin-right: 1em;
 }
 </style>
