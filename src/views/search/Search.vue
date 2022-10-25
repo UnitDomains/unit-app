@@ -171,7 +171,9 @@ export default {
       console.log(viewType);
       this.viewType = viewType;
     },
-    onSearchClick(searchText) {},
+    onSearchClick(searchText) {
+      this.$router.push({ path: `/search/${searchText}` });
+    },
     onDomainItemClick(item) {
       this.$router.push({ path: `/name/${item.domainName}/register` });
     },

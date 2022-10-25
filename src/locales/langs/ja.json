@@ -67,7 +67,8 @@
     "transfer": "譲渡",
     "warning": "Warning",
     "year": "年",
-    "appCaption": "ブロックチェーンをベースにした分散型のオープンで拡張性の高いネーミングシステムです",
+    "appCaption": "Web3世界の座標軸、必携です",
+    "appSubCaption": "ブロックチェーンをベースにした分散型のオープンで拡張性の高いネーミングシステムです",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -155,6 +156,7 @@
         "f4": "Easier transactions without worrying about sending to the wrong address",
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
+      "dapp": "Dapp Development",
       "more": "more..."
     }
   },

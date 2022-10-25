@@ -58,7 +58,6 @@ export default class Registrar {
     registryAddress,
     registrarAddress,
     controllerAddress,
-    //   bulkRenewalAddress,
     provider,
   }) {
     const permanentRegistrar = getPermanentRegistrarContract({
@@ -71,11 +70,6 @@ export default class Registrar {
         provider,
       });
 
-    //    const bulkRenewal = getBulkRenewalContract({
-    //        address: bulkRenewalAddress,
-    //        provider
-    //    })
-
     const ENS = getENSContract({
       address: registryAddress,
       provider,
@@ -84,7 +78,6 @@ export default class Registrar {
     this.permanentRegistrar = permanentRegistrar;
     this.permanentRegistrarController = permanentRegistrarController;
     this.registryAddress = registryAddress;
-    //    this.bulkRenewal = bulkRenewal
     this.ENS = ENS;
   }
 

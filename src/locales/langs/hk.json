@@ -65,7 +65,8 @@
     "textrecord": "文本記錄",
     "transfer": "轉讓",
     "warning": "警告",
-    "appCaption": "基於以太坊區塊鏈的分布式、開放和可擴展的域名系統",
+    "appCaption": "Web3世界的坐標 ，你必須擁有它",
+    "appSubCaption": "基於以太坊區塊鏈的分布式、開放和可擴展的域名系統",
     "help": "帮助中心",
     "termsofservice": "服務條款",
     "names": "域名",
@@ -153,6 +154,7 @@
         "f4": "交易更加容易，無需擔心發送到錯誤地址",
         "f5": "支持無限子域，不同子域用於不同領域"
       },
+      "dapp": "Dapp Development",
       "more": "詳細..."
     }
   },

@@ -59,23 +59,26 @@ body {
 }
 
 .app-header {
-  background-color: #545c64;
+  background-color: #2c3e50;
   text-align: center;
   line-height: 60px;
   margin: 0px;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 .app-main {
   background-color: #f7f6f6;
   text-align: center;
   padding: 0px;
-  margin: 0;
+  margin-top: 60px;
 }
 
 .app-footer {
   margin: 0;
   padding: 1em 0;
-  background-color: #545c64;
+  background-color: #2c3e50;
   text-align: center;
   line-height: 60px;
 }

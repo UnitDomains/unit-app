@@ -7,7 +7,6 @@ import {
   BaseRegistrarImplementation,
   ETHRegistrarController,
   DNSRegistrar,
-  // BulkRenewal as bulkRenewalContract,
   LinearPremiumPriceOracle,
   SubdomainRegistrar,
 } from "./abi";
@@ -35,14 +34,6 @@ function getPermanentRegistrarControllerContract({ address, provider }) {
 function getDnsRegistrarContract({ parentOwner, provider }) {
   return new Contract(parentOwner, DNSRegistrar, provider);
 }
-/*
-function getBulkRenewalContract({
-    address,
-    provider
-}) {
-    return new Contract(address, bulkRenewalContract, provider)
-}
-*/
 
 function getLinearPremiumPriceOracle({ address, provider }) {
   return new Contract(address, LinearPremiumPriceOracle, provider);
@@ -59,7 +50,6 @@ export {
   getPermanentRegistrarContract,
   getPermanentRegistrarControllerContract,
   getDnsRegistrarContract,
-  //  getBulkRenewalContract,
   getLinearPremiumPriceOracle,
   getSubdomainRegistrar,
 };

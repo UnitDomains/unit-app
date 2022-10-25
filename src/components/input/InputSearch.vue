@@ -57,7 +57,6 @@ export default {
       }
 
       this.$emit("onClick", this.searchText);
-      this.$router.push({ path: `/search/${this.searchText}` });
     },
     onClose() {
       this.dialogVisible = false;
@@ -87,6 +86,9 @@ export default {
   text-transform: lowercase;
 }
 
+.custom-input-box:hover {
+  border-color: #bedefe;
+}
 .custom-input-box:focus {
   border-color: #409eff;
 }

@@ -68,7 +68,6 @@ export class ENS {
 
   /* Main methods */
   /**
-   * 得到节点所有者
    * @param {*} name
    * @returns
    */
@@ -78,7 +77,6 @@ export class ENS {
     return owner;
   }
   /**
-   * 得到解析器地址
    * @param {*} name
    * @returns
    */
@@ -258,7 +256,6 @@ export class ENS {
   }
 
   /**
-   * 得到地址所对应的域名
    * @param {*} address
    * @returns
    */
@@ -279,11 +276,11 @@ export class ENS {
 
     try {
       const provider = await getProvider();
-      const Resolver = getResolverContract({
+      const resolverContract = getResolverContract({
         address: resolverAddr,
         provider,
       });
-      const name = await Resolver.name(reverseNamehash);
+      const name = await resolverContract.name(reverseNamehash);
       return {
         name,
       };

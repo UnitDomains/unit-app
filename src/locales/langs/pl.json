@@ -71,7 +71,8 @@
     "year_0": "years",
     "year_1": "years",
     "year_2": "years",
-    "appCaption": "rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum",
+    "appCaption": "Web3 world coordinates , You must have it",
+    "appSubCaption": "rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -159,6 +160,7 @@
         "f4": "Easier transactions without worrying about sending to the wrong address",
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
+      "dapp": "Dapp Development",
       "more": "more..."
     }
   },

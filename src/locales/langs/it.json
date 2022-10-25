@@ -69,7 +69,8 @@
     "warning": "Attenzione",
     "year": "anno",
     "year_plural": "anni",
-    "appCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
+    "appCaption": "Web3 world coordinates , You must have it",
+    "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -157,6 +158,7 @@
         "f4": "Easier transactions without worrying about sending to the wrong address",
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
+      "dapp": "Dapp Development",
       "more": "more..."
     }
   },

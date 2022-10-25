@@ -11,7 +11,7 @@ const Welcome = () => import("../views/Welcome.vue");
 const About = () => import("../views/About.vue");
 
 const Search = () => import("../views/search/Search.vue");
-
+const SearchByTLD = () => import("../views/search/SearchByTLD.vue");
 const NameContainer = () => import("../views/name/NameContainer.vue");
 const Register = () => import("../views/name/Register.vue");
 const NameDetails = () => import("../views/name/NameDetails.vue");
@@ -39,6 +39,15 @@ const routes = [
     path: "/search/:searchText",
     name: "search",
     component: Search,
+    beforeEnter: (to, from, next) => {
+      next();
+    },
+  },
+
+  {
+    path: "/search/tld/:tldText",
+    name: "searchByTLD",
+    component: SearchByTLD,
     beforeEnter: (to, from, next) => {
       next();
     },

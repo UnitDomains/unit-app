@@ -1,6 +1,5 @@
 import BaseRegistrar from "./abis/IBaseRegistrar.json";
 import BaseRegistrarImplementation from "./abis/BaseRegistrarImplementation.json";
-//import BulkRenewal from './abis/BulkRenewal.json'
 import ENS from "./abis/IENS.json";
 import ENSRegistry from "./abis/ENSRegistry.json";
 import ENSRegistryWithFallback from "./abis/ENSRegistryWithFallback.json";

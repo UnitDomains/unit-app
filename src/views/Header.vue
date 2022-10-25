@@ -182,6 +182,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  
+  background-color: #2c3e50;
 }
 
 .app-logo {

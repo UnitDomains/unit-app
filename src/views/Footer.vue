@@ -1,40 +1,39 @@
 <template>
-  <div>
+  <div class="footer-container">
     <div class="footer-panel">
       <div class="footer-name">
-
         <a target="_blank" href="mailto://unit.domains@gmail.com">Email</a>
-
       </div>
       <div class="footer-name">
-        <a target="_blank" href="https://docs.unit.domains/FAQ.html">{{ $t('c.faq') }}</a>
+        <a target="_blank" href="https://docs.unit.domains/FAQ.html">{{ $t("c.faq") }}</a>
       </div>
       <div class="footer-name">
-
-        <a target="_blank" href="https://docs.unit.domains">{{ $t('c.help') }}</a>
-
+        <a target="_blank" href="https://docs.unit.domains">{{ $t("c.help") }}</a>
       </div>
     </div>
 
     <div class="footer-panel">
       <div class="footer-name">
         <a target="_blank" href="https://github.com/UnitDomains">Github</a>
-
       </div>
       <div class="footer-name">
-
         <router-link to="/about">{{ $t("c.about") }}</router-link>
       </div>
       <div class="footer-name">
-        <a target="_blank" href="https://docs.unit.domains/TermsofService.html">{{ $t('c.termsofservice') }}</a>
+        <a target="_blank" href="https://docs.unit.domains/TermsofService.html">{{
+          $t("c.termsofservice")
+        }}</a>
       </div>
+    </div>
+    <div class="footer-panel">
+      <div class="footer-name">© unit.domains All Rights Reserved</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "UnitDomainsFooter"
+  name: "UnitDomainsFooter",
 };
 </script>
 <style scoped>
@@ -86,6 +85,3 @@ a:active {
   color: yellow;
 }
 </style>
-
-
-

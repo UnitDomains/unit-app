@@ -67,7 +67,8 @@
     "transfer": "전달",
     "warning": "경고",
     "year": "년",
-    "appCaption": "블록체인 기반의 분산되고 개방되어 있으며 확장가능한 네이밍 서비스입니다",
+    "appCaption": "Web3 world coordinates , You must have it",
+    "appSubCaption": "블록체인 기반의 분산되고 개방되어 있으며 확장가능한 네이밍 서비스입니다",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -155,6 +156,7 @@
         "f4": "잘못된 주소로 보낼 걱정 없이 더 쉽게 거래",
         "f5": "무제한 하위 도메인 지원, 다른 필드에 다른 하위 도메인이 사용됨"
       },
+      "dapp": "Dapp Development",
       "more": "상세한..."
     }
   },
