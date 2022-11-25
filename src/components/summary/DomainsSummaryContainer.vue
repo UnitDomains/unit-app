@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div class="domains-summary-container-panel">
     <div class="domains-summary-item">
@@ -11,10 +19,9 @@
   </div>
 </template>
 
-<script>
-import { setup } from "contracts/api";
-import { getBlock, getNetworkId, isContractController } from "contracts/web3.js";
-import { getDomainNamesCountFromServer, getDomainOwnersCount } from "server/summary.js";
+<script lang="ts">
+import { web3Config } from "contracts/web3";
+import { getDomainNamesCountFromServer, getDomainOwnersCount } from "server/summary";
 
 export default {
   name: "DomainsSummaryContainer",
@@ -32,7 +39,7 @@ export default {
   methods: {
     async initDomainSummaryFromServer() {
       //await setup();
-      var networkId = await getNetworkId();
+      var networkId = await web3Config.getNetworkId();
       this.domainNamesCount = await getDomainNamesCountFromServer(networkId);
       this.domainOwnersCount = await getDomainOwnersCount(networkId);
     },

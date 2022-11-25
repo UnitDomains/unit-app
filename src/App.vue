@@ -1,7 +1,4 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-
+<script setup lang="ts">
 import HeaderVue from "./views/Header.vue";
 import FooterVue from "./views/Footer.vue";
 </script>
@@ -11,7 +8,7 @@ import FooterVue from "./views/Footer.vue";
     <div class="app-header">
       <HeaderVue />
     </div>
-    <div class="app-main">
+    <div class="app-main" id="appMain">
       <router-view></router-view>
     </div>
     <div class="app-footer">
@@ -20,22 +17,12 @@ import FooterVue from "./views/Footer.vue";
   </div>
 </template>
 
-<script>
-import { connect } from "contractUtils/connect.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
+<script lang="ts">
+import { web3Config } from "contracts/web3";
 
 export default {
-  setup() {},
   async mounted() {
-    try {
-      await connect();
-    } catch (err) {
-      console.log(err);
-
-      if (err.message.indexOf("Unsupported network") >= 0) {
-        this.$router.push({ path: "/error/notsupportnetwork" });
-      }
-    }
+    await web3Config.connect();
   },
 };
 </script>
@@ -59,26 +46,23 @@ body {
 }
 
 .app-header {
-  background-color: #2c3e50;
+  background-color: #545c64;
   text-align: center;
   line-height: 60px;
   margin: 0px;
-  width: 100%;
-  position: fixed;
-  top: 0;
 }
 
 .app-main {
   background-color: #f7f6f6;
   text-align: center;
   padding: 0px;
-  margin-top: 60px;
+  margin: 0;
 }
 
 .app-footer {
   margin: 0;
   padding: 1em 0;
-  background-color: #2c3e50;
+  background-color: #545c64;
   text-align: center;
   line-height: 60px;
 }

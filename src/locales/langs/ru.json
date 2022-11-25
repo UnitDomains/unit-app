@@ -71,7 +71,7 @@
     "year_0": "years",
     "year_1": "years",
     "year_2": "years",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Names in the Web3 world, You must have it",
     "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -161,6 +161,14 @@
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "Have a Web3 name and travel the Web3 world",
+        "content0": "Take full control of your name and use it in the Web3 world",
+        "title1": "The NFT field is promising",
+        "content1": "Generate NFTs that can be traded on the market",
+        "title2": "Web3 configuration file",
+        "content2": "Save various personal data such as avatars, URLs, etc."
+      },
       "more": "more..."
     }
   },
@@ -196,7 +204,9 @@
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Срок регистрации",
     "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Rental price to pay",
+    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Общие сумма к оплате",
     "yearUnit": "год"
   },
@@ -206,7 +216,7 @@
       "manage": "Управлять",
       "register": "Зарегистрировать",
       "request": "Запрос на регистрацию",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Нажмите 'зарегистрировать' чтобы перейти 3-му шагу."
     },
     "favourite": "Добавьте имя в 'Избранное' для быстрого доступа в случае если вы закроете браузер.",
@@ -242,6 +252,7 @@
     },
     "titles": [
       "Для регистрации имени необходимо пройти все 3 шага",
+      "Пожалуйста, наберитесь терпения и подождите некоторое время",
       "Скоро вы сможете управлять своим именем.",
       "Вы прошли все шаги регистрации и теперь можете начать управлять вашим именем!"
     ]
@@ -288,15 +299,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "Подтвердить",
         "cancel": "Отменить",
-        "confirm": "Подтвердить"
+        "confirm": "Подтвердить",
+        "delete": "Удалить",
+        "ignore": "пренебрегать"
       },
-      "subTitle": "Это действие изменет записи в блокчейне.",
-      "title": "Вы уверены что хотите это сделать?",
+
       "value": {
         "future": "БУДУЩЕЕ",
         "previous": "ПРЕДЫДУЩЕЕ"
       }
+    },
+    "dialog": {
+      "alert": "предупреждать",
+      "info": "оперативная информация",
+      "waiting": "Пожалуйста, терпеливо дождитесь завершения операции...",
+      "subTitle": "Это действие изменет записи в блокчейне.",
+      "title": "Вы уверены что хотите это сделать?"
     },
     "dns": {
       "messages": {
@@ -368,6 +388,13 @@
       "openEdit": "Add/Edit Records",
       "title": "Записи"
     },
+    "subdomain": {
+      "removal": "Вы уверены, что хотите удалить поддомен?",
+      "notAllowedContainsPoint": "Субдомены не могут содержать '.'",
+      "alreadyRegistered": "Этот поддомен уже зарегистрирован и не может быть зарегистрирован повторно.",
+      "add": "Добавить поддомен",
+      "nosubdomains": "Поддомены не были добавлены"
+    },
     "resolver": {
       "error": "Ошибка Мигрирования Ресолвера",
       "message": "Чтобы сбросить ваше ресолвер вручную, нажмите установить и введите адрес вашего ресолвера.",
@@ -379,14 +406,11 @@
     "search": {
       "title": "Имена"
     },
-    "subdomains": {
-      "add": "Добавить поддомен",
-      "nosubdomains": "Поддомены не были добавлены"
-    },
     "tabs": {
       "details": "Подробности",
       "register": "Зарегистрировать",
-      "subdomains": "Поддомены"
+      "subdomains": "Поддомены",
+      "parentDomain": "родительский домен"
     },
     "test": {
       "note": "Примечание: домен .test позволяет каждому желающему запросить имя для тестовых целей, срок действия которого истечёт через 28 дней."
@@ -407,6 +431,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "The program only supports some networks, please switch to one of the networks below."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Пожалуйста, установите кошелек",
+    "wantWalletDetail": "Кошелек не установлен, пожалуйста, установите его, иначе программу нельзя будет использовать.",
+    "walletError": "Произошла ошибка кошелька",
+    "walletRight": "Кошелек в порядке",
+    "browser": "Программа не поддерживает этот браузер, смените браузер",
+    "needlogin": "Пожалуйста, войдите в аккаунт кошелька",
+    "needconnect": "Подключите приложение",
+    "metamask": {
+      "pluginName": "Плагин метамаски"
     }
   }
 }

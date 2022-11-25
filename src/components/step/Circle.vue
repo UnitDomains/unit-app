@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div class="circle-container">
     <div class="circle-progressbar">
@@ -14,8 +22,8 @@
   </div>
 </template>
 
-<script>
-function formatDegree(percent) {
+<script lang="ts">
+function formatDegree(percent: number) {
   return `transform:rotate(${-135 + (360 / 100) * percent}deg)`;
 }
 

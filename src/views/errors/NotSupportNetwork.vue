@@ -1,20 +1,27 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div>
     <div>
       <div>
-        <h1>Unsupported network</h1>
-        <h2>Unsupported network</h2>
-        <p>Only the following networks are supported:
-        <ul>
-          <li>Main</li>
-        </ul>
-        </p>
-        <p>Please switch to the main network in Metamask. </p>
+        <h1>{{ $t("errors.network.title") }}</h1>
+        <div style="text-align: left">
+          <p>{{ $t("errors.network.description") }}</p>
+          <ul>
+            <li>Main</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "NotSupportNetwork",
 };

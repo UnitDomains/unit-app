@@ -13,10 +13,11 @@
 .detail-panel {
   width: 100%;
   font: 1em sans-serif;
-
 }
 
 .detail-collapse-container {
+  margin-left: 20px;
+  margin-right: 20px;
   border-radius: 5px 5px 0 0;
   border: 1px solid #dcdfe6;
 }
@@ -40,6 +41,17 @@
   height: 2em;
   text-align: right;
   padding: 0.5em;
+}
+
+.detail-base-info-left-sub {
+  font: 1em sans-serif;
+  font-weight: bolder;
+  width: 200px;
+
+  text-align: right;
+
+  padding: 0.5em;
+  margin-left: -20px;
 }
 
 .detail-base-info-middle {
@@ -72,6 +84,7 @@
 .details-records-panel {
   border-radius: 5px 5px 0 0;
   border: 1px solid #dcdfe6;
+  margin: 10px;
 }
 
 .details-records-caption {
@@ -83,13 +96,12 @@
 
 .details-records-left {
   font: 1em sans-serif;
-  width: 250px;
+  width: 230px;
   text-align: right;
 }
 
 .details-records-right {
   font: 1em sans-serif;
-
   width: 100%;
 }
 

@@ -1,3 +1,38 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
+
+import { getAddressValidation, getSearchTermType } from "contracts/utils/address";
+const { t } = useI18n();
+const searchText = ref("");
+
+//event
+const emit = defineEmits<{
+  (e: "onClick", searchText: string): void;
+}>();
+
+const onClick = () => {
+  var s = getSearchTermType(searchText.value);
+  console.log(s);
+  if (s.type === "Invalid") {
+    createAlertDialog(t("errors.search.InvalidCharacters"));
+
+    return;
+  } else if (s.type === "UnSupported") {
+    createAlertDialog(t("errors.search.UnsupportedTLD"));
+
+    return;
+  }
+
+  emit("onClick", searchText.value);
+};
+</script>
+
 <template>
   <div style="display: inline-block">
     <div style="display: flex">
@@ -11,63 +46,12 @@
         <span>{{ $t("search.button") }}</span>
       </div>
     </div>
-
-    <ModalDialog
-      title="Info"
-      :content="dialogContent"
-      :footer="true"
-      :cancelVisible="false"
-      cancelText="Cancel"
-      okText="OK"
-      @close="onClose"
-      @cancel="onCancel"
-      @ok="onConfirm"
-      v-show="dialogVisible"
-    ></ModalDialog>
   </div>
 </template>
 
-<script>
-import { getAddressValidation, getSearchTermType } from "contracts/utils/address.js";
-import ModalDialog from "../ui/ModalDialog.vue";
+<script lang="ts">
 export default {
   name: "InputSearch",
-  components: {
-    ModalDialog,
-  },
-  data() {
-    return {
-      searchText: "",
-      dialogVisible: false,
-      dialogContent: "",
-    };
-  },
-
-  methods: {
-    onClick() {
-      var s = getSearchTermType(this.searchText);
-      if (s === "invalid") {
-        this.dialogVisible = true;
-        this.dialogContent = "Invalid characters";
-        return;
-      } else if (s === "unsupported") {
-        this.dialogVisible = true;
-        this.dialogContent = "Unsupported characters";
-        return;
-      }
-
-      this.$emit("onClick", this.searchText);
-    },
-    onClose() {
-      this.dialogVisible = false;
-    },
-    onCancel() {
-      this.dialogVisible = false;
-    },
-    onConfirm() {
-      this.dialogVisible = false;
-    },
-  },
 };
 </script>
 <style scoped>

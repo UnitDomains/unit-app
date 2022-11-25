@@ -1,4 +1,82 @@
-<script setup></script>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute, onBeforeRouteUpdate } from "vue-router";
+
+import { useI18n } from "vue-i18n";
+
+import { appContractModels } from "@/contracts/setup";
+
+import { web3Config } from "@/contracts/web3";
+import { IServerPage, IServerDomainInfo } from "@/server/serverType";
+import { getRegistrantFromServer } from "@/server/domain";
+import { processError } from "utils/processError";
+
+import AddressList from "components/address/AddressList.vue";
+
+import { showLoading, ILoading } from "@/components/ui/loading";
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const account = ref("");
+
+const addressData = ref<IServerPage<IServerDomainInfo> | null>(null);
+const pageNo = ref(1);
+const pageSize = ref(10);
+
+onBeforeRouteUpdate((to) => {
+  if (typeof to.params.account === "string")
+    account.value = to.params.account.trim().toLowerCase();
+  else account.value = to.params.account[0].trim().toLowerCase();
+});
+
+onMounted(() => {
+  if (typeof route.params.account === "string")
+    account.value = route.params.account.trim().toLowerCase();
+  else account.value = route.params.account[0].trim().toLowerCase();
+});
+
+onMounted(async () => {
+  await getRecordsFromServer();
+});
+
+const onRegisterButtonClick = () => {
+  router.push({ path: `/address/${account.value}/registrant` });
+};
+
+const onControllerButtonClick = () => {
+  router.push({ path: `/address/${account.value}/controller` });
+};
+
+const onAddressItemClick = (name: string) => {
+  router.push({ path: `/name/${name}/details` });
+};
+
+const onPageClick = async (page: number) => {
+  pageNo.value = page;
+  await getRecordsFromServer();
+};
+
+const getRecordsFromServer = async () => {
+  try {
+    await appContractModels.setup();
+
+    console.log(account);
+    var networkId = await web3Config.getNetworkId();
+
+    addressData.value = await getRegistrantFromServer(
+      networkId,
+      account.value,
+      pageNo.value,
+      pageSize.value
+    );
+  } catch (err) {
+    console.log(err);
+    // processError(err, this.$router);
+  }
+};
+</script>
 
 <template>
   <div class="address-account-container">
@@ -29,103 +107,14 @@
   </div>
 </template>
 
-<script>
-import EthVal from "ethval";
-import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
-import { labelhash } from "contracts/utils/labelhash.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import { emptyAddress } from "contracts/utils";
-
-import { calculateDuration } from "utils/dates.js";
-
-import { normalize } from "contracts/utils/eth-ens-namehash";
-
-import moment from "moment";
-
-import createIcon from "@/blockies";
-
-import loading from "components/ui/loading";
-
-import { getRegistrantFromServer } from "server/domain.js";
-import { processError } from "utils/processError.js";
-
-import AddressList from "components/address/AddressList.vue";
-
+<script lang="ts">
 export default {
   name: "AddressRegistrant",
-  components: {
-    AddressList,
-  },
-  data() {
-    return {
-      account: this.$route.params.account,
-
-      addressData: null,
-      pageNo: 1,
-      pageSize: 10,
-    };
-  },
-  computed: {},
-
-  async mounted() {
-    await this.getRecordsFromServer();
-  },
-
-  /*
-  watch: {
-    $route(to, from) {
-      this.account = to.params.account;
-      console.log(to);
-      this.getRecordsFromServer();
-    },
-  },*/
-
-  async beforeRouteUpdate(to, from, next) {
-    this.account = to.params.account;
-
-    // this.getRecordsFromServer()
-
-    next();
-  },
-  methods: {
-    onRegisterButtonClick() {
-      this.$router.push({ path: `/address/${this.account}/registrant` });
-    },
-    onControllerButtonClick() {
-      this.$router.push({ path: `/address/${this.account}/controller` });
-    },
-    onAddressItemClick(name) {
-      this.$router.push({ path: `/name/${name}/details` });
-    },
-    async onPageClick(page) {
-      this.pageNo = page;
-      this.addressData = await this.getRecordsFromServer();
-    },
-
-    async getRecordsFromServer() {
-      try {
-        await setup();
-        var account = this.account;
-        console.log(account);
-        var networkId = await getNetworkId();
-
-        this.addressData = await getRegistrantFromServer(
-          networkId,
-          account,
-          this.pageNo,
-          this.pageSize
-        );
-      } catch (err) {
-        console.log(err);
-        processError(err, this.$router);
-      }
-    },
-  },
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/address.css";
+@import "@/assets/css/address.css";
 
 .user-info {
   height: 60px;

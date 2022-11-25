@@ -1,3 +1,36 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+import { number } from "@intlify/core-base";
+
+const props = defineProps({
+  domainName: {
+    type: String,
+    default: "",
+  },
+  tabTitle: {
+    type: Array,
+    default: null,
+  },
+  active: {
+    type: String,
+    default: 0,
+  },
+});
+
+//event
+const emit = defineEmits<{
+  (e: "onTabClick", index: number): void;
+}>();
+
+const onTabClick = (index: number) => {
+  emit("onTabClick", index);
+};
+</script>
+
 <template>
   <div class="tabs-container">
     <div class="tabs-title">{{ domainName }}</div>
@@ -8,7 +41,7 @@
             v-for="(item, index) in tabTitle"
             :key="index"
             @click="onTabClick(index)"
-            :class="{ active: active == index }"
+            :class="{ active: parseInt(active) == index }"
           >
             {{ item }}
           </li>
@@ -18,30 +51,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "Tabs",
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-    tabTitle: {
-      type: Array,
-      default: null,
-    },
-    active: {
-      type: String,
-      default: "0",
-    },
-  },
-  computed: {},
-
-  methods: {
-    onTabClick(index) {
-      this.$emit("onTabClick", index);
-    },
-  },
 };
 </script>
 <style scoped>

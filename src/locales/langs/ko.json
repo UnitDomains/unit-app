@@ -67,12 +67,12 @@
     "transfer": "전달",
     "warning": "경고",
     "year": "년",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Names in the Web3 world, You must have it",
     "appSubCaption": "블록체인 기반의 분산되고 개방되어 있으며 확장가능한 네이밍 서비스입니다",
-    "help": "Help Center",
-    "termsofservice": "Terms of Service",
-    "names": "Names",
-    "owners": "Owners"
+    "help": "지원 센터",
+    "termsofservice": "서비스 약관",
+    "names": "도메인 이름",
+    "owners": "사용자"
   },
   "certificate": {
     "button": "Request SSL certificate",
@@ -156,7 +156,15 @@
         "f4": "잘못된 주소로 보낼 걱정 없이 더 쉽게 거래",
         "f5": "무제한 하위 도메인 지원, 다른 필드에 다른 하위 도메인이 사용됨"
       },
-      "dapp": "Dapp Development",
+      "dapp": "Dapp 개발",
+      "slogan": {
+        "title0": "Web3 이름을 갖고 Web3 세계를 여행하세요",
+        "content0": "귀하의 이름을 완전히 제어하고 Web3 세계에서 사용하십시오.",
+        "title1": "NFT 분야는 유망하다",
+        "content1": "시장에서 거래 가능한 NFT 생성",
+        "title2": "Web3 구성 파일",
+        "content2": "아바타, URL 등 다양한 개인정보를 저장합니다."
+      },
       "more": "상세한..."
     }
   },
@@ -191,8 +199,10 @@
     "gasDescription": "Estimated Gas Price (Step 1 + Step 3). The gas price will flucuate.",
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "등록 기간",
-    "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "registrationPriceLabel": "등록비",
+    "rentPriceLabel": "렌탈 비용",
+    "totalDescription": "예상 총 비용 (등록비 + 렌탈 비용 + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "예상 총 비용 (렌탈 비용 + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "결제할 총 금액",
     "yearUnit": "년"
   },
@@ -202,7 +212,7 @@
       "manage": "관리",
       "register": "등록",
       "request": "등록 요청",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "역 기록 설정",
       "warning": "3번째 단계로 넘어가려면 등록을 클릭하세요"
     },
     "favourite": "* 브라우저를 닫더라도 쉽게 접근할 수 있도록 도메인을 즐겨찾기 하세요.",
@@ -238,6 +248,7 @@
     },
     "titles": [
       "도메인을 등록하려면 3개의 단계를 완료해야 합니다.",
+      "인내심을 갖고 잠시 기다려주세요.",
       "곧 당신의 도메인을 관리할 수 있게 됩니다.",
       "모든 단계를 완료했습니다. 이제 당신의 도메인을 관리해보세요!"
     ]
@@ -284,15 +295,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "확인",
         "cancel": "취소",
-        "confirm": "확인"
+        "confirm": "확인",
+        "delete": "삭제",
+        "ignore": "소홀히 하다"
       },
-      "subTitle": "이 액션은 블록체인의 상태를 변경하게 됩니다.",
-      "title": "이걸 하려고 하신게 확실한가요?",
+
       "value": {
         "future": "미래",
         "previous": "이전"
       }
+    },
+    "dialog": {
+      "alert": "경고하다",
+      "info": "프롬프트 정보",
+      "waiting": "작업이 완료될 때까지 기다려 주십시오....",
+      "subTitle": "이 액션은 블록체인의 상태를 변경하게 됩니다.",
+      "title": "이걸 하려고 하신게 확실한가요?"
     },
     "dns": {
       "messages": {
@@ -364,6 +384,13 @@
       "openEdit": "Add/Edit Records",
       "title": "레코드"
     },
+    "subdomain": {
+      "removal": "하위 도메인을 삭제하시겠습니까?",
+      "notAllowedContainsPoint": "하위 도메인은 '.'을 포함할 수 없습니다.",
+      "alreadyRegistered": "이 하위 도메인은 이미 등록되었으며 다시 등록할 수 없습니다.",
+      "add": "서브도메인 추가",
+      "nosubdomains": "추가된 서브도메인이 없습니다"
+    },
     "resolver": {
       "error": "리졸버 마이그레이션 에러",
       "message": "리졸버를 수동으로 초기화하려면 설정을 클릭하고 등록할 리졸버의 주소를 입력하세요.",
@@ -375,14 +402,11 @@
     "search": {
       "title": "도메인 이름"
     },
-    "subdomains": {
-      "add": "서브도메인 추가",
-      "nosubdomains": "추가된 서브도메인이 없습니다"
-    },
     "tabs": {
       "details": "상세",
       "register": "레지스터",
-      "subdomains": "서브도메인"
+      "subdomains": "서브도메인",
+      "parentDomain": "상위 도메인"
     },
     "test": {
       "note": "주: .test 도메인은 누구나 테스트를 위해 사용 요청을 할 수 있으며 28일이 지나면 만료됩니다."
@@ -403,6 +427,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "지원되지 않는 네트워크",
+      "description": "프로그램은 일부 네트워크만 지원합니다. 아래 네트워크 중 하나로 전환하세요."
+    },
+    "search": {
+      "InvalidCharacters": "불법 문자 포함",
+      "UnsupportedTLD": "이 TLD는 지원되지 않습니다."
+    }
+  },
+  "wallet": {
+    "wantWallet": "지갑을 설치하세요",
+    "wantWalletDetail": "지갑이 설치되어 있지 않습니다. 지갑을 설치하십시오. 그렇지 않으면 프로그램을 사용할 수 없습니다.",
+    "walletError": "지갑 오류가 발생했습니다",
+    "walletRight": "지갑은 정상입니다",
+    "browser": "프로그램이 이 브라우저를 지원하지 않습니다. 브라우저를 변경하십시오.",
+    "needlogin": "지갑 계정에 로그인하십시오",
+    "needconnect": "앱을 연결하십시오",
+    "metamask": {
+      "pluginName": "메타마스크 플러그인"
     }
   }
 }

@@ -69,10 +69,10 @@
     "warning": "Avertissement",
     "year": "année",
     "year_plural": "années",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Un nom dans le monde du Web3, il faut l'avoir",
     "appSubCaption": "un système de nommage distribué, ouvert et extensible basé sur la blockchain Ethereum",
     "help": "Help Center",
-    "termsofservice": "Terms of Service",
+    "termsofservice": "Conditions d'utilisation",
     "names": "Names",
     "owners": "Owners"
   },
@@ -142,24 +142,32 @@
     },
     "website": {
       "about": {
-        "p0": "Unit domains is a distributed, open and scalable domain name system based on Ethereum blockchain. The domain name system allows people to replace long blockchain addresses with short domain names instead of copying or entering lengthy blockchain addresses.",
-        "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
-        "p2": "The unit domains smart contract is based on ENS( https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
+        "p0": "Unit Domains est un système de noms de domaine distribué, ouvert et extensible basé sur la blockchain Ethereum.Le système de noms de domaine permet aux utilisateurs de ne plus copier ou saisir de longues adresses de blockchain et de les remplacer par des noms de domaine courts.",
+        "p1": "Le site Web Unit Domains vous permet de rechercher des noms de domaine, d'enregistrer des noms de domaine et de gérer des noms de domaine.",
+        "p2": "Le contrat intelligent Unit Domains est basé sur ENS (https://ens.domains/) et a été modifié pour prendre en charge plusieurs domaines de premier niveau. Dans le même temps, le site Web fait également référence à l'ENS. Les utilisateurs peuvent consulter ces codes sur le site Web Github."
       }
     },
     "welcome": {
-      "statistics": "Statistics",
+      "statistics": "Statistiques",
       "features": {
-        "title": "Features",
-        "f0": "Convert hard-to-write and hard-to-remember addresses into easy-to-write and easy-to-remember domain names that are easy to share",
-        "f1": "Supports multiple suffixes, including meta, unit, area, etc.",
-        "f2": "Create a decentralized digital identity and travel the Web3 world",
-        "f3": "NTF domain names that can be traded on the market",
-        "f4": "Easier transactions without worrying about sending to the wrong address",
-        "f5": "Support unlimited subdomains, different subdomains are used for different fields"
+        "title": "Caractéristiques",
+        "f0": "Convertissez les adresses difficiles à écrire et difficiles à mémoriser en noms de domaine faciles à écrire et faciles à mémoriser, faciles à partager",
+        "f1": "Prend en charge plusieurs suffixes, y compris méta, unité, zone, etc.",
+        "f2": "Créez une identité numérique décentralisée et profitez du monde Web3",
+        "f3": "Les noms de domaine NTF peuvent être échangés sur le marché",
+        "f4": "Les transactions sont plus faciles sans se soucier de l'envoi à la mauvaise adresse",
+        "f5": "Prend en charge des sous-domaines illimités, différents sous-domaines sont utilisés pour différents domaines"
       },
-      "dapp": "Dapp Development",
-      "more": "more..."
+      "dapp": "Développement d'applications",
+      "slogan": {
+        "title0": "Posséder un nom Web3, parcourir le monde Web3",
+        "content0": "Prenez le contrôle total de votre nom et utilisez-le dans le monde Web3",
+        "title1": "Il y a beaucoup à faire dans le domaine NFT",
+        "content1": "Générer des NFT, qui peuvent être échangés sur le marché",
+        "title2": "Fichier de configuration Web3",
+        "content2": "Enregistrez diverses données personnelles telles que les avatars et les URL"
+      },
+      "more": "détaillé..."
     }
   },
   "howtouse": {
@@ -194,7 +202,9 @@
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Période d'enregistrement",
     "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Rental price to pay",
+    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Prix ​​total à payer",
     "yearUnit": "année"
   },
@@ -204,7 +214,7 @@
       "manage": "Gérer",
       "register": "Enregistrer",
       "request": "Demande d'enregistrement",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Cliquer sur Enregistrer pour passer à l'étape 3."
     },
     "favourite": "* Mettez en favoris les noms pour les retrouver facilement dans le cas où vous fermez votre navigateur. ",
@@ -240,6 +250,7 @@
     },
     "titles": [
       "L'enregistrement d'un nom vous oblige à suivre 3 étapes",
+      "S'il vous plaît soyez patient et attendez un moment",
       "Vous pourrez bientôt gérer votre nom.",
       "Vous avez terminé toutes les étapes, gérez votre nom maintenant!"
     ]
@@ -286,15 +297,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "Ok",
         "cancel": "Annuler",
-        "confirm": "Confirmer"
+        "confirm": "Confirmer",
+        "delete": "Delete",
+        "ignore": "Ignore"
       },
-      "subTitle": "Cette action va modifier l'état de la Blockchain.",
-      "title": "Êtes-vous sûr de vouloir faire ça?",
+
       "value": {
         "future": "PROCHAIN",
         "previous": "PRÉCÉDANT"
       }
+    },
+    "dialog": {
+      "alert": "prévenir",
+      "info": "Informations Rapides",
+      "waiting": "Veuillez attendre patiemment que l'opération se termine...",
+      "subTitle": "Cette action va modifier l'état de la Blockchain.",
+      "title": "Êtes-vous sûr de vouloir faire ça?"
     },
     "dns": {
       "messages": {
@@ -366,6 +386,13 @@
       "openEdit": "Add/Edit Records",
       "title": "Enregistrements"
     },
+    "subdomain": {
+      "removal": "Voulez-vous vraiment supprimer le sous-domaine ?",
+      "notAllowedContainsPoint": "Les sous-domaines ne peuvent pas contenir de '.'",
+      "alreadyRegistered": "Ce sous-domaine a déjà été enregistré et ne peut pas être réenregistré.",
+      "add": "Ajouter un sous-domaine",
+      "nosubdomains": "Aucun sous-domaine n'a été ajouté"
+    },
     "resolver": {
       "error": "Erreur lors de la migration du Résolveur",
       "message": "Pour réinitialiser votre résolveur manuellement, cliquez sur définir et entrez l'adresse de votre résolveur personnalisé.",
@@ -377,14 +404,11 @@
     "search": {
       "title": "Noms"
     },
-    "subdomains": {
-      "add": "Ajouter un sous-domaine",
-      "nosubdomains": "Aucun sous-domaine n'a été ajouté"
-    },
     "tabs": {
       "details": "Détails",
       "register": "Enregistrer",
-      "subdomains": "Sous-domaines"
+      "subdomains": "Sous-domaines",
+      "parentDomain": "Domaine Parent"
     },
     "test": {
       "note": "Remarque: le domaine .test permet à quiconque de revendiquer un nom inutilisé à des fins de test, qui expire après 28 jours"
@@ -405,6 +429,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "Le programme ne prend en charge que certains réseaux, veuillez passer à l'un des réseaux ci-dessous."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Veuillez installer le portefeuille",
+    "wantWalletDetail": "Le portefeuille n'est pas installé, veuillez installer le portefeuille, sinon le programme ne peut pas être utilisé.",
+    "walletError": "Une erreur de portefeuille s'est produite",
+    "walletRight": "Le portefeuille est OK",
+    "browser": "Le programme ne prend pas en charge ce navigateur, veuillez changer de navigateur",
+    "needlogin": "Veuillez vous connecter au compte portefeuille",
+    "needconnect": "Veuillez connecter l'application",
+    "metamask": {
+      "pluginName": "Plug-in Metamask"
     }
   }
 }

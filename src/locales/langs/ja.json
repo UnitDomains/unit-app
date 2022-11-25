@@ -25,7 +25,7 @@
     "transactionBanner": "あなたは私たちが送ったトランザクション、または他のサイトからの招待によりこちらへ案内されました。以下の名前をお持ちの方は、すぐに更新する必要があります！"
   },
   "blockies": {
-    "noAddressFound": "No address found"
+    "noAddressFound": "アドレスが見つかりません」"
   },
   "c": {
     "Address": "アドレス",
@@ -67,12 +67,12 @@
     "transfer": "譲渡",
     "warning": "Warning",
     "year": "年",
-    "appCaption": "Web3世界の座標軸、必携です",
+    "appCaption": "Web3の世界では、名前を持つことが必須",
     "appSubCaption": "ブロックチェーンをベースにした分散型のオープンで拡張性の高いネーミングシステムです",
-    "help": "Help Center",
-    "termsofservice": "Terms of Service",
-    "names": "Names",
-    "owners": "Owners"
+    "help": "ヘルプセンター",
+    "termsofservice": "利用規約",
+    "names": "ドメイン名",
+    "owners": "ユーザー"
   },
   "certificate": {
     "button": "Request SSL certificate",
@@ -140,24 +140,32 @@
     },
     "website": {
       "about": {
-        "p0": "Unit domains is a distributed, open and scalable domain name system based on Ethereum blockchain. The domain name system allows people to replace long blockchain addresses with short domain names instead of copying or entering lengthy blockchain addresses.",
-        "p1": "The unit domains website allows you to query domain names, register domain names and manage domain names.",
-        "p2": "The unit domains smart contract is based on ENS( https://ens.domains/ )And modified to support multiple top-level domain names. At the same time, the website also refers to ens. Users can view the code on the GitHub website."
+        "p0": "Unit Domains は、イーサリアム ブロックチェーンに基づく分散型のオープンで拡張可能なドメイン ネーム システムです. ドメイン ネーム システムにより、ユーザーは長いブロックチェーン アドレスをコピーしたり入力したりして、短いドメイン名に置き換えることができなくなります。",
+        "p1": "Unit Domains の Web サイトでは、ドメイン名の検索、ドメイン名の登録、およびドメイン名の管理を行うことができます。",
+        "p2": "Unit Domains スマート コントラクトは ENS (https://ens.domains/) に基づいており、複数のトップレベル ドメインをサポートするように変更されています。同時に、このウェブサイトは ENS についても言及しています。ユーザーは、Github Web サイトでこれらのコードを表示できます。"
       }
     },
     "welcome": {
-      "statistics": "Statistics",
+      "statistics": "統計",
       "features": {
-        "title": "Features",
-        "f0": "Convert hard-to-write and hard-to-remember addresses into easy-to-write and easy-to-remember domain names that are easy to share",
-        "f1": "Supports multiple suffixes, including meta, unit, area, etc.",
-        "f2": "Create a decentralized digital identity and travel the Web3 world",
-        "f3": "NTF domain names that can be traded on the market",
-        "f4": "Easier transactions without worrying about sending to the wrong address",
-        "f5": "Support unlimited subdomains, different subdomains are used for different fields"
+        "title": "特徴",
+        "f0": "書きにくく覚えにくいアドレスを、書きやすく覚えやすいドメイン名に変換し、共有しやすくします",
+        "f1": "メタ、ユニット、エリアなど、複数のサフィックスをサポートします。",
+        "f2": "分散型デジタル ID を作成し、Web3 の世界を旅する",
+        "f3": "市場で取引可能なNTFドメイン名",
+        "f4": "間違った住所への送付を心配することなく、より簡単な取引",
+        "f5": "無制限のサブドメインをサポートし、異なるサブドメインが異なるフィールドに使用されます"
       },
-      "dapp": "Dapp Development",
-      "more": "more..."
+      "dapp": "Dapp開発",
+      "slogan": {
+        "title0": "Web3 の名前を持ち、Web3 の世界を旅する",
+        "content0": "自分の名前を完全に管理して、Web3 の世界で使用する",
+        "title1": "NFT分野は有望",
+        "content1": "市場で取引できるNFTを生成する",
+        "title2": "Web3 構成ファイル",
+        "content2": "アバター、URLなどのさまざまな個人データを保存します。"
+      },
+      "more": "詳細..."
     }
   },
   "howtouse": {
@@ -191,18 +199,20 @@
     "gasDescription": "Estimated Gas Price (Step 1 + Step 3). The gas price will flucuate.",
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "登録期間",
-    "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "registrationPriceLabel": "登録料",
+    "rentPriceLabel": "レンタル費用",
+    "totalDescription": "概算総費用 (登録料 + レンタル費用 + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "概算総費用 (レンタル費用 + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "お支払合計額",
     "yearUnit": "年"
   },
   "register": {
     "buttons": {
-      "insufficient": "Insufficient balance on your wallet. Fill in your wallet and reload the page.",
+      "insufficient": "ウォレットの残高が不足しています。ウォレットに資金を追加し、ページをリロードしてください。",
       "manage": "管理",
       "register": "登録",
       "request": "登録のリクエスト",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "リバースレコードを設定する",
       "warning": "ステップ３に移るために登録をクリックしてください"
     },
     "favourite": "* ブラウザを閉じた時にアクセスしやすいよう名前をお気に入りに登録する",
@@ -238,6 +248,7 @@
     },
     "titles": [
       "名前を登録するには、3つのステップを完了する必要があります。",
+      "お手数ですが、今しばらくお待ちください",
       "すぐに名前の管理ができるようになります。",
       "すべての手順が完了しました！今すぐ名前を管理しましょう！"
     ]
@@ -284,15 +295,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "確認",
         "cancel": "キャンセル",
-        "confirm": "確認"
+        "confirm": "確認",
+        "delete": "消去",
+        "ignore": "忘れる"
       },
-      "subTitle": "このアクションはブロックチェーンに書き込まれている値を上書きします",
-      "title": "本当に変更してよろしいですか？",
+
       "value": {
         "future": "変更後",
         "previous": "変更前"
       }
+    },
+    "dialog": {
+      "alert": "暖かい",
+      "info": "プロンプト情報",
+      "waiting": "操作が完了するまでしばらくお待ちください...",
+      "subTitle": "このアクションはブロックチェーンに書き込まれている値を上書きします",
+      "title": "本当に変更してよろしいですか？"
     },
     "dns": {
       "messages": {
@@ -364,6 +384,13 @@
       "openEdit": "Add/Edit Records",
       "title": "レコード"
     },
+    "subdomain": {
+      "removal": "サブドメインを削除してもよろしいですか?",
+      "notAllowedContainsPoint": "サブドメインに「.」を含めることはできません",
+      "alreadyRegistered": "このサブドメインは既に登録されており、再度登録することはできません。",
+      "add": "サブドメインを追加",
+      "nosubdomains": "追加されたサブドメインはありません"
+    },
     "resolver": {
       "error": "移行に失敗しました",
       "message": "手動でリゾルバをリセットするには、「設定」をクリックしてカスタムリゾルバのアドレスを入力します",
@@ -375,14 +402,11 @@
     "search": {
       "title": "Names"
     },
-    "subdomains": {
-      "add": "サブドメインを追加",
-      "nosubdomains": "追加されたサブドメインはありません"
-    },
     "tabs": {
       "details": "詳細",
       "register": "登録",
-      "subdomains": "サブドメイン"
+      "subdomains": "サブドメイン",
+      "parentDomain": "親ドメイン"
     },
     "test": {
       "note": "注：.testドメインは、誰でもテスト目的で未使用の名前を請求することができ、28日後に有効期限が切れます。"
@@ -403,6 +427,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "サポートされていないネットワーク",
+      "description": "このプログラムは一部のネットワークのみをサポートしています。以下のいずれかのネットワークに切り替えてください。"
+    },
+    "search": {
+      "InvalidCharacters": "不正な文字が含まれています",
+      "UnsupportedTLD": "この TLD はサポートされていません"
+    }
+  },
+  "wallet": {
+    "wantWallet": "ウォレットをインストールしてください",
+    "wantWalletDetail": "ウォレットがインストールされていません。ウォレットをインストールしてください。そうしないと、プログラムを使用できません。",
+    "walletError": "ウォレット エラーが発生しました",
+    "walletRight": "ウォレットはOK",
+    "browser": "このプログラムはこのブラウザをサポートしていません。ブラウザを変更してください",
+    "needlogin": "ウォレット アカウントにログインしてください",
+    "needconnect": "アプリを接続してください",
+    "metamask": {
+      "pluginName": "メタマスク プラグイン"
     }
   }
 }

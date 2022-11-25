@@ -69,7 +69,7 @@
     "warning": "Warning",
     "year": "year",
     "year_plural": "years",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Names in the Web3 world, You must have it",
     "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -159,6 +159,14 @@
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "Have a Web3 name and travel the Web3 world",
+        "content0": "Take full control of your name and use it in the Web3 world",
+        "title1": "The NFT field is promising",
+        "content1": "Generate NFTs that can be traded on the market",
+        "title2": "Web3 configuration file",
+        "content2": "Save various personal data such as avatars, URLs, etc."
+      },
       "more": "more..."
     }
   },
@@ -194,7 +202,9 @@
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Registration Period",
     "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Rental price to pay",
+    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Total price to pay",
     "yearUnit": "year"
   },
@@ -204,7 +214,7 @@
       "manage": "Manage name",
       "register": "Register",
       "request": "Request to register",
-      "setreverserecord": "Set as Primary ENS(unit.domains) Name",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Click register to move to the 3rd step"
     },
     "favourite": "* Favorite the name for easy access in case you close out of your browser.",
@@ -240,6 +250,7 @@
     },
     "titles": [
       "Registering a name requires you to complete 3 steps",
+      "Please be patient and wait for a while",
       "You’ll be able to manage your name soon.",
       "You’ve completed all the steps, manage your name now!"
     ]
@@ -286,11 +297,13 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "Ok",
         "cancel": "Cancel",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "delete": "Delete",
+        "ignore": "Ignore"
       },
-      "subTitle": "This action will modify the state of the blockchain.",
-      "title": "Are you sure you want to do this?",
+
       "value": {
         "future": "FUTURE",
         "previous": "PREVIOUS"
@@ -302,6 +315,13 @@
         "outOfSync": "The Controller and DNS Owner are out of sync. Click 'sync' to make the DNS Owner the Controller. Click 'refresh' if you make changes to the domain in the DNS Registrar.",
         "readyToRegister": "*Click 'refresh' if you make changes to the domain in the DNS Registrar."
       }
+    },
+    "dialog": {
+      "alert": "Alert",
+      "info": "Info",
+      "waiting": "Please wait patiently for the operation to complete...",
+      "subTitle": "This action will modify the state of the blockchain.",
+      "title": "Are you sure you want to do this?"
     },
     "domain": {
       "state": {
@@ -366,6 +386,13 @@
       "openEdit": "Add/Edit Records",
       "title": "Records"
     },
+    "subdomain": {
+      "removal": "Are you sure you want to delete the subdomain?",
+      "notAllowedContainsPoint": "The subdomain is not allowed to contain '.'",
+      "alreadyRegistered": "This subdomain has already been registered and cannot be registered again.",
+      "add": "Add Subdomain",
+      "nosubdomains": "No Subdomains have been added"
+    },
     "resolver": {
       "error": "Error Migrating Resolver",
       "message": "To reset your resolver manually, click set and enter the address of your custom resolver.",
@@ -377,14 +404,11 @@
     "search": {
       "title": "Names"
     },
-    "subdomains": {
-      "add": "Add Subdomain",
-      "nosubdomains": "No Subdomains have been added"
-    },
     "tabs": {
       "details": "Details",
       "register": "Register",
-      "subdomains": "Subdomains"
+      "subdomains": "Subdomains",
+      "parentDomain": "Parent Domain"
     },
     "test": {
       "note": "Note: .test domain allows anyone to claim an unused name for test purposes, which expires after 28 days"
@@ -405,6 +429,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "The program only supports some networks, please switch to one of the networks below."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Please install the wallet",
+    "wantWalletDetail": "The wallet is not installed, please install the wallet, otherwise the program cannot be used.",
+    "walletError": "Wallet error occurred",
+    "walletRight": "Wallet is OK",
+    "browser": "The program does not support this browser, please change the browser",
+    "needlogin": "Please log in to the wallet account",
+    "needconnect": "Please connect the app",
+    "metamask": {
+      "pluginName": "Metamask Plugin"
     }
   }
 }

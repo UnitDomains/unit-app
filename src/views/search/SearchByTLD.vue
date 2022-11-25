@@ -1,3 +1,44 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute, onBeforeRouteUpdate } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import { getDomain, getDomainSuffix } from "contractUtils/domainName";
+
+import InputSearch from "components/input/InputSearch.vue";
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const tldText = ref("");
+
+onBeforeRouteUpdate((to) => {
+  if (typeof to.params.tldText === "string")
+    tldText.value = to.params.tldText.trim().toLowerCase();
+  else tldText.value = to.params.tldText[0].trim().toLowerCase();
+});
+
+onMounted(() => {
+  if (typeof route.params.tldText === "string")
+    tldText.value = route.params.tldText.trim().toLowerCase();
+  else tldText.value = route.params.tldText[0].trim().toLowerCase();
+});
+
+const onSearchClick = (searchText: string) => {
+  var suffix = getDomainSuffix(searchText);
+  if (suffix && suffix.toLowerCase() === tldText.value)
+    router.push({ path: `/search/${searchText}` });
+  else {
+    searchText = getDomain(searchText);
+    console.log(searchText);
+    router.push({ path: `/search/${searchText}${tldText.value}` });
+  }
+};
+</script>
+
 <template>
   <div>
     <div class="tld-text-container">
@@ -10,87 +51,13 @@
   </div>
 </template>
 
-<script>
-import { getCurrentInstance } from "vue";
-
-import { setup, getRegistrar, getENS } from "contracts/api";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import {
-  getDomain,
-  getDomainSuffix,
-  getSupportDomainNamesSuffixArray,
-  getJointName,
-  getDomainIndex,
-  getHostDomain,
-} from "contractUtils/domainName.js";
-
-import { getAddressValidation, getSearchTermType } from "contracts/utils/address.js";
-
-import { processError } from "utils/processError.js";
-
-import axios from "http/http";
-import BASEURL from "http/api.js";
-
-import InputSearch from "components/input/InputSearch.vue";
-import DomainList from "components/domains/DomainList.vue";
-import DomainNameSpecificList from "components/domains/DomainNameSpecificList.vue";
-
-import loading from "components/ui/loading";
-
-import ItemView from "icons/ItemView.svg";
-import ListView from "icons/ListView.svg";
-
-import SelectedItemView from "icons/SelectedItemView.svg";
-import SelectedListView from "icons/SelectedListView.svg";
-
+<script lang="ts">
 export default {
   name: "SearchByTLD",
-  components: {
-    InputSearch,
-  },
-
-  data() {
-    return {
-      tldText: "",
-      domainNameSpecificArray: [],
-      domainNameSuggestArray: [],
-      domainNameNotAvailableArray: [],
-      priceInfo: null,
-      viewType: 1,
-      itemViewSvg: ItemView,
-      listViewSvg: ListView,
-      selectedItemView: SelectedItemView,
-      selectedListView: SelectedListView,
-    };
-  },
-  async beforeRouteUpdate(to, from) {
-    //from eth network
-    //  await this.getSearchResults(this.searchText);
-
-    //from data server
-    console.log(to);
-
-    this.tldText = to.params.tldText.trim().toLowerCase();
-  },
-  async mounted() {
-    this.tldText = this.$route.params.tldText.trim().toLowerCase();
-  },
-  methods: {
-    onSearchClick(searchText) {
-      var suffix = getDomainSuffix(searchText);
-      if (suffix && suffix.toLowerCase() === this.tldText)
-        this.$router.push({ path: `/search/${searchText}` });
-      else {
-        searchText = getDomain(searchText);
-        console.log(searchText);
-        this.$router.push({ path: `/search/${searchText}${this.tldText}` });
-      }
-    },
-  },
 };
 </script>
 <style scoped>
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 
 .tld-text-container {
   margin-top: 0;

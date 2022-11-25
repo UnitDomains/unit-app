@@ -1,31 +1,40 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+import { IServerPage, IServerDomainInfo } from "@/server/serverType";
+interface Props {
+  item: IServerDomainInfo;
+}
+
+const props = defineProps<Props>();
+
+//event
+const emit = defineEmits<{
+  (e: "onAddressItemClick", name: string): void;
+}>();
+
+const name = computed(() => {
+  if (!props.item) return "";
+  return getJointName(props.item.name, props.item.baseNodeIndex);
+});
+
+const onAddressItemClick = () => {
+  emit("onAddressItemClick", name.value);
+};
+</script>
 <template>
   <div class="address-panel" @click="onAddressItemClick()">
     <div class="address-name">{{ name }}</div>
   </div>
 </template>
 
-<script>
-import { getJointName } from "contractUtils/domainName.js";
+<script lang="ts">
+import { getJointName } from "@/contractUtils/domainName";
 export default {
   name: "AddressItem",
-  computed: {
-    name() {
-      if (!this.item) return "";
-      return getJointName(this.item.name, this.item.baseNodeIndex);
-    },
-  },
-
-  props: {
-    item: {
-      type: Object,
-      default: null,
-    },
-  },
-  methods: {
-    onAddressItemClick() {
-      this.$emit("onAddressItemClick", this.name);
-    },
-  },
 };
 </script>
 <style scoped>

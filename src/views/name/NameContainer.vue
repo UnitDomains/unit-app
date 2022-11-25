@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { onBeforeRouteUpdate, useRouter } from "vue-router";
+import { reactive, computed, ref, onMounted } from "vue";
+
+import InputSearch from "components/input/InputSearch.vue";
+
+import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
+import { web3Config } from "contracts/web3";
+const router = useRouter();
+
+onBeforeRouteUpdate(async (to, from, next) => {
+  try {
+    const account = await web3Config.getAccount();
+    console.log(account);
+    next();
+  } catch (err) {
+    next("/error/wallet");
+  }
+  return false;
+});
+
+onMounted(async () => {});
+
+const onSearchClick = (searchText: string) => {
+  router.push({ path: `/search/${searchText}` });
+};
+</script>
 <template>
   <div class="name-container">
     <div class="input-search">
@@ -8,29 +35,11 @@
   </div>
 </template>
 
-<script>
-import InputSearch from "components/input/InputSearch.vue";
+<script setup lang="ts"></script>
 
+<script lang="ts">
 export default {
   name: "NameContainer",
-  components: {
-    InputSearch,
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {
-    //   '$route'(to, from) {
-    //       location.reload()
-    //   }
-  },
-
-  mounted() {},
-
-  methods: {
-    onSearchClick() {},
-  },
 };
 </script>
 

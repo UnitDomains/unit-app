@@ -65,7 +65,7 @@
     "textrecord": "文本記錄",
     "transfer": "轉讓",
     "warning": "警告",
-    "appCaption": "Web3世界的坐標 ，你必須擁有它",
+    "appCaption": "Web3世界裏的名字，你必須擁有它",
     "appSubCaption": "基於以太坊區塊鏈的分布式、開放和可擴展的域名系統",
     "help": "帮助中心",
     "termsofservice": "服務條款",
@@ -155,6 +155,14 @@
         "f5": "支持無限子域，不同子域用於不同領域"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "擁有一個Web3名字， 遨遊Web3世界",
+        "content0": "完全掌控自己的名字，併在Web3世界裏面使用",
+        "title1": "NFT領域大有可為",
+        "content1": "生成NFT，可以在市場上進行交易",
+        "title2": "Web3配置文件",
+        "content2": "保存頭像、網址等各種個人資料"
+      },
       "more": "詳細..."
     }
   },
@@ -190,7 +198,9 @@
     "pricePerAmount": "當前選定時長的註冊價格",
     "registrationPeriodLabel": "註冊時長",
     "registrationPriceLabel": "註冊費用",
-    "totalDescription": "預估的總費用（註冊費 + Gas）。Gas 價格基於 {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "租賃費用",
+    "totalDescription": "預估的總費用（註冊費用 + 租賃費用 + Gas）。Gas 價格基於 {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "預估的總費用（租賃費用 + Gas）。Gas 價格基於 {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "支付總額",
     "yearUnit": "年份"
   },
@@ -236,6 +246,7 @@
     },
     "titles": [
       "註冊壹個域名需要 3 個步驟",
+      "請耐心要等待一段時間",
       "您很快就可以完成域名註冊",
       "您已經完成域名註冊，現在可以管理域名了！"
     ]
@@ -282,15 +293,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "確定",
         "cancel": "取消",
-        "confirm": "確定"
+        "confirm": "確定",
+        "delete": "删除",
+        "ignore": "忽略"
       },
-      "subTitle": "該操作將更新域名在區塊鏈上的狀態。",
-      "title": "您確定要執行該操作？",
+
       "value": {
         "future": "更新後",
         "previous": "更新前"
       }
+    },
+    "dialog": {
+      "alert": "警告",
+      "info": "提示信息",
+      "waiting": "請您耐心等待操作完成...",
+      "subTitle": "該操作將更新域名在區塊鏈上的狀態。",
+      "title": "您確定要執行該操作？"
     },
     "dns": {
       "messages": {
@@ -362,6 +382,13 @@
       "openEdit": "添加/編輯 記錄",
       "title": "解析記錄"
     },
+    "subdomain": {
+      "removal": "您確定要刪除子域名？",
+      "notAllowedContainsPoint": "子域名不能包含'.'",
+      "alreadyRegistered": "該子域名已經註冊，不能重複註冊。",
+      "add": "添加子域名",
+      "nosubdomains": "暫未分配子域名"
+    },
     "resolver": {
       "error": "解析器遷移異常",
       "message": "若要手動重置解析器，請單擊 “設置” 並輸入自定義解析器的地址。",
@@ -373,14 +400,11 @@
     "search": {
       "title": "域名"
     },
-    "subdomains": {
-      "add": "添加子域名",
-      "nosubdomains": "暫未分配子域名"
-    },
     "tabs": {
       "details": "詳情",
       "register": "註冊",
-      "subdomains": "子域名"
+      "subdomains": "子域名",
+      "parentDomain": "父域名"
     },
     "test": {
       "note": "註意：誰都可以註冊尚未使用的 <1>.test</1> 域名，域名會在申請 28 天後到期。"
@@ -401,6 +425,28 @@
       "content": "該域名包含非 ASCII 字符。請註意，有些字符看起來與英文字母相同或非常相似，特別是西裏爾字母和希臘字母。此外，中文的繁體字與簡體字看起來相同或非常相似。要了解更多信息，請參閱",
       "link": "維基百科的相關文章",
       "title": "註意"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "程序僅支持部分網絡，請切換到下面網絡之一。"
+    },
+    "search": {
+      "InvalidCharacters": "包含非法字符",
+      "UnsupportedTLD": "不支持該頂級域名"
+    }
+  },
+  "wallet": {
+    "wantWallet": "請安裝錢包",
+    "wantWalletDetail": "沒有安裝錢包，請安裝錢包,否則無法使用程序。",
+    "walletError": "錢包發生錯誤",
+    "walletRight": "錢包正常",
+    "browser": "程序不支持該瀏覽器，請更換瀏覽器",
+    "needlogin": "請登錄錢包賬戶",
+    "needconnect": "請連接應用程序",
+    "metamask": {
+      "pluginName": "Metamask插件"
     }
   }
 }

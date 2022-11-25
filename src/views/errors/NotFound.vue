@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div>
     <h1>404：Not Found</h1>
@@ -9,12 +17,12 @@
     </p>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "NotFound",
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 </style>

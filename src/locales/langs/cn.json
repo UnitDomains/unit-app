@@ -62,7 +62,8 @@
     "textrecord": "文本记录",
     "transfer": "转让",
     "warning": "警告",
-    "appCaption": "Web3世界的坐标 ，你必须拥有它",
+    "year": "年",
+    "appCaption": "Web3世界里的名字，你必须拥有它",
     "appSubCaption": "基于以太坊区块链的分布式、开放和可扩展的域名系统",
     "help": "帮助中心",
     "termsofservice": "服务条款",
@@ -147,6 +148,14 @@
         "f5": "支持无限子域，不同子域用于不同领域"
       },
       "dapp": "Dapp开发",
+      "slogan": {
+        "title0": "拥有一个Web3名字， 遨游Web3世界",
+        "content0": "完全掌控自己的名字，并在Web3世界里面使用",
+        "title1": "NFT领域大有可为",
+        "content1": "生成NFT，可以在市场上进行交易",
+        "title2": "Web3配置文件",
+        "content2": "保存头像、网址等各种个人资料"
+      },
       "more": "详细..."
     }
   },
@@ -182,7 +191,9 @@
     "pricePerAmount": "当前选定时长的注册价格",
     "registrationPeriodLabel": "注册时长",
     "registrationPriceLabel": "注册费用",
-    "totalDescription": "预估的总费用（注册费 + Gas）。Gas 价格基于 {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "租赁费用",
+    "totalDescription": "预估的总费用（注册费 + 租赁费 + Gas）。Gas 价格基于 {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "预估的总费用（租赁费 + Gas）。Gas 价格基于 {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "支付总额",
     "yearUnit": "年份"
   },
@@ -218,7 +229,7 @@
     },
     "step2": {
       "label": "第 2 步",
-      "text": "需要等待一段时间，以确保其他人没有尝试注册相同的名字，同时也是在保护你的注册请求。",
+      "text": "需要等待一段时间，以确保其他人没有尝试注册相同的名字，同时也是在保护您的注册请求。",
       "title": "等一分钟"
     },
     "step3": {
@@ -228,6 +239,7 @@
     },
     "titles": [
       "注册一个域名需要 3 个步骤",
+      "需要等待一段时间",
       "您很快就可以完成域名注册",
       "您已经完成域名注册，现在可以管理域名了！"
     ]
@@ -274,15 +286,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "确定",
         "cancel": "取消",
-        "confirm": "确定"
+        "confirm": "确定",
+        "delete": "删除",
+        "ignore": "忽略"
       },
-      "subTitle": "该操作将更新域名在区块链上的状态。",
-      "title": "您确定要执行该操作？",
+
       "value": {
         "future": "更新后",
         "previous": "更新前"
       }
+    },
+    "dialog": {
+      "alert": "警告",
+      "info": "提示信息",
+      "waiting": "请您耐心等待操作完成...",
+      "subTitle": "该操作将更新域名在区块链上的状态。",
+      "title": "您确定要执行该操作？"
     },
     "dns": {
       "messages": {
@@ -352,6 +373,13 @@
       "openEdit": "添加/编辑 记录",
       "title": "解析记录"
     },
+    "subdomain": {
+      "removal": "您确定要删除子域名？",
+      "notAllowedContainsPoint": "子域名不能包含'.'",
+      "add": "添加子域名",
+      "nosubdomains": "暂未分配子域名",
+      "alreadyRegistered": "该子域名已经注册，不能重复注册。"
+    },
     "resolver": {
       "error": "解析器迁移异常",
       "message": "若要手动重置解析器，请单击 “设置” 并输入自定义解析器的地址。",
@@ -363,14 +391,11 @@
     "search": {
       "title": "域名"
     },
-    "subdomains": {
-      "add": "添加子域名",
-      "nosubdomains": "暂未分配子域名"
-    },
     "tabs": {
       "details": "详情",
       "register": "注册",
-      "subdomains": "子域名"
+      "subdomains": "子域名",
+      "parentDomain": "父域名"
     },
     "test": {
       "note": "注意：谁都可以注册尚未使用的 <1>.test</1> 域名，域名会在申请 28 天后到期。"
@@ -391,6 +416,28 @@
       "content": "该域名包含非 ASCII 字符。请注意，有些字符看起来与英文字母相同或非常相似，特别是西里尔字母和希腊字母。此外，中文的繁体字与简体字看起来相同或非常相似。要了解更多信息，请参阅",
       "link": "维基百科的相关文章",
       "title": "注意"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "不支持的网络",
+      "description": "程序仅支持部分网络，请切换到下面网络之一。"
+    },
+    "search": {
+      "InvalidCharacters": "包含非法字符",
+      "UnsupportedTLD": "不支持该顶级域名"
+    }
+  },
+  "wallet": {
+    "wantWallet": "请安装钱包",
+    "wantWalletDetail": "没有安装钱包，请安装钱包,否则无法使用程序。",
+    "walletError": "钱包发生错误",
+    "walletRight": "钱包正常",
+    "browser": "程序不支持该浏览器，请更换浏览器",
+    "needlogin": "请登录钱包账户",
+    "needconnect": "请连接应用程序",
+    "metamask": {
+      "pluginName": "Metamask插件"
     }
   }
 }

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ClipboardSVG from "icons/Clipboard.svg";
 </script>
 
@@ -8,7 +8,7 @@ import ClipboardSVG from "icons/Clipboard.svg";
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useClipboard from "vue-clipboard3";
 
 const { toClipboard } = useClipboard();

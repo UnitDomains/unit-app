@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div class="empty-container">
     <div class="sk-fading-circle">
@@ -17,7 +25,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "Empty",
   computed: {},

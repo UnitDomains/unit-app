@@ -1,6 +1,133 @@
-<script setup></script>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import { web3Config } from "contracts/web3";
+
+import { appContractModels } from "contracts/setup";
+
+import createIcon from "@/blockies";
+import { shortAddressFormat } from "@/utils/util";
+
+import { getReverseNameFromServer } from "server/reverse";
+import { inject } from "vue";
+
+import { UserAccountStore } from "store";
+
+const { t } = useI18n();
+
+const router = useRouter();
+
+const name = computed(() => {
+  return;
+});
+
+//event
+const emit = defineEmits<{
+  (e: "onClick"): void;
+}>();
+
+const isWalletInstalled = computed(() => {
+  return UserAccountStore.walletInstalled;
+});
+const isWalletConnected = computed(() => {
+  return UserAccountStore.connected;
+});
+
+const userAccountShort = computed(() => {
+  if (!UserAccountStore.reverseRecordName)
+    return shortAddressFormat(UserAccountStore.account);
+  return UserAccountStore.reverseRecordName;
+});
+const networkName = computed(() => {
+  return getNetWorkNameById(UserAccountStore.networkId);
+});
+const blockImgURL = computed(() => {
+  var address = UserAccountStore.account;
+  return createIcon({
+    seed: address.toLowerCase(),
+    size: 8,
+    scale: 5,
+    color: 0, //'#E1E1E1',
+    bgcolor: 0, // '#FFFFFF',
+    spotcolor: 0, //'#CFCFCF'
+  }).toDataURL();
+});
+
+const onConnectClick = async () => {
+  await web3Config.connect();
+};
+const onDisconnectClick = async () => {
+  await web3Config.disconnect();
+};
+const onBlockClick = () => {
+  emit("onClick");
+};
+const getNetWorkNameById = (networkId: number) => {
+  /*
+   * Hex Decimal Network
+   * 0x1 1 Ethereum Main Network(Mainnet)
+   * 0x3 3 Ropsten Test Network
+   * 0x4 4 Rinkeby Test Network
+   * 0x5 5 Goerli Test Network
+   * 0x2a 42 Kovan Test Network
+   */
+  networkId = Number(networkId);
+  switch (networkId) {
+    case 0x1:
+    case 1:
+      return "Ethereum Mainnet";
+    case 0x3:
+    case 3:
+      return "Ropsten Test";
+    case 0x4:
+    case 4:
+      return "Rinkeby Test";
+    case 0x5:
+    case 5:
+      return "Goerli Test";
+    case 0x2a:
+    case 42:
+      return "Kovan Test";
+
+    default:
+      return "Test";
+  }
+};
+
+//get reverse record from eth-chain
+const getReverseRecordName = async (address: string) => {
+  await appContractModels.setup();
+
+  let reverseRecord = await appContractModels.getReverseRecord();
+
+  return await reverseRecord.getReverseRecordName(address);
+};
+</script>
 <template>
-  <div class="user-info-container" v-if="userAccountValidate">
+  <div v-if="isWalletInstalled == 0">
+    <UnitButton
+      :caption="t('wallet.wantWallet')"
+      @onClick="onConnectClick"
+      type="primary"
+      :enable="true"
+    >
+    </UnitButton>
+  </div>
+  <div v-else-if="isWalletConnected == 0">
+    <UnitButton
+      :caption="t('c.connect')"
+      @onClick="onConnectClick"
+      type="primary"
+      :enable="true"
+    >
+    </UnitButton>
+  </div>
+
+  <div class="user-info-container" v-else>
     <div
       class="user-block"
       :style="{ backgroundImage: `url(${blockImgURL})` }"
@@ -8,152 +135,14 @@
     ></div>
     <div class="user-account-container">
       <div class="user-account">{{ userAccountShort }}</div>
-      <div class="network-name">{{ networkName }}{{ $t("c.network") }}</div>
+      <div class="network-name">{{ networkName }}{{ t("c.network") }}</div>
     </div>
-    <!--   <UnitButton :caption="$t('c.disconnect')" @onClick="onDisconnectClick" type="primary" :enable="true">
-        </UnitButton> -->
-  </div>
-  <div v-else>
-    <UnitButton
-      :caption="$t('c.connect')"
-      @onClick="onConnectClick"
-      type="primary"
-      :enable="true"
-    >
-    </UnitButton>
   </div>
 </template>
 
-<script>
-import {
-  setupWeb3,
-  getWeb3,
-  getNetworkId,
-  getProvider,
-  getAccount,
-  getSigner,
-} from "contracts/web3";
-
-import { connect, disconnect } from "contractUtils/connect.js";
-
-import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
-
-import createIcon from "@/blockies";
-import { shortAddressFormat } from "@/utils/util.js";
-
-import { getReverseNameFromServer } from "server/reverse.js";
-import { inject } from "vue";
-
-import { UserAccountStore } from "store/store.js";
-
+<script lang="ts">
 export default {
   name: "UserInfo",
-
-  computed: {
-    userAccountValidate() {
-      return this.userAccountShort;
-    },
-    userAccountShort() {
-      if (!UserAccountStore.reverseRecordName)
-        return shortAddressFormat(UserAccountStore.account);
-      return UserAccountStore.reverseRecordName;
-    },
-    networkName() {
-      return this.getNetWorkNameById(UserAccountStore.networkId);
-    },
-    blockImgURL() {
-      var address = UserAccountStore.account;
-      return createIcon({
-        seed: address.toLowerCase(),
-        size: 8,
-        scale: 5,
-        color: 0, //'#E1E1E1',
-        bgcolor: 0, // '#FFFFFF',
-        spotcolor: 0, //'#CFCFCF'
-      }).toDataURL();
-    },
-  },
-  data() {
-    return {};
-  },
-  async mounted() {
-    // await this.getEthAccount();
-  },
-  methods: {
-    onConnectClick() {
-      connect();
-    },
-    onDisconnectClick() {
-      disconnect();
-    },
-    onBlockClick() {
-      this.$emit("onClick");
-    },
-    getNetWorkNameById(networkId) {
-      /*
-       * Hex Decimal Network
-       * 0x1 1 Ethereum Main Network(Mainnet)
-       * 0x3 3 Ropsten Test Network
-       * 0x4 4 Rinkeby Test Network
-       * 0x5 5 Goerli Test Network
-       * 0x2a 42 Kovan Test Network
-       */
-      networkId = Number(networkId);
-      switch (networkId) {
-        case 0x1:
-        case 1:
-          return "Ethereum Main";
-        case 0x3:
-        case 3:
-          return "Ropsten Test";
-        case 0x4:
-        case 4:
-          return "Rinkeby Test";
-        case 0x5:
-        case 5:
-          return "Goerli Test";
-        case 0x2a:
-        case 42:
-          return "Kovan Test";
-
-        default:
-          return "Test";
-      }
-    },
-
-    async getEthAccount() {
-      try {
-        /**
-         * Eth Account can get from wallet
-         */
-        //  await setupWeb3();
-        //  var address = await getAccount();
-        //  var networkId = await getNetworkId();
-        //  this.userAccount = address;
-
-        var address = UserAccountStore.account;
-        var networkId = UserAccountStore.networkId;
-
-        this.reverseRecordName = await getReverseNameFromServer(networkId, address);
-
-        /*
-        //从服务器上获取失败，则从链上获取
-        if (!ret)
-          this.reverseRecordName = await this.getReverseRecordName(address);
-          */
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    async getReverseRecordName(address) {
-      await setup();
-
-      let reverseRecord = await getReverseRecord();
-
-      return await reverseRecord.getReverseRecordName(address);
-    },
-  },
 };
 </script>
 <style scoped>

@@ -1,21 +1,289 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute, onBeforeRouteUpdate } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import InputSearch from "components/input/InputSearch.vue";
+
+import { appContractModels } from "@/contracts/setup";
+
+import { web3Config } from "@/contracts/web3";
+import { emptyAddress } from "@/contracts/utils";
+
+import { getJointName } from "@/contractUtils/domainName";
+import { UserAccountStore } from "store";
+
+import createIcon from "@/blockies";
+
+import { showLoading, ILoading } from "@/components/ui/loading";
+
+import { sendHelper } from "../../contractUtils/transaction";
+
+import { IServerDomainInfo } from "@/server/serverType";
+
+import {
+  getReverseNameFromServer,
+  getReverseRecordDomainsFromServer,
+} from "@/server/reverse";
+
+import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
+
+import { isAddressEqual } from "@/utils/util";
+
+import { waitUntil } from "@/utils/waitUntil";
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const routerAccount = ref("");
+const accountReverseRecord = ref("");
+const reverseRecordDomains = ref<IServerDomainInfo[]>([]);
+const selectedItem = ref("");
+
+onBeforeRouteUpdate(async (to) => {
+  if (typeof to.params.account === "string")
+    routerAccount.value = to.params.account.trim().toLowerCase();
+  else routerAccount.value = to.params.account[0].trim().toLowerCase();
+
+  await getReverseInfoFromServer();
+});
+
+onMounted(async () => {
+  if (typeof route.params.account === "string")
+    routerAccount.value = route.params.account.trim().toLowerCase();
+  else routerAccount.value = route.params.account[0].trim().toLowerCase();
+
+  await getReverseInfoFromServer();
+  /*
+  const loading: ILoading = {
+    id: ".address-account-container",
+    func: async () => {
+      await waitUntil(async () => {
+        console.log("waitUntil");
+        return false;
+      }, 600000);
+    },
+  };
+  showLoading(loading);
+  */
+});
+
+const blockImgURL = computed(() => {
+  var imgURL = createIcon({
+    seed: routerAccount.value.toLowerCase(),
+    size: 8,
+    scale: 5,
+    color: 0, //'#E1E1E1',
+    bgcolor: 0, // '#FFFFFF',
+    spotcolor: 0, //'#CFCFCF'
+  }).toDataURL();
+
+  return imgURL;
+});
+
+const hasValidReverseRecord = computed(() => {
+  return accountReverseRecord.value !== "";
+});
+
+const noneReverseRecord = computed(() => {
+  if (!reverseRecordDomains || reverseRecordDomains.value.length == 0) return true;
+  return false;
+});
+
+const showReverseRecord = computed(() => {
+  return isAddressEqual(UserAccountStore.account, routerAccount.value);
+});
+
+const onSearchClick = (searchText: string) => {
+  router.push({ path: `/search/${searchText}` });
+};
+
+const onAddressItemClick = (name: string) => {
+  router.push({ path: `/name/${name}/details` });
+};
+
+const getReverseInfoFromServerHelper = async () => {
+  await appContractModels.setup();
+
+  //Get data from wallet
+
+  //this.account = await web3Config.getAccount();
+  //var networkId = await web3Config.getNetworkId();
+
+  //Get data from store
+  const account = UserAccountStore.account;
+  const networkId = UserAccountStore.networkId;
+
+  accountReverseRecord.value =
+    (await getReverseNameFromServer(networkId, routerAccount.value)) ?? "";
+
+  //Get data from server
+  reverseRecordDomains.value =
+    (await getReverseRecordDomainsFromServer(networkId, routerAccount.value)) ?? [];
+};
+
+const getReverseInfoFromServer = async () => {
+  const loading: ILoading = {
+    id: ".address-account-container",
+    func: async () => {
+      await getReverseInfoFromServerHelper();
+    },
+  };
+  showLoading(loading);
+};
+
+/**
+ *  Get data from eth chains
+ */
+const getReverseRecordState = async () => {
+  try {
+    await appContractModels.setup();
+
+    var networkId = await web3Config.getNetworkId();
+
+    if (UserAccountStore.account === routerAccount.value) {
+      const reverseRecord = await appContractModels.getReverseRecord();
+      if (typeof reverseRecord == undefined) throw new Error("reverseRecord undefined");
+
+      var result = await reverseRecord?.getReverseRecordName(routerAccount.value);
+
+      accountReverseRecord.value = result;
+
+      reverseRecordDomains.value =
+        (await getReverseRecordDomainsFromServer(networkId, routerAccount.value)) ?? [];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const showSetReverseDialog = () => {
+  createAlertDialog(t("singleName.record.messages.selectPlaceholder"));
+};
+
+const onSetReverseClick = async () => {
+  if (!selectedItem.value) {
+    showSetReverseDialog();
+    return;
+  }
+
+  const loading: ILoading = {
+    id: ".address-account-container",
+    func: async () => {
+      await setReverseRecord(selectedItem.value);
+
+      await waitUntil(async () => {
+        const a = await getReverseNameFromServer(
+          UserAccountStore.networkId,
+          routerAccount.value
+        );
+        console.log(a);
+        console.log(accountReverseRecord.value);
+
+        return a != null;
+      }, 600000);
+
+      await getReverseInfoFromServer();
+    },
+  };
+  showLoading(loading);
+};
+
+const setReverseRecord = async (name: string) => {
+  try {
+    await appContractModels.setup();
+    var ens = await appContractModels.getENS();
+
+    if (typeof ens == undefined) throw new Error("ens undefined");
+
+    var tx = await ens?.claimAndSetReverseRecordName(name);
+    await sendHelper(tx);
+  } catch (error) {}
+};
+
+const deleteReverseRecord = async () => {
+  try {
+    await appContractModels.setup();
+    var ens = await appContractModels.getENS();
+
+    var tx = await ens?.claimAndSetReverseRecordName(emptyAddress);
+
+    await sendHelper(tx);
+    await getReverseRecordState();
+  } catch (error) {}
+};
+
+const getItemValue = (item) => {
+  return getJointName(item.name, item.baseNodeIndex);
+};
+
+const onDeleteReverseRecordOK = async () => {
+  const loading: ILoading = {
+    id: ".address-account-container",
+    func: async () => {
+      await deleteReverseRecord();
+
+      await waitUntil(async () => {
+        console.log("waitUntil");
+
+        const a = await getReverseNameFromServer(
+          UserAccountStore.networkId,
+          routerAccount.value
+        );
+        console.log(a);
+        return a == null;
+      }, 600000);
+
+      await getReverseInfoFromServer();
+    },
+  };
+  showLoading(loading);
+};
+
+const cancel = (): void => {};
+
+const showDeleteDialog = () => {
+  createDialog({
+    footerVisible: true,
+    cancelVisible: true,
+    title: t("singleName.dialog.alert"),
+    content:
+      t("singleName.record.messages.reverseRecordRemoval") +
+      t("singleName.dialog.subTitle") +
+      t("singleName.dialog.title"),
+    ok: onDeleteReverseRecordOK,
+    cancel,
+  });
+};
+</script>
+
 <template>
   <div class="address-container">
     <div class="input-search">
-      <InputSearch></InputSearch>
+      <InputSearch @onClick="onSearchClick"></InputSearch>
     </div>
 
     <div class="address-account-container">
       <div class="user-info">
         <div class="user-block" :style="{ backgroundImage: `url(${blockImgURL})` }"></div>
-        <div class="user-account">{{ routerAccount }}</div>
+        <div class="user-account">
+          {{ routerAccount }}
+
+          <div v-if="hasValidReverseRecord">
+            <span>{{ accountReverseRecord }}</span>
+          </div>
+        </div>
       </div>
 
       <div v-if="showReverseRecord">
         <div v-if="noneReverseRecord">
-          <div>{{ $t("singleName.record.messages.notSet") }}</div>
+          <div>{{ t("singleName.record.messages.notSet") }}</div>
           <div>
             {{
-              $t("singleName.record.messages.explanation", {
+              t("singleName.record.messages.explanation", {
                 name: "example.unit",
                 account: routerAccount,
               })
@@ -23,20 +291,20 @@
           </div>
 
           <div class="message_warning">
-            {{ $t("singleName.record.messages.noForwardRecordAavilable") }}
+            {{ t("singleName.record.messages.noForwardRecordAavilable") }}
           </div>
-          <div>{{ $t("singleName.record.messages.explanation2") }}</div>
+          <div>{{ t("singleName.record.messages.explanation2") }}</div>
         </div>
 
         <div v-else>
           <div v-if="hasValidReverseRecord">
             <div>
-              {{ $t("singleName.record.messages.setTo") }}
+              {{ t("singleName.record.messages.setTo") }}
               <span class="account-reverse-record">{{ accountReverseRecord }}</span>
             </div>
             <div>
               {{
-                $t("singleName.record.messages.explanation", {
+                t("singleName.record.messages.explanation", {
                   name: accountReverseRecord,
                   account: routerAccount,
                 })
@@ -44,18 +312,18 @@
             </div>
 
             <UnitButton
-              caption="Delete"
-              @onClick="onDeleteReverseClick"
+              :caption="t('singleName.confirm.button.delete')"
+              @onClick="showDeleteDialog"
               :enable="true"
               type="primary"
             >
             </UnitButton>
           </div>
           <div v-else>
-            <div>{{ $t("singleName.record.messages.notSet") }}</div>
+            <div>{{ t("singleName.record.messages.notSet") }}</div>
             <div>
               {{
-                $t("singleName.record.messages.explanation", {
+                t("singleName.record.messages.explanation", {
                   name: "example.unit",
                   account: routerAccount,
                 })
@@ -70,10 +338,10 @@
                 {{ getItemValue(item) }}
               </option>
             </select>
-            <div>{{ $t("singleName.record.messages.explanation2") }}</div>
+            <div>{{ t("singleName.record.messages.explanation2") }}</div>
 
             <UnitButton
-              :caption="$t('c.set')"
+              :caption="t('c.set')"
               @onClick="onSetReverseClick"
               :enable="true"
               type="primary"
@@ -90,238 +358,14 @@
   </div>
 </template>
 
-<script>
-import InputSearch from "components/input/InputSearch.vue";
-
-import EthVal from "ethval";
-import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
-import { labelhash } from "contracts/utils/labelhash.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import { emptyAddress } from "contracts/utils";
-
-import { calculateDuration } from "utils/dates.js";
-
-import { normalize } from "contracts/utils/eth-ens-namehash";
-import { getJointName } from "contractUtils/domainName.js";
-import { UserAccountStore } from "store/store.js";
-
-import moment from "moment";
-
-import createIcon from "@/blockies";
-
-import loading from "components/ui/loading";
-
-import axios from "http/http";
-import BASEURL from "http/api.js";
-import { sendHelper } from "../../contractUtils/transaction";
-
-import {
-  getReverseNameFromServer,
-  getReverseRecordDomainsFromServer,
-} from "server/reverse.js";
-
+<script lang="ts">
 export default {
   name: "AddressContainer",
-  components: {
-    InputSearch,
-  },
-  data() {
-    return {
-      routerAccount: this.$route.params.account,
-      account: "",
-      accountReverseRecord: "",
-      addressData: null,
-      reverseRecordDomains: [],
-      selectedItem: "",
-      deleteReverseRecordEnable: true,
-    };
-  },
-  computed: {
-    blockImgURL() {
-      var imgURL = createIcon({
-        seed: this.routerAccount.toLowerCase(),
-        size: 8,
-        scale: 5,
-        color: 0, //'#E1E1E1',
-        bgcolor: 0, // '#FFFFFF',
-        spotcolor: 0, //'#CFCFCF'
-      }).toDataURL();
-
-      return imgURL;
-    },
-    hasValidReverseRecord() {
-      return this.accountReverseRecord;
-    },
-    noneReverseRecord() {
-      if (!this.reverseRecordDomains || this.reverseRecordDomains.length == 0)
-        return true;
-      return false;
-    },
-    showReverseRecord() {
-      return this.account === this.routerAccount;
-    },
-  },
-
-  async mounted() {
-    //You can get data from server or eth-chains
-    /**  
-    //Get data from eth-chains
-     await this.getReverseRecordState();
-    */
-
-    //Get data from server
-    await this.getReverseInfoFromServer();
-  },
-  async beforeRouteUpdate(to, from, next) {
-    this.routerAccount = to.params.account;
-
-    //You can get data from server or eth-chains
-    /**  
-    //Get data from eth-chains.
-     await this.getReverseRecordState();
-    */
-
-    //Get data from server
-    await this.getReverseInfoFromServer();
-
-    next();
-  },
-
-  methods: {
-    onAddressItemClick(name) {
-      this.$router.push({ path: `/name/${name}/details` });
-    },
-
-    async getReverseInfoFromServer() {
-      loading.showLoading(".address-account-container");
-
-      await setup();
-
-      //Get data from wallet
-
-      //this.account = await getAccount();
-      //var networkId = await getNetworkId();
-
-      //Get data from store
-      this.account = UserAccountStore.account;
-      var networkId = UserAccountStore.networkId;
-
-      console.log(networkId);
-      console.log(this.routerAccount);
-      console.log(this.account);
-
-      this.accountReverseRecord = await getReverseNameFromServer(
-        networkId,
-        this.routerAccount
-      );
-
-      //Get data from server
-      this.reverseRecordDomains = await getReverseRecordDomainsFromServer(
-        networkId,
-        this.routerAccount
-      );
-      loading.hideLoading();
-    },
-
-    /**
-Get data from eth chains
- */
-    async getReverseRecordState() {
-      loading.showLoading(".address-account-container");
-
-      try {
-        await setup();
-        this.account = await getAccount();
-        var networkId = await getNetworkId();
-
-        if (this.account === this.routerAccount) {
-          let reverseRecord = await getReverseRecord();
-
-          var result = await reverseRecord.getReverseRecordName(this.routerAccount);
-
-          this.accountReverseRecord = result;
-
-          //从服务器获得相关域名
-          this.reverseRecordDomains = await getReverseRecordDomainsFromServer(
-            networkId,
-            this.routerAccount
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      // Loading should be closed asynchronously
-      loading.hideLoading();
-    },
-    async setReverseRecord(name) {
-      await setup();
-      var ens = await getENS();
-
-      var tx = await ens.claimAndSetReverseRecordName(name);
-      await sendHelper(tx);
-    },
-
-    async deleteReverseRecord() {
-      loading.showLoading(".address-account-container");
-      try {
-        this.deleteReverseRecordEnable = false;
-
-        await setup();
-        var ens = await getENS();
-
-        var tx = await ens.claimAndSetReverseRecordName(emptyAddress);
-
-        await sendHelper(tx);
-        await this.getReverseRecordState();
-      } catch (error) {
-        this.deleteReverseRecordEnable = true;
-      }
-      loading.hideLoading();
-    },
-
-    async onSetReverseClick() {
-      if (!this.selectedItem) {
-        alert(this.$t("singleName.record.messages.selectPlaceholder"));
-        return;
-      }
-
-      loading.showLoading(".address-account-container");
-      var name = this.selectedItem;
-
-      try {
-        await this.setReverseRecord(name);
-
-        await this.getReverseRecordState();
-      } catch (error) {
-        console.log(error);
-      }
-
-      // Loading should be closed asynchronously
-      loading.hideLoading();
-    },
-    getItemValue(item) {
-      return getJointName(item.name, item.baseNodeIndex);
-    },
-
-    async onDeleteReverseClick() {
-      var r = confirm(this.$t("singleName.record.messages.reverseRecordRemoval"));
-      if (r) {
-        loading.showLoading(".address-account-container");
-
-        this.deleteReverseRecord();
-
-        // Loading should be closed asynchronously
-        loading.hideLoading();
-      } else {
-      }
-    },
-  },
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/address.css";
+@import "@/assets/css/address.css";
 
 .address-container {
   padding-bottom: 10px;

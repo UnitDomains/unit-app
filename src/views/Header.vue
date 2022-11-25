@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import UserInfoVue from "components/userInfo/UserInfo.vue";
 </script>
 
@@ -42,7 +42,7 @@ import UserInfoVue from "components/userInfo/UserInfo.vue";
   </div>
 </template>
 
-<script>
+<script lang="ts">
 const LanguageStore = {
   get: () => {
     return window.localStorage.getItem("activeLanguageValue");
@@ -107,16 +107,7 @@ const LANGUAGES = [
   },
 ];
 
-import {
-  setupWeb3,
-  getWeb3,
-  getNetworkId,
-  getProvider,
-  getAccount,
-  getSigner,
-} from "contracts/web3";
-
-import { setup, getRegistrar, getENS } from "contracts/api";
+import { web3Config } from "contracts/web3";
 
 import logoSVG from "images/logo.svg";
 
@@ -166,8 +157,8 @@ export default {
     },
 
     async onMyNamesClick() {
-      await setupWeb3();
-      var address = await getAccount();
+      await web3Config.connect();
+      var address = await web3Config.getAccount();
 
       this.$router.push({ path: `/address/${address}` });
     },
@@ -182,7 +173,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  
+
   background-color: #2c3e50;
 }
 

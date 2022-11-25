@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div id="ContentContainer">
     <div class="detail-base-info-container" v-if="!editAreaVisible">
@@ -14,17 +22,19 @@
     </div>
     <div v-else class="detail-collapse-container">
       <div class="detail-base-info-container">
-        <div class="detail-base-info-left">{{ title }}</div>
+        <div class="detail-base-info-left-sub">{{ title }}</div>
 
         <div class="detail-base-info-middle-1">
           <div>{{ content }}</div>
-          <input
-            class="custom-input-box"
-            :placeholder="title"
-            @keyup.enter="onAddressContentChange"
-            @input="onAddressContentChange"
-            v-model="newContent"
-          />
+          <div style="margin-top: 1em">
+            <input
+              class="custom-input-box"
+              :placeholder="title"
+              @keyup.enter="onAddressContentChange"
+              @input="onAddressContentChange"
+              v-model="newContent"
+            />
+          </div>
         </div>
       </div>
 
@@ -46,7 +56,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "DetailContentItem",
   components: {},
@@ -103,11 +113,11 @@ export default {
 </script>
 
 <style scoped>
-@import "~@/assets/css/detail.css";
-@import "~@/assets/css/document.css";
+@import "@/assets/css/detail.css";
+@import "@/assets/css/document.css";
 .custom-input-box {
   margin: 10px;
-  width: 60em;
+  min-width: 30em;
   box-sizing: border-box;
   border: 1px solid #dcdfe6;
 

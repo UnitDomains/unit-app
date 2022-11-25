@@ -1,11 +1,36 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import DomainItemView from "./DomainItemView.vue";
+import DomainListView from "./DomainListView.vue";
+import { IServerDomainInfo, IServerPriceInfo } from "@/server/serverType";
+
+interface Props {
+  domainNameArray: IServerDomainInfo[];
+  viewType: Number;
+}
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (e: "onDomainItemClick", item: IServerDomainInfo): void;
+}>();
+
+const onDomainItemClick = (item: IServerDomainInfo) => {
+  emit("onDomainItemClick", item);
+};
+</script>
+
 <template>
   <div>
     <div class="domain-list-item-view-container" v-if="viewType == 1">
       <div v-for="(item, index) in domainNameArray" :key="index">
         <DomainItemView
-          :domainName="item.domainName"
-          :owned="item.owned"
-          :expiryTime="item.expiryTime"
+          :domainName="item"
           @click="onDomainItemClick(item)"
         ></DomainItemView>
       </div>
@@ -14,9 +39,7 @@
       <div v-for="(item, index) in domainNameArray" :key="index">
         <DomainListView
           v-if="viewType == 0"
-          :domainName="item.domainName"
-          :owned="item.owned"
-          :expiryTime="item.expiryTime"
+          :domainName="item"
           @click="onDomainItemClick(item)"
         ></DomainListView>
       </div>
@@ -24,35 +47,9 @@
   </div>
 </template>
 
-<script>
-import DomainItemView from "./DomainItemView.vue";
-import DomainListView from "./DomainListView.vue";
+<script lang="ts">
 export default {
   name: "DomainList",
-  components: {
-    DomainItemView,
-    DomainListView,
-  },
-  data() {
-    return {
-      searchText: "value",
-    };
-  },
-  props: {
-    domainNameArray: {
-      type: Array,
-      default: () => [],
-    },
-    viewType: {
-      type: Number,
-      default: 0,
-    },
-  },
-  methods: {
-    onDomainItemClick(item) {
-      this.$emit("onDomainItemClick", item);
-    },
-  },
 };
 </script>
 <style scoped>

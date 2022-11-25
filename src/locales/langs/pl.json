@@ -71,7 +71,7 @@
     "year_0": "years",
     "year_1": "years",
     "year_2": "years",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Names in the Web3 world, You must have it",
     "appSubCaption": "rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -161,6 +161,14 @@
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "Have a Web3 name and travel the Web3 world",
+        "content0": "Take full control of your name and use it in the Web3 world",
+        "title1": "The NFT field is promising",
+        "content1": "Generate NFTs that can be traded on the market",
+        "title2": "Web3 configuration file",
+        "content2": "Save various personal data such as avatars, URLs, etc."
+      },
       "more": "more..."
     }
   },
@@ -196,7 +204,9 @@
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Czas rejestracji",
     "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Rental price to pay",
+    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Łączna kwota do zapłaty",
     "yearUnit": "rok"
   },
@@ -206,7 +216,7 @@
       "manage": "Zarządzaj",
       "register": "Zarejestruj",
       "request": "Wniosek o rejestrację",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Kliknij zarejestruj, aby przejść do 3 kroku"
     },
     "favourite": "* Ustaw ulubione nazwy do łatwego dostępu, w przypadku, gdy przypadkowo zamkniesz swoją przeglądarkę.",
@@ -242,6 +252,7 @@
     },
     "titles": [
       "Rejestracja nazwy wymaga od ciebie ukończenia 3 kroków",
+      "Please be patient and wait for a while",
       "Będziesz w stanie zarządzać swoimi nazwami wkrótce.",
       "Zakończyłeś wszystkie kroki, możesz zarządzać swoimi nazwami!"
     ]
@@ -288,15 +299,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "Potwierdź",
         "cancel": "Anuluj",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "delete": "Delete",
+        "ignore": "Ignore"
       },
-      "subTitle": "To działanie zmieni stan blockchaina.",
-      "title": "Czy na pewno chcesz to zrobić?",
+
       "value": {
         "future": "PRZYSZŁE",
         "previous": "POPRZEDNIE"
       }
+    },
+    "dialog": {
+      "alert": "Ostrzegać",
+      "info": "Szybka Informacja",
+      "waiting": "Proszę cierpliwie czekać na zakończenie operacji...",
+      "subTitle": "To działanie zmieni stan blockchaina.",
+      "title": "Czy na pewno chcesz to zrobić?"
     },
     "dns": {
       "messages": {
@@ -368,6 +388,13 @@
       "openEdit": "Add/Edit Records",
       "title": "Rekordy"
     },
+    "subdomain": {
+      "removal": "Czy na pewno chcesz usunąć subdomenę?",
+      "notAllowedContainsPoint": "Subdomeny nie mogą zawierać znaku „.”",
+      "alreadyRegistered": "Ta subdomena została już zarejestrowana i nie można jej ponownie zarejestrować.",
+      "add": "Dodaj Subdomenę",
+      "nosubdomains": "Nie dodano Subdomen"
+    },
     "resolver": {
       "error": "Błąd Migracji Revolver'a",
       "message": "Aby ręcznie zresetować program rozpoznawania nazw, kliknij ustaw i wprowadź adres niestandardowego programu do rozwiązywania problemów.",
@@ -379,14 +406,11 @@
     "search": {
       "title": "Nazwy"
     },
-    "subdomains": {
-      "add": "Dodaj Subdomenę",
-      "nosubdomains": "Nie dodano Subdomen"
-    },
     "tabs": {
       "details": "Szczegóły",
       "register": "Rejestr (if verb then: Zarejestruj)",
-      "subdomains": "Subdomeny"
+      "subdomains": "Subdomeny",
+      "parentDomain": "Domena Nadrzędna"
     },
     "test": {
       "note": "Uwaga: domena .test pozwala każdemu ubiegać się o nieużywaną nazwę do celów testowych, która wygasa po 28 dniach"
@@ -407,6 +431,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "Program obsługuje tylko niektóre sieci, przełącz się na jedną z poniższych sieci."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Zainstaluj portfel",
+    "wantWalletDetail": "Portfel nie jest zainstalowany, zainstaluj portfel, w przeciwnym razie nie można użyć programu.",
+    "walletError": "Wystąpił błąd Portfela",
+    "walletRight": "Portfel jest OK",
+    "browser": "Program nie obsługuje tej przeglądarki, zmień przeglądarkę",
+    "needlogin": "Proszę zalogować się na konto portfela",
+    "needconnect": "Połącz aplikację",
+    "metamask": {
+      "pluginName": "Wtyczka metamaski"
     }
   }
 }

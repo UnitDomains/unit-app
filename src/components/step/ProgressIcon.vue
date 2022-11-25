@@ -1,10 +1,27 @@
-<script setup>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+
 import GreyCircleTick from "icons/GreyCircleTick.svg";
 import CheckCircle from "icons/CheckCircle.svg";
+
+import { RegisterProcessState, RegisterProcessResult } from "@/utils/registerType";
+
+const props = defineProps({
+  state: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const iconColor = computed(() => {
+  if (props.state == 2) return "green";
+  return "grey";
+});
 </script>
+
 <template>
   <div>
-    <div v-if="state == 2">
+    <div v-if="props.state == RegisterProcessResult.Success">
       <img :src="CheckCircle" alt="succeed" />
     </div>
 
@@ -14,30 +31,9 @@ import CheckCircle from "icons/CheckCircle.svg";
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "ProgressIcon",
-  components: {},
-  props: {
-    state: {
-      type: Number,
-      default: 0 /**
-            0:未开始
-            1:开始
-            2:完成 */,
-    },
-  },
-  computed: {
-    iconColor() {
-      if (this.state == 2) return "green";
-      return "grey";
-    },
-  },
-  data() {
-    return {};
-  },
-
-  methods: {},
 };
 </script>
 <style scoped></style>

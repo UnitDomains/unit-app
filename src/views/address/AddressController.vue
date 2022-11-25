@@ -1,4 +1,84 @@
-<script setup></script>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute, onBeforeRouteUpdate } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import { appContractModels } from "@/contracts/setup";
+
+import { web3Config } from "@/contracts/web3";
+import { emptyAddress } from "@/contracts/utils";
+
+import createIcon from "@/blockies";
+
+import { showLoading, ILoading } from "@/components/ui/loading";
+import { IServerPage, IServerDomainInfo } from "@/server/serverType";
+import { getControllerFromServer } from "@/server/domain";
+import { processError } from "utils/processError";
+
+import AddressList from "components/address/AddressList.vue";
+import { UserAccountStore } from "@/store";
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const account = ref("");
+
+const addressData = ref<IServerPage<IServerDomainInfo> | null>(null);
+const pageNo = ref(1);
+const pageSize = ref(10);
+
+onBeforeRouteUpdate(async (to) => {
+  if (typeof to.params.account === "string")
+    account.value = to.params.account.trim().toLowerCase();
+  else account.value = to.params.account[0].trim().toLowerCase();
+  await getRecordsFromServer();
+});
+
+onMounted(async () => {
+  if (typeof route.params.account === "string")
+    account.value = route.params.account.trim().toLowerCase();
+  else account.value = route.params.account[0].trim().toLowerCase();
+
+  await getRecordsFromServer();
+});
+
+const onRegisterButtonClick = () => {
+  router.push({ path: `/address/${account.value}/registrant` });
+};
+
+const onControllerButtonClick = () => {
+  router.push({ path: `/address/${account.value}/controller` });
+};
+
+const onAddressItemClick = (name: string) => {
+  router.push({ path: `/name/${name}/details` });
+};
+
+const onPageClick = async (page: number) => {
+  pageNo.value = page;
+  await getRecordsFromServer();
+};
+
+const getRecordsFromServer = async () => {
+  try {
+    await appContractModels.setup();
+
+    var networkId = UserAccountStore.networkId;
+
+    addressData.value = await getControllerFromServer(
+      networkId,
+      account.value,
+      pageNo.value,
+      pageSize.value
+    );
+  } catch (err) {
+    processError(err, router);
+  }
+};
+</script>
 
 <template>
   <div class="address-account-container">
@@ -29,98 +109,14 @@
   </div>
 </template>
 
-<script>
-import EthVal from "ethval";
-import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
-import { labelhash } from "contracts/utils/labelhash.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import { emptyAddress } from "contracts/utils";
-
-import { calculateDuration } from "utils/dates.js";
-
-import { normalize } from "contracts/utils/eth-ens-namehash";
-
-import moment from "moment";
-
-import createIcon from "@/blockies";
-
-import loading from "components/ui/loading";
-
-import { getControllerFromServer } from "server/domain.js";
-import { processError } from "utils/processError.js";
-
-import AddressList from "components/address/AddressList.vue";
-
+<script lang="ts">
 export default {
   name: "AddressController",
-  components: {
-    AddressList,
-  },
-  data() {
-    return {
-      account: this.$route.params.account,
-
-      addressData: null,
-      pageNo: 1,
-      pageSize: 10,
-    };
-  },
-  computed: {},
-
-  async mounted() {
-    await this.getRecordsFromServer();
-  },
-  /*
-  watch: {
-    $route(to, from) {
-      this.account = to.params.account;
-      this.getRecordsFromServer();
-    },
-  },
-*/
-  beforeRouteUpdate(to, from, next) {
-    this.account = to.params.account;
-
-    next();
-  },
-
-  methods: {
-    onRegisterButtonClick() {
-      this.$router.push({ path: `/address/${this.account}/registrant` });
-    },
-    onControllerButtonClick() {
-      this.$router.push({ path: `/address/${this.account}/controller` });
-    },
-    onAddressItemClick(name) {
-      this.$router.push({ path: `/name/${name}/details` });
-    },
-    async onPageClick(page) {
-      this.pageNo = page;
-      await this.getRecordsFromServer();
-    },
-
-    async getRecordsFromServer() {
-      try {
-        await setup();
-        var account = this.account;
-        var networkId = await getNetworkId();
-
-        this.addressData = await getControllerFromServer(
-          networkId,
-          account,
-          this.pageNo,
-          this.pageSize
-        );
-      } catch (err) {
-        processError(err, this.$router);
-      }
-    },
-  },
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/address.css";
+@import "@/assets/css/address.css";
 
 .user-info {
   height: 60px;

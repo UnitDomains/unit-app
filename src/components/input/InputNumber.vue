@@ -1,3 +1,105 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted, watch } from "vue";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+interface Props {
+  value: number;
+  enabled: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: 1,
+  enabled: true,
+});
+const currentValue = ref<number>(props.value);
+const downButtonDisabled = ref(false);
+const upButtonDisabled = ref(false);
+
+const MaxNumber = 1000000;
+const MinNumber = 1;
+
+onMounted(() => {
+  updateValue(props.value);
+});
+
+//event
+const emit = defineEmits<{
+  (e: "input", newValue: number): void;
+  (e: "onChange", newValue: number): void;
+}>();
+
+watch(currentValue, (newValue, oldValue) => {
+  if (newValue <= MinNumber) {
+    downButtonDisabled.value = true;
+  } else downButtonDisabled.value = false;
+
+  if (newValue >= MaxNumber) {
+    upButtonDisabled.value = true;
+  } else upButtonDisabled.value = false;
+
+  emit("input", newValue);
+  emit("onChange", newValue);
+});
+
+const updateValue = (val: number) => {
+  if (val > MaxNumber) {
+    val = MaxNumber;
+  }
+  if (val < MinNumber) {
+    val = MinNumber;
+  }
+
+  currentValue.value = val;
+};
+
+const handleDown = () => {
+  if (downButtonDisabled.value) return;
+  if (!props.enabled) return;
+  var num = currentValue.value;
+  num -= 1;
+  if (num <= MinNumber) {
+    num = MinNumber;
+  }
+
+  currentValue.value = num;
+};
+const handleUp = () => {
+  if (!props.enabled) return;
+  if (upButtonDisabled.value) return;
+
+  let num: number = currentValue.value;
+
+  num += 1;
+
+  if (num >= MaxNumber) {
+    num = MaxNumber;
+  }
+
+  currentValue.value = num;
+};
+const isValueNumber = (value: number) => {
+  return /(^-?[0-9]+\.{1}\d+$)|(^-?[1-9]*$)|(^-?0{1}$)/.test(value + "");
+};
+const handleChange = (event) => {
+  var val = event.target.value.trim();
+
+  if (isValueNumber(val)) {
+    val = parseInt(val);
+    //currentValue.value = val;
+    if (val > MaxNumber) {
+      val = MaxNumber;
+    }
+    if (val < MinNumber) {
+      val = MinNumber;
+    }
+    currentValue.value = val;
+  } else {
+    event.target.value = currentValue.value;
+  }
+};
+</script>
+
 <template>
   <div class="input-number-panel">
     <div
@@ -17,7 +119,7 @@
       :disabled="!enabled"
     />
     <div class="input-number-year-unit">
-      <span>{{ $t("pricer.yearUnit") }}</span>
+      <span>{{ t("pricer.yearUnit") }}</span>
     </div>
     <div
       class="input-number-plus"
@@ -29,115 +131,9 @@
   </div>
 </template>
 
-<script>
-const MaxNumber = 1000000;
-const MinNumber = 1;
+<script lang="ts">
 export default {
   name: "InputNumber",
-  props: {
-    value: {
-      type: Number,
-      default: 1,
-    },
-
-    enabled: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {
-      currentValue: this.value,
-      downButtonDisabled: false,
-      upButtonDisabled: false,
-    };
-  },
-  mounted: function () {
-    this.updateValue(this.value);
-  },
-
-  watch: {
-    currentValue: function (val) {
-      var num = new Number(val);
-
-      if (num <= MinNumber) {
-        this.downButtonDisabled = true;
-      } else this.downButtonDisabled = false;
-
-      if (num >= MaxNumber) {
-        this.upButtonDisabled = true;
-      } else this.upButtonDisabled = false;
-
-      this.$emit("input", num);
-
-      this.$emit("onChange", num);
-    },
-
-    value: function (val) {
-      if (val >= MaxNumber) val = MaxNumber;
-      if (val < MinNumber) val = MinNumber;
-
-      this.updateValue(val);
-    },
-  },
-  methods: {
-    updateValue: function (val) {
-      if (val > MaxNumber) {
-        val = MaxNumber;
-      }
-      if (val < MinNumber) {
-        val = MinNumber;
-      }
-      //  console.log(val)
-      var num = new Number(val);
-      //  console.log(num)
-
-      this.currentValue = num;
-      //  console.log(this.currentValue)
-    },
-    handleDown: function () {
-      if (this.downButtonDisabled) return;
-      if (!this.enabled) return;
-      var num = new Number(this.currentValue);
-      num -= 1;
-      if (num <= MinNumber) {
-        num = MinNumber;
-      }
-
-      this.currentValue = num;
-    },
-    handleUp: function () {
-      if (!this.enabled) return;
-      if (this.upButtonDisabled) return;
-      var num = new Number(this.currentValue);
-      num += 1;
-      if (num >= MaxNumber) {
-        num = MaxNumber;
-      }
-
-      this.currentValue = num;
-    },
-    isValueNumber(value) {
-      return /(^-?[0-9]+\.{1}\d+$)|(^-?[1-9]*$)|(^-?0{1}$)/.test(value + "");
-    },
-    handleChange: function (event) {
-      var val = event.target.value.trim();
-
-      if (this.isValueNumber(val)) {
-        val = Number(val);
-        this.currentValue = val;
-        if (val > MaxNumber) {
-          val = MaxNumber;
-        }
-        if (val < MinNumber) {
-          val = MinNumber;
-        }
-        this.currentValue = val;
-      } else {
-        event.target.value = this.currentValue;
-      }
-    },
-  },
 };
 </script>
 <style scoped>

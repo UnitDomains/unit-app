@@ -1,27 +1,629 @@
-<script setup></script>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import { BigNumber } from "ethers";
+
+import * as Price from "@/contractUtils/Price";
+
+import Step from "components/step/Step.vue";
+
+import ProgressBar from "components/step/ProgressBar.vue";
+import ProgressText from "components/step/ProgressText.vue";
+import RegisterDuration from "components/name/duration/RegisterDuration.vue";
+import Tabs from "components/ui/Tabs.vue";
+import Empty from "components/ui/Empty.vue";
+
+import { ProgressStore } from "@/contractUtils/ProgressStore";
+
+import { appContractModels } from "@/contracts/setup";
+
+import { web3Config } from "@/contracts/web3";
+import { calculateDuration } from "@/utils/dates";
+
+import { getAccountBalance } from "@/contractUtils/Price";
+
+import { sendHelper } from "@/contractUtils/transaction";
+import moment from "moment";
+
+import { getDomainInfoFromServer } from "@/server/domain";
+import { UserAccountStore } from "store";
+
+import { setupProgressStore, IProgressStoreData } from "@/contractUtils/ProgressStore";
+
+import { RegisterProcessState } from "@/utils/registerType";
+
+import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
+
+const { t } = useI18n();
+
+const router = useRouter();
+
+enum DomainNameRegisteredState {
+  Unknown = 0,
+  Registered = 1,
+  Unregistered = 2,
+}
+
+interface RegisterNameState {
+  /**
+        step 0:Init
+        step 1: Request to register
+        step 2: Wait for 1 minute
+        step 3:Complete Registration
+        step 4: Succeed
+  */
+  stepNumber: RegisterProcessState;
+
+  years: number;
+
+  /**
+   * state:
+   * 0: not start
+   * 1:processing
+   * 2: succeed
+   */
+  stepState: number;
+
+  progressValue: number;
+
+  price: Price.INewDomainPriceValue;
+
+  accountBalanceInsufficientVisible: boolean; //'余额不足'信息可见性
+  pendingVisible: boolean; //'正在打包'信息可见性
+  requestRegistrarButtonEnable: boolean; //请求注册按钮
+  registerButtonEnable: boolean; //注册按钮
+
+  domainNameAlreadyRegistered: DomainNameRegisteredState;
+
+  waitOneMinuteId: number;
+
+  commitmentId: number;
+
+  registerId: number;
+
+  loadingVisible: boolean;
+}
+
+const state: RegisterNameState = reactive({
+  stepNumber: RegisterProcessState.NotStart,
+  years: 0,
+  stepState: 0,
+  progressValue: 0,
+  price: {
+    rentPrice: BigNumber.from(0),
+    registerPrice: BigNumber.from(0),
+    rentAndRegisterPrices: BigNumber.from(0),
+    totalSlow: BigNumber.from(0),
+    totalFast: BigNumber.from(0),
+    registerGasSlow: BigNumber.from(0),
+    registerGasFast: BigNumber.from(0),
+    gasPriceToGweiSlow: BigNumber.from(0),
+    gasPriceToGweiFast: BigNumber.from(0),
+  },
+
+  accountBalanceInsufficientVisible: false, //'余额不足'信息可见性
+  pendingVisible: false, //'正在打包'信息可见性
+  requestRegistrarButtonEnable: false, //请求注册按钮
+  registerButtonEnable: false, //注册按钮
+
+  domainNameAlreadyRegistered: DomainNameRegisteredState.Unknown,
+
+  waitOneMinuteId: 0,
+
+  commitmentId: 0,
+
+  registerId: 0,
+
+  loadingVisible: false,
+});
+
+const MoveNextStep = () => {
+  if (state.stepNumber == RegisterProcessState.NotStart)
+    state.stepNumber = RegisterProcessState.Step1;
+  else if (state.stepNumber == RegisterProcessState.Step1)
+    state.stepNumber = RegisterProcessState.Step2;
+  else if (state.stepNumber == RegisterProcessState.Step2)
+    state.stepNumber = RegisterProcessState.Step3Begin;
+  else if (state.stepNumber == RegisterProcessState.Step3Begin)
+    state.stepNumber = RegisterProcessState.Step3Pending;
+  else if (state.stepNumber == RegisterProcessState.Step3Pending)
+    state.stepNumber = RegisterProcessState.End;
+  else state.stepNumber = RegisterProcessState.End;
+};
+
+const MovePrevStep = () => {
+  if (state.stepNumber == RegisterProcessState.Step3Pending)
+    state.stepNumber = RegisterProcessState.Step3Begin;
+  else state.stepNumber = RegisterProcessState.NotStart;
+};
+
+let progressStore: ProgressStore;
+
+function setStep(step: RegisterProcessState) {
+  if (step < RegisterProcessState.NotStart) step = RegisterProcessState.NotStart;
+  else if (step >= RegisterProcessState.End) {
+    step = RegisterProcessState.End;
+    state.progressValue = 100;
+    progressStore.remove();
+  } else if (step == RegisterProcessState.NotStart) {
+    progressStore.remove();
+  }
+
+  state.stepNumber = step;
+
+  progressStore.setStep(state.stepNumber);
+}
+
+const props = defineProps({
+  domainName: {
+    type: String,
+    default: "",
+  },
+});
+
+/**
+ * state:
+ * 0: not start
+ * 1:processing
+ * 2: succeed
+ */
+const step1State = computed<number>(() => {
+  if (state.stepNumber == 0) return 0;
+  if (state.stepNumber == 1) return 1;
+  return 2;
+});
+
+const step2State = computed<number>(() => {
+  if (state.stepNumber <= 1) return 0;
+  if (state.stepNumber == 2) return 1;
+  return 2;
+});
+
+const step3State = computed<number>(() => {
+  if (state.stepNumber <= 2) return 0;
+  if (state.stepNumber == 3) return 1;
+  return 2;
+});
+const progressVisible = computed<boolean>(() => {
+  if (state.stepNumber >= 1) return true;
+  return false;
+});
+
+const circlePercent = computed<number>(() => {
+  if (state.stepNumber == 1 && state.progressValue <= 30)
+    return (state.progressValue / 30) * 100;
+  if (state.stepNumber == 2 && state.progressValue > 30 && state.progressValue <= 70)
+    return ((state.progressValue - 30) / 40) * 100;
+  return ((state.progressValue - 70) / 30) * 100;
+});
+
+const buttonRequestRegistrarVisible = computed<boolean>(() => {
+  if (state.pendingVisible) return false;
+
+  if (state.accountBalanceInsufficientVisible) return false;
+  if (state.stepNumber == RegisterProcessState.NotStart) return true;
+  return false;
+});
+
+const buttonRegistrarVisible = computed<boolean>(() => {
+  if (state.pendingVisible) return false;
+
+  if (state.accountBalanceInsufficientVisible) return false;
+  if (state.stepNumber == RegisterProcessState.Step3Begin) return true;
+
+  return false;
+});
+
+const reverseButtonVisible = computed<boolean>(() => {
+  if (state.pendingVisible) return false;
+  if (state.stepNumber == RegisterProcessState.End) return true;
+
+  return false;
+});
+
+const registerCaption = computed<string>(() => {
+  switch (state.stepNumber) {
+    case RegisterProcessState.NotStart:
+      return t("register.titles[0]");
+    case RegisterProcessState.Step1:
+    case RegisterProcessState.Step2:
+      return t("register.titles[1]");
+    case RegisterProcessState.Step3Begin:
+    case RegisterProcessState.Step3Pending:
+      return t("register.titles[2]");
+
+    case RegisterProcessState.End:
+      return t("register.titles[3]");
+
+    default:
+      return "";
+  }
+});
+
+const registerDurationVisible = computed<boolean>(() => {
+  return state.stepNumber == RegisterProcessState.NotStart;
+});
+
+onMounted(async () => {
+  /**
+    You can get info from server or eth-chains
+     */
+
+  //from eth-chains
+  //  await this.getDomainNameAvailableFromEthChains();
+
+  //from server
+  await getDomainNameAvailableFromServer();
+});
+
+const onTabClick = (index: number): void => {
+  if (index === 0) {
+    //register
+    router.push({ path: `/name/${props.domainName}/register` });
+  } else if (index === 1) {
+    //detail
+    router.push({ path: `/name/${props.domainName}/details` });
+  } else if (index === 2) {
+    //subdomain
+    router.push({ path: `/name/${props.domainName}/subdomains` });
+  }
+};
+
+const onDurationBeginChange = () => {
+  state.requestRegistrarButtonEnable = false;
+};
+
+const commitmentTimer = () => {
+  state.pendingVisible = true;
+  state.progressValue = 15;
+  if (!state.commitmentId)
+    state.commitmentId = window.setInterval(commitmentTimerHelper, 1000);
+};
+
+const waitOneMinuteTimer = () => {
+  if (!state.waitOneMinuteId)
+    state.waitOneMinuteId = window.setInterval(waitOneMinuteTimerHelper, 1000);
+};
+
+const waitOneMinuteTimerHelper = () => {
+  var savedStep = progressStore.getValue();
+  if (savedStep) {
+    var secondsPassed = 1;
+    if (savedStep.secondsPassed) secondsPassed = savedStep.secondsPassed + 1;
+    if (secondsPassed > 60) secondsPassed = 60;
+
+    progressStore.setSecondsPassed(secondsPassed);
+    state.progressValue = 30 + (secondsPassed / 60) * 40;
+
+    if (secondsPassed >= 60 && state.waitOneMinuteId) {
+      //wait 60 second(a minute)
+
+      console.log("waitOneMinuteId:" + state.waitOneMinuteId);
+      window.clearInterval(state.waitOneMinuteId);
+      state.waitOneMinuteId = 0;
+      setStep(RegisterProcessState.Step3Begin);
+
+      state.registerButtonEnable = true;
+    }
+  }
+};
+
+/**
+ * Get data from server
+ */
+const getDomainNameAvailableFromServer = async () => {
+  state.loadingVisible = true;
+  var networkId = UserAccountStore.networkId;
+
+  /*
+      //Get data from eth-chains
+      await setup();
+      networkId = await web3Config.getNetworkId();
+      */
+
+  var ret = await getDomainInfoFromServer(networkId, props.domainName);
+  console.log(ret);
+
+  if (!ret) {
+    await appContractModels.setup();
+
+    state.domainNameAlreadyRegistered = DomainNameRegisteredState.Unregistered;
+    await initProgressStore();
+  } else {
+    state.domainNameAlreadyRegistered = DomainNameRegisteredState.Registered;
+  }
+  state.loadingVisible = false;
+};
+
+/**
+ * Get data from eth-chains
+ */
+const getDomainNameAvailableFromEthChains = async () => {
+  await appContractModels.setup();
+
+  var registrar = await appContractModels.getRegistrar();
+  if (typeof registrar == undefined) throw new Error("registrar undefined");
+
+  let available = await registrar?.getAvailable(props.domainName);
+
+  if (available) {
+    state.domainNameAlreadyRegistered = DomainNameRegisteredState.Unregistered;
+    await initProgressStore();
+  } else {
+    state.domainNameAlreadyRegistered = DomainNameRegisteredState.Registered;
+  }
+};
+
+const commitmentTimerHelper = async () => {
+  await appContractModels.setup();
+  var savedStep = progressStore.getValue();
+  var registrar = await appContractModels.getRegistrar();
+  if (typeof registrar == undefined) throw new Error("registrar undefined");
+
+  let a = await registrar?.checkCommitment(props.domainName, savedStep.secret);
+
+  if (a > 0 && state.commitmentId) {
+    window.clearInterval(state.commitmentId);
+    state.commitmentId = 0;
+    state.pendingVisible = false;
+    setStep(2);
+    progressStore.setStep(state.stepNumber);
+    waitOneMinuteTimer();
+  }
+};
+
+const registerTimer = () => {
+  state.pendingVisible = true;
+  state.progressValue = 80;
+
+  if (!state.registerId) state.registerId = window.setInterval(registerTimerHelper, 1000);
+};
+
+const registerTimerHelper = async () => {
+  await appContractModels.setup();
+  var registrar = await appContractModels.getRegistrar();
+  let a = await registrar?.getAvailable(props.domainName);
+  if (!a && state.registerId) {
+    window.clearInterval(state.registerId);
+
+    state.registerId = 0;
+    state.pendingVisible = false;
+    state.domainNameAlreadyRegistered = DomainNameRegisteredState.Registered;
+
+    setStep(RegisterProcessState.End);
+
+    progressStore?.remove();
+  }
+};
+
+const initProgressStore = async () => {
+  var networkId = await web3Config.getNetworkId();
+  var account = await web3Config.getAccount();
+
+  progressStore = await setupProgressStore(props.domainName, account, networkId);
+  //progressStore.remove();
+
+  var savedStep = progressStore?.getValue();
+
+  console.log(savedStep);
+
+  state.years = savedStep.years;
+  const block = await web3Config.getBlock();
+  var now = moment(block.timestamp * 1000);
+
+  if (
+    savedStep.commitmentExpirationDate &&
+    moment(savedStep.commitmentExpirationDate).isSameOrBefore(now)
+  ) {
+    savedStep = progressStore.remove();
+  }
+
+  if (savedStep) {
+    state.stepNumber = savedStep.step;
+
+    switch (state.stepNumber) {
+      case RegisterProcessState.Step1:
+        {
+          commitmentTimer();
+        }
+        break;
+      case RegisterProcessState.Step2:
+        {
+          waitOneMinuteTimer();
+        }
+
+        break;
+      case RegisterProcessState.Step3Begin:
+        {
+          state.progressValue = 70;
+          state.registerButtonEnable = true;
+        }
+        break;
+      case RegisterProcessState.Step3Pending:
+        {
+          registerTimer();
+        }
+        break;
+      case RegisterProcessState.End:
+        {
+          state.progressValue = 100;
+        }
+        break;
+    }
+  }
+};
+
+const onDurationChange = async (years: number, price: Price.INewDomainPriceValue) => {
+  state.price = price;
+
+  var totalFees = price.totalFast;
+
+  var accountBalance = await getAccountBalance();
+  console.log(totalFees.gt(accountBalance));
+
+  if (totalFees.gt(accountBalance)) {
+    state.accountBalanceInsufficientVisible = true;
+  } else state.accountBalanceInsufficientVisible = false;
+
+  progressStore.setYears(years);
+  state.requestRegistrarButtonEnable = true;
+};
+
+/**
+ * Responds when the user presses the "Request Registration" button
+ */
+const onRequestRegistrar = async () => {
+  try {
+    state.requestRegistrarButtonEnable = false;
+
+    await appContractModels.setup();
+
+    const registrar = await appContractModels.getRegistrar();
+    if (typeof registrar == undefined) throw new Error("registrar undefined");
+
+    const savedStep: IProgressStoreData = progressStore.getValue();
+
+    const tx = await registrar?.commit(props.domainName, savedStep.secret);
+
+    state.pendingVisible = true;
+    setStep(RegisterProcessState.Step1);
+
+    state.progressValue = 5;
+
+    await sendHelper(tx);
+
+    const block = await web3Config.getBlock();
+    let commitmentExpirationDate = moment(block.timestamp * 1000).add(
+      await registrar?.getMaximumCommitmentAge(),
+      "second"
+    );
+    console.log(commitmentExpirationDate);
+    progressStore.setCommitmentExpirationDate(commitmentExpirationDate.toString());
+
+    progressStore.setStep(state.stepNumber);
+
+    console.log(progressStore);
+
+    commitmentTimer();
+    state.requestRegistrarButtonEnable = true;
+  } catch (error: any) {
+    console.log(error);
+    if (
+      error.message.includes("User denied transaction signature.") || //Metamask
+      error.message.includes("User denied transaction signature") || //Cipher
+      error.message.includes("Invalid Message Body") || //Toshi/Coinbase
+      error.message.includes("cancelled") || //Trust
+      error.message.includes("user rejected transaction")
+    ) {
+      console.log("User denied");
+    } else {
+      alert("error");
+    }
+    state.requestRegistrarButtonEnable = true;
+    console.log(error);
+    setStep(RegisterProcessState.NotStart);
+
+    state.pendingVisible = false;
+  }
+};
+
+/**
+ *
+ */
+const onRegistrar = async () => {
+  try {
+    state.registerButtonEnable = false;
+    const savedStep: IProgressStoreData = progressStore.getValue();
+
+    await appContractModels.setup();
+
+    var registrar = await appContractModels.getRegistrar();
+    if (typeof registrar == undefined) throw new Error("registrar undefined");
+
+    var duration = calculateDuration(savedStep.years);
+
+    var tx = await registrar?.register(props.domainName, duration, savedStep.secret);
+    setStep(RegisterProcessState.Step3Pending);
+    progressStore.setStep(RegisterProcessState.Step3Pending);
+
+    state.progressValue = 90;
+    state.pendingVisible = true;
+    await sendHelper(tx);
+    state.pendingVisible = false;
+
+    state.progressValue = 100;
+
+    state.pendingVisible = false;
+    setStep(RegisterProcessState.End);
+  } catch (error: any) {
+    console.log(error);
+    if (
+      error.message.includes("User denied transaction signature.") || //Metamask
+      error.message.includes("User denied transaction signature") || //Cipher
+      error.message.includes("Invalid Message Body") || //Toshi/Coinbase
+      error.message.includes("cancelled") //Trust
+    ) {
+      console.log("User denied");
+    }
+    console.log(error);
+    setStep(RegisterProcessState.Step3Begin);
+    state.pendingVisible = false;
+    state.registerButtonEnable = true;
+  }
+};
+
+const onSetReverseRecord = async () => {
+  var address = await web3Config.getAccount();
+
+  router.push({ path: `/address/${address}` });
+};
+
+const ok = (): boolean => {
+  console.log("register ok-1");
+  return true;
+};
+const cancel = (): boolean => {
+  console.log("register cancel-1");
+  return true;
+};
+
+const showDialog = () => {
+  createAlertDialog("asdf");
+};
+</script>
+
 <template>
   <div id="RegisterContainer" class="register-name-panel">
     <Tabs
       :domainName="domainName"
       :tabTitle="[
-        $t('singleName.tabs.register'),
-        $t('singleName.tabs.details'),
-        $t('singleName.tabs.subdomains'),
+        t('singleName.tabs.register'),
+        t('singleName.tabs.details'),
+        t('singleName.tabs.subdomains'),
       ]"
       active="0"
       @onTabClick="onTabClick"
     ></Tabs>
 
-    <div v-if="domainNameAlreadyRegistered == 1">
+    <div v-if="state.domainNameAlreadyRegistered == DomainNameRegisteredState.Registered">
       <div class="already-registered-title">
-        {{ $t("singleName.messages.alreadyregistered") }}
+        {{ t("singleName.messages.alreadyregistered") }}
       </div>
     </div>
-    <div v-else-if="domainNameAlreadyRegistered == 2" style="width: 100%">
+    <div
+      v-else-if="
+        state.domainNameAlreadyRegistered == DomainNameRegisteredState.Unregistered
+      "
+      style="width: 100%"
+    >
       <div class="register-duration" v-show="registerDurationVisible">
         <RegisterDuration
           :domainName="domainName"
-          :years="years"
+          :years="state.years"
           @onDurationChange="onDurationChange"
           @onDurationBeginChange="onDurationBeginChange"
         ></RegisterDuration>
@@ -43,542 +645,67 @@
       </div>
 
       <div class="progress-panel" v-show="progressVisible">
-        <ProgressBar :value="progressValue"></ProgressBar>
-        <ProgressText :stepNumber="stepNumber" :stepState="stepState"></ProgressText>
+        <ProgressBar :value="state.progressValue"></ProgressBar>
+        <ProgressText
+          :stepNumber="state.stepNumber"
+          :stepState="state.stepState"
+        ></ProgressText>
       </div>
       <div
-        v-show="accountBalanceInsufficientVisible"
+        v-show="state.accountBalanceInsufficientVisible"
         class="account-balance-insufficient"
       >
-        {{ $t("register.buttons.insufficient") }}
+        {{ t("register.buttons.insufficient") }}
       </div>
 
-      <div class="pending-info-container" v-show="pendingVisible">
+      <div class="pending-info-container" v-show="state.pendingVisible">
         <p class="pending-words" :text="$t('singleName.messages.pending')">
-          {{ $t("singleName.messages.pending") }}
+          {{ t("singleName.messages.pending") }}
         </p>
       </div>
 
       <div class="operation-panel">
         <UnitButton
-          :caption="$t('register.buttons.request')"
+          :caption="t('register.buttons.request')"
           @onClick="onRequestRegistrar"
-          :enable="!accountBalanceInsufficientVisible && requestRegistrarButtonEnable"
-          v-show="requestRegistrarVisible"
+          :enable="
+            !state.accountBalanceInsufficientVisible && state.requestRegistrarButtonEnable
+          "
+          v-show="buttonRequestRegistrarVisible"
           type="primary"
         ></UnitButton>
 
         <UnitButton
-          :caption="$t('register.buttons.register')"
+          :caption="t('register.buttons.register')"
           @onClick="onRegistrar"
-          :enable="!accountBalanceInsufficientVisible && registerButtonEnable"
+          :enable="!state.accountBalanceInsufficientVisible && state.registerButtonEnable"
           type="primary"
-          v-show="registrarVisible"
+          v-show="buttonRegistrarVisible"
         ></UnitButton>
 
         <UnitButton
-          :caption="$t('register.buttons.setreverserecord')"
+          :caption="t('register.buttons.setreverserecord')"
           @onClick="onSetReverseRecord"
           type="primary"
-          :enable="!accountBalanceInsufficientVisible"
-          v-show="reverseVisible"
+          :enable="!state.accountBalanceInsufficientVisible"
+          v-show="reverseButtonVisible"
         ></UnitButton>
       </div>
     </div>
-    <Empty v-if="loadingVisible"></Empty>
+    <Empty v-if="state.loadingVisible"></Empty>
   </div>
 </template>
 
-<script>
-import EthVal from "ethval";
-import { setup, getRegistrar, getENS } from "contracts/api";
-import { labelhash } from "contracts/utils/labelhash.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import { calculateDuration } from "utils/dates.js";
-
-import { getRentPrice, getAccountBalance } from "contractUtils/Price.js";
-import { getDomain, getDomainSuffix } from "contractUtils/domainName.js";
-import { sendHelper } from "contractUtils/transaction.js";
-import moment from "moment";
-
-import { getDomainInfoFromServer } from "server/domain.js";
-import { UserAccountStore } from "store/store.js";
-
-import Step from "components/step/Step.vue";
-
-import ProgressBar from "components/step/ProgressBar.vue";
-import ProgressText from "components/step/ProgressText.vue";
-import RegisterDuration from "components/name/RegisterDuration.vue";
-import Tabs from "components/ui/Tabs.vue";
-import Empty from "components/ui/Empty.vue";
-
-import { setupProgressStore } from "contractUtils/ProgressStore.js";
-
-export default {
+<script lang="ts">
+export default defineComponent({
   name: "RegisterName",
-  components: {
-    Step,
-    Tabs,
-    ProgressBar,
-    ProgressText,
-    RegisterDuration,
-    Empty,
-  },
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {
-    /**
-     * state:
-     * 0: not start
-     * 1:processing
-     * 2: succeed
-     */
-    step1State() {
-      if (this.stepNumber == 0) return 0;
-      if (this.stepNumber == 1) return 1;
-      return 2;
-    },
-    step2State() {
-      if (this.stepNumber <= 1) return 0;
-      if (this.stepNumber == 2) return 1;
-      return 2;
-    },
-    step3State() {
-      if (this.stepNumber <= 2) return 0;
-      if (this.stepNumber == 3) return 1;
-      return 2;
-    },
-    progressVisible() {
-      if (this.stepNumber >= 1) return true;
-      return false;
-    },
-    circlePercent() {
-      if (this.stepNumber == 1 && this.progressValue <= 30)
-        return (this.progressValue / 30) * 100;
-      if (this.stepNumber == 2 && this.progressValue > 30 && this.progressValue <= 70)
-        return ((this.progressValue - 30) / 40) * 100;
-      return ((this.progressValue - 70) / 30) * 100;
-    },
 
-    /**
-     * 请求注册可见性
-     */
-    requestRegistrarVisible() {
-      if (this.pendingVisible) return false;
-
-      if (this.accountBalanceInsufficientVisible) return false;
-      if (this.stepNumber == 0) return true;
-      return false;
-    },
-    /**
-     * 注册可见性
-     */
-    registrarVisible() {
-      if (this.pendingVisible) return false;
-
-      if (this.accountBalanceInsufficientVisible) return false;
-      if (this.stepNumber == 3) return true;
-
-      return false;
-    },
-    reverseVisible() {
-      if (this.pendingVisible) return false;
-      if (this.stepNumber == 4) return true;
-
-      return false;
-    },
-    registerCaption() {
-      switch (this.stepNumber) {
-        case 0:
-          return this.$t("register.titles[0]");
-        case 1:
-        case 2:
-        case 3:
-          return this.$t("register.titles[1]");
-
-        case 4:
-          return this.$t("register.titles[2]");
-
-        default:
-          return "";
-      }
-    },
-    registerDurationVisible() {
-      return this.stepNumber == 0;
-    },
-  },
-  data() {
-    return {
-      /**
-        step 0:Init 
-        step 1: Request to register
-        step 2: Wait for 1 minute
-        step 3:Complete Registration
-        step 4: Succeed
-             */
-      stepNumber: 0,
-      years: 1,
-
-      /**
-       * state:
-       * 0: not start
-       * 1:processing
-       * 2: succeed
-       */
-      stepState: 0,
-      progressValue: 0,
-
-      price: null,
-      gasPrice: null,
-      accountBalanceInsufficientVisible: false, //'余额不足'信息可见性
-      pendingVisible: false, //'正在打包'信息可见性
-      requestRegistrarButtonEnable: false, //请求注册按钮
-      registerButtonEnable: false, //注册按钮
-
-      domainNameAlreadyRegistered: 0,
-      waitOneMinuteId: null,
-      commitmentId: null,
-      registerId: null,
-
-      loadingVisible: true,
-    };
-  },
-
-  async mounted() {
-    /**
-    You can get info from server or eth-chains
-     */
-
-    //from eth-chains
-    //  await this.getDomainNameAvailableFromEthChains();
-
-    //from server
-    await this.getDomainNameAvailableFromServer();
-  },
-
-  methods: {
-    onTabClick(index) {
-      if (index === 0) {
-        //register
-        this.$router.push({ path: `/name/${this.domainName}/register` });
-      } else if (index === 1) {
-        //detail
-        this.$router.push({ path: `/name/${this.domainName}/details` });
-      } else if (index === 2) {
-        //subdomain
-        this.$router.push({ path: `/name/${this.domainName}/subdomains` });
-      }
-    },
-
-    /**
-     * Get data from server
-     */
-    async getDomainNameAvailableFromServer() {
-      this.loadingVisible = true;
-      var networkId = UserAccountStore.networkId;
-
-      /*
-      //Get data from eth-chains
-      await setup();
-      networkId = await getNetworkId();
-      */
-
-      var ret = await getDomainInfoFromServer(networkId, this.domainName);
-
-      if (!ret) {
-        await setup();
-
-        this.domainNameAlreadyRegistered = 2;
-        await this.initProgressStore();
-      } else {
-        this.domainNameAlreadyRegistered = 1;
-      }
-      this.loadingVisible = false;
-    },
-
-    /**
-     * Get data from eth-chains
-     */
-    async getDomainNameAvailableFromEthChains() {
-      await setup();
-
-      var registrar = await getRegistrar();
-      let available = await registrar.getAvailable(this.domainName);
-
-      if (available) {
-        this.domainNameAlreadyRegistered = 2;
-        await this.initProgressStore();
-      } else {
-        this.domainNameAlreadyRegistered = 1;
-      }
-    },
-    commitmentTimer() {
-      this.pendingVisible = true;
-      this.progressValue = 15;
-      if (!this.commitmentId)
-        this.commitmentId = window.setInterval(this.commitmentTimerHelper, 1000);
-    },
-    async commitmentTimerHelper() {
-      await setup();
-      var savedStep = this.progressStore.getSavedStep();
-      var registrar = await getRegistrar();
-      let a = await registrar.checkCommitment(this.domainName, savedStep.secret);
-
-      if (a > 0 && this.commitmentId) {
-        window.clearInterval(this.commitmentId);
-        this.commitmentId = null;
-        this.pendingVisible = false;
-        this.setStep(2);
-        this.progressStore.setStep(this.stepNumber);
-        this.waitOneMinuteTimer();
-      }
-    },
-
-    waitOneMinuteTimer() {
-      if (!this.waitOneMinuteId)
-        this.waitOneMinuteId = window.setInterval(this.waitOneMinuteTimerHelper, 1000);
-    },
-
-    waitOneMinuteTimerHelper() {
-      var savedStep = this.progressStore.getSavedStep();
-      if (savedStep) {
-        var secondsPassed = 1;
-        if (savedStep.secondsPassed) secondsPassed = savedStep.secondsPassed + 1;
-        if (secondsPassed > 60) secondsPassed = 60;
-
-        this.progressStore.setSecondsPassed(secondsPassed);
-        this.progressValue = 30 + (secondsPassed / 60) * 40;
-
-        if (secondsPassed >= 60 && this.waitOneMinuteId) {
-          //wait 60 second(a minute)
-
-          console.log("waitOneMinuteId:" + this.waitOneMinuteId);
-          window.clearInterval(this.waitOneMinuteId);
-          this.waitOneMinuteId = null;
-          this.setStep(3);
-
-          this.registerButtonEnable = true;
-        }
-      }
-    },
-
-    registerTimer() {
-      this.pendingVisible = true;
-      this.progressValue = 80;
-
-      if (!this.registerId)
-        this.registerId = window.setInterval(this.registerTimerHelper, 1000);
-    },
-    async registerTimerHelper() {
-      await setup();
-      var savedStep = this.progressStore.getSavedStep();
-      var registrar = await getRegistrar();
-      let a = await registrar.getAvailable(this.domainName);
-      if (!a && this.registerId) {
-        window.clearInterval(this.registerId);
-        this.registerId = null;
-        this.pendingVisible = false;
-        this.setStep(4);
-        this.progressStore.remove();
-      }
-    },
-
-    async initProgressStore() {
-      var networkId = await getNetworkId();
-      var account = await getAccount();
-
-      this.progressStore = await setupProgressStore(this.domainName, account, networkId);
-      //    this.progressStore.remove()
-
-      var savedStep = this.progressStore.getSavedStep();
-
-      console.log(savedStep);
-
-      this.years = savedStep.years;
-      const block = await getBlock();
-      var now = moment(block.timestamp * 1000);
-
-      if (
-        savedStep.commitmentExpirationDate &&
-        moment(savedStep.commitmentExpirationDate).isSameOrBefore(now)
-      ) {
-        savedStep = this.progressStore.remove();
-      }
-
-      if (savedStep) {
-        this.stepNumber = savedStep.step;
-
-        switch (this.stepNumber) {
-          case 1:
-            {
-              this.commitmentTimer();
-            }
-            break;
-          case 2:
-            {
-              this.waitOneMinuteTimer();
-            }
-
-            break;
-          case 3:
-            {
-              this.registerTimer();
-            }
-            break;
-        }
-      }
-    },
-    setStep(step) {
-      if (step < 0) step = 0;
-      else if (step >= 4) {
-        step = 4;
-        this.progressValue = 100;
-        this.progressStore.remove();
-      } else if (step == 0) {
-        this.progressStore.remove();
-      }
-
-      this.stepNumber = step;
-    },
-    incrementStep() {
-      this.stepNumber++;
-      if (this.stepNumber > 4) this.stepNumber = 4;
-    },
-    decreaseStep() {
-      this.stepNumber--;
-      if (this.stepNumber < 0) this.stepNumber = 0;
-    },
-    onDurationBeginChange() {
-      this.requestRegistrarButtonEnable = false;
-    },
-
-    async onDurationChange(years, price) {
-      this.price = price;
-
-      var totalFees = price.totalFast;
-
-      var accountBalance = new EthVal(await getAccountBalance());
-      console.log(totalFees.gt(accountBalance));
-
-      if (totalFees.gt(accountBalance)) {
-        this.accountBalanceInsufficientVisible = true;
-      } else this.accountBalanceInsufficientVisible = false;
-
-      this.progressStore.setYears(years);
-      this.requestRegistrarButtonEnable = true;
-    },
-
-    /**
-     * 请求注册
-     */
-    async onRequestRegistrar() {
-      try {
-        this.requestRegistrarButtonEnable = false;
-        await setup();
-
-        var registrar = await getRegistrar();
-
-        var savedStep = this.progressStore.getSavedStep();
-        var tx = await registrar.commit(this.domainName, savedStep.secret);
-
-        this.pendingVisible = true;
-        this.setStep(1);
-        this.progressStore.setStep(this.stepNumber);
-        this.progressValue = 5;
-
-        await sendHelper(tx);
-
-        const block = await getBlock();
-        let commitmentExpirationDate = moment(block.timestamp * 1000).add(
-          await registrar.getMaximumCommitmentAge(),
-          "second"
-        );
-        console.log(commitmentExpirationDate);
-        this.progressStore.setCommitmentExpirationDate(commitmentExpirationDate);
-
-        this.progressStore.setStep(this.stepNumber);
-
-        console.log(this.progressStore);
-
-        this.commitmentTimer();
-        this.requestRegistrarButtonEnable = true;
-      } catch (error) {
-        if (
-          error.message.includes("User denied transaction signature.") || //Metamask
-          error.message.includes("User denied transaction signature") || //Cipher
-          error.message.includes("Invalid Message Body") || //Toshi/Coinbase
-          error.message.includes("cancelled") //Trust
-        ) {
-          console.log("User denied");
-        } else {
-          alert("error");
-        }
-        this.requestRegistrarButtonEnable = true;
-        console.log(error);
-        this.setStep(0);
-
-        this.pendingVisible = false;
-      }
-    },
-
-    /**
-     * 注册
-     */
-    async onRegistrar() {
-      try {
-        this.registerButtonEnable = false;
-        var savedStep = this.progressStore.getSavedStep();
-
-        await setup();
-
-        var registrar = await getRegistrar();
-        var duration = calculateDuration(savedStep.years);
-
-        var tx = await registrar.register(this.domainName, duration, savedStep.secret);
-        this.setStep(3);
-        this.progressStore.setStep(3);
-
-        this.progressValue = 90;
-        this.pendingVisible = true;
-        await sendHelper(tx);
-        this.pendingVisible = false;
-
-        this.progressValue = 100;
-
-        this.pendingVisible = false;
-        this.setStep(4);
-      } catch (error) {
-        console.log(error);
-        if (
-          error.message.includes("User denied transaction signature.") || //Metamask
-          error.message.includes("User denied transaction signature") || //Cipher
-          error.message.includes("Invalid Message Body") || //Toshi/Coinbase
-          error.message.includes("cancelled") //Trust
-        ) {
-          console.log("User denied");
-        }
-        console.log(error);
-        this.setStep(3);
-        this.pendingVisible = false;
-        this.registerButtonEnable = true;
-      }
-    },
-    async onSetReverseRecord() {
-      var address = await getAccount();
-
-      this.$router.push({ path: `/address/${address}` });
-    },
-  },
-};
+  methods: {},
+});
 </script>
 
 <style scoped>
-@import "~@/assets/css/name.css";
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 .register-name-panel {
   display: flex;
   flex-wrap: wrap;

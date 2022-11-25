@@ -1,19 +1,23 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
+
 <template>
   <div class="document-body">
     <router-view></router-view>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "ErrorContainer",
-  components: {},
-  data() {},
-
-  methods: {},
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 </style>

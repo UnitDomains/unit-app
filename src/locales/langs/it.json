@@ -69,7 +69,7 @@
     "warning": "Attenzione",
     "year": "anno",
     "year_plural": "anni",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Un nome nel mondo Web3, è necessario averlo",
     "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -159,6 +159,14 @@
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "Have a Web3 name and travel the Web3 world",
+        "content0": "Take full control of your name and use it in the Web3 world",
+        "title1": "The NFT field is promising",
+        "content1": "Generate NFTs that can be traded on the market",
+        "title2": "Web3 configuration file",
+        "content2": "Save various personal data such as avatars, URLs, etc."
+      },
       "more": "more..."
     }
   },
@@ -194,7 +202,9 @@
     "pricePerAmount": "Prezzo per il periodo scelto",
     "registrationPeriodLabel": "Periodo di validità",
     "registrationPriceLabel": "Prezzo di registrazione da pagare",
-    "totalDescription": "Totale stimato (Prezzo + Gas). Il gas price si aggira sui {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Canone di locazione da pagare",
+    "totalDescription": "Totale stimato (Prezzo di registrazione + Canone di locazione + Gas). Il gas price si aggira sui {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Totale stimato (Canone di locazione + Gas). Il gas price si aggira sui {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Prezzo totale da pagare",
     "yearUnit": "anno"
   },
@@ -204,7 +214,7 @@
       "manage": "Gestisci dominio",
       "register": "Registro",
       "request": "Richiesta da registrare",
-      "setreverserecord": "Imposta record di risoluzione",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Clicca registra per passare allo step 3"
     },
     "favourite": "* Nome preferito per accedere facilmente in caso di chiusura del browser.",
@@ -240,6 +250,7 @@
     },
     "titles": [
       "Registrare un nome di dominio richiede di completare 3 step",
+      "Please be patient and wait for a while",
       "Presto potrai gestire il tuo nome dominio.",
       "Hai completato tutti i passaggi, gestisci pure il tuo dominio!"
     ]
@@ -286,15 +297,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "ok",
         "cancel": "Annulla",
-        "confirm": "Conferma"
+        "confirm": "Conferma",
+        "delete": "Delete",
+        "ignore": "Ignore"
       },
-      "subTitle": "Questa azione modificherà lo stato della blockchain.",
-      "title": "Sei sicuro di voler procedere?",
+
       "value": {
         "future": "FUTURE",
         "previous": "PREVIOUS"
       }
+    },
+    "dialog": {
+      "alert": "Avvisare",
+      "info": "Informazioni Tempestive",
+      "waiting": "Si prega di attendere pazientemente il completamento dell'operazione...",
+      "subTitle": "Questa azione modificherà lo stato della blockchain.",
+      "title": "Sei sicuro di voler procedere?"
     },
     "dns": {
       "messages": {
@@ -366,6 +386,13 @@
       "openEdit": "Aggiungi/Modifica Record",
       "title": "Record"
     },
+    "subdomain": {
+      "removal": "Sei sicuro di voler eliminare il sottodominio?",
+      "notAllowedContainsPoint": "I sottodomini non possono contenere '.'",
+      "alreadyRegistered": "Questo sottodominio è già stato registrato e non può essere registrato di nuovo.",
+      "add": "Aggiungi Sottodomini",
+      "nosubdomains": "Nessun Sottodominio è stato aggiunto"
+    },
     "resolver": {
       "error": "Errore durante la Migrazione del Risolutore",
       "message": "Per ripristinare manualmente il risolutore, clicca imposta e inserisci l'indirizzo del tuo risolutore personale.",
@@ -377,14 +404,11 @@
     "search": {
       "title": "Domini"
     },
-    "subdomains": {
-      "add": "Aggiungi Sottodomini",
-      "nosubdomains": "Nessun Sottodominio è stato aggiunto"
-    },
     "tabs": {
       "details": "Dettagli",
       "register": "Registra",
-      "subdomains": "Sottodomini"
+      "subdomains": "Sottodomini",
+      "parentDomain": "Dominio Principale"
     },
     "test": {
       "note": "Nota: il dominio .test consente a chiunque di riscattare un nome non usato a scopo di test, che scade dopo 28 giorni"
@@ -405,6 +429,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "Il programma supporta solo alcune reti, passare a una delle reti seguenti."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Installa il portafoglio",
+    "wantWalletDetail": "Il portafoglio non è installato, installa il portafoglio, altrimenti il ​​programma non può essere utilizzato.",
+    "walletError": "Si è verificato un errore nel portafoglio",
+    "walletRight": "Il portafoglio è OK",
+    "browser": "Il programma non supporta questo browser, per favore cambia browser",
+    "needlogin": "Accedi all'account del portafoglio",
+    "needconnect": "Connetti l'app",
+    "metamask": {
+      "pluginName": "Plugin Metamask"
     }
   }
 }

@@ -1,3 +1,65 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import DomainsSummaryContainer from "components/summary/DomainsSummaryContainer.vue";
+import InputSearch from "components/input/InputSearch.vue";
+
+import Banner0Image from "images/banner0.png";
+import Banner1Image from "images/banner1.png";
+import Banner2Image from "images/banner2.png";
+import Banner3Image from "images/banner3.png";
+import Banner4Image from "images/banner4.png";
+import Banner5Image from "images/banner5.png";
+
+import Avatar0Image from "images/avatar0.svg";
+import Avatar1Image from "images/avatar1.svg";
+import Avatar2Image from "images/avatar2.svg";
+import Avatar3Image from "images/avatar3.svg";
+import Avatar4Image from "images/avatar4.svg";
+import Avatar5Image from "images/avatar5.svg";
+
+import { getSupportDomainNamesSuffixArray } from "@/contractUtils/domainName";
+
+const router = useRouter();
+
+const screenWidth = ref(document.body.clientWidth);
+
+const showDialog = ref(false);
+
+const summaryDeckWidth = computed(() => {
+  var w = Math.floor((screenWidth.value - 20) / 380) * 380;
+  if (w > 380 * 3) w = 380 * 3;
+  return w;
+});
+const deckWidth = computed(() => {
+  return Math.floor((screenWidth.value - 20) / 380) * 380;
+});
+
+const allTLDs = computed(() => {
+  return getSupportDomainNamesSuffixArray();
+});
+
+onMounted(() => {
+  window.onresize = () => {
+    return (() => {
+      screenWidth.value = document.body.clientWidth;
+    })();
+  };
+});
+
+const onTLDClick = (item: string) => {
+  router.push({ path: `/search/tld/.${item}` });
+};
+
+const onSearchClick = (searchText: string) => {
+  router.push({ path: `/search/${searchText}` });
+};
+</script>
+
 <template>
   <div class="welcome-container">
     <div class="welcome-title">
@@ -8,79 +70,70 @@
 
     <div class="input-search">
       <InputSearch @onClick="onSearchClick"></InputSearch>
-      <div class="wel-doc-domain-container">
-        <div class="wel-doc-domain-item">
-          <a href="/search/tld/.about">.about</a>
+      <div class="wel-doc-domain-container wel-doc-domain-container-width">
+        <div
+          class="wel-doc-domain-item"
+          v-for="(item, index) in allTLDs"
+          :key="index"
+          @click="onTLDClick(item)"
+        >
+          .{{ item }}
         </div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.about">.area</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.beyond">.beyond</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.book">.book</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.cat">.cat</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.cell">.cell</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.dream">.dream</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.dog">.dog</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.east">.east</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.enjoy">.enjoy</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.enter">.enter</a></div>
-        <div class="wel-doc-domain-item">
-          <a href="/search/tld/.everything">.everything</a>
+      </div>
+    </div>
+
+    <div class="wel-doc-block-banner-1">
+      <div class="wel-doc-block-banner-1-title">
+        <div>{{ $t("home.welcome.slogan.title0") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-1-text">
+        <div>{{ $t("home.welcome.slogan.content0") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-web3-name-frame">
+        <div class="wel-doc-block-banner-web3-name-container">
+          <div class="wel-doc-block-banner-web3-name-text">alice.girl</div>
         </div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.earth">.earth</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.focus">.focus</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.foot">.foot</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.friend">.friend</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.girl">.girl</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.go">.go</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.good">.good</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.boy">.boy</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.happy">.happy</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.high">.high</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.hour">.hour</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.home">.home</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.here">.here</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.image">.image</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.item">.item</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.keep">.keep</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.key">.key</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.local">.local</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.lucky">.lucky</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.main">.main</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.meta">.meta</a></div>
-        <div class="wel-doc-domain-item">
-          <a href="/search/tld/.metaverse">.metaverse</a>
+        <div class="wel-doc-block-banner-web3-name-container">
+          <div class="wel-doc-block-banner-web3-name-text">bob.boy</div>
         </div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.moon">.moon</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.nature">.nature</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.nice">.nice</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.north">.north</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.option">.option</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.owner">.owner</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.person">.person</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.player">.player</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.point">.point</a></div>
-        <div class="wel-doc-domain-item">
-          <a href="/search/tld/.position">.position</a>
+        <div class="wel-doc-block-banner-web3-name-container">
+          <div class="wel-doc-block-banner-web3-name-text">cindy.region</div>
         </div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.power">.power</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.rain">.rain</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.record">.record</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.region">.region</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.right">.right</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.room">.room</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.sea">.sea</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.side">.side</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.spring">.spring</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.station">.station</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.street">.street</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.south">.south</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.time">.time</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.unit">.unit</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.verse">.verse</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.wind">.wind</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.yeah">.yeah</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.west">.west</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.well">.well</a></div>
-        <div class="wel-doc-domain-item"><a href="/search/tld/.world">.world</a></div>
+      </div>
+    </div>
+
+    <div class="wel-doc-block-banner-2">
+      <div class="wel-doc-block-banner-1-title">
+        <div>{{ $t("home.welcome.slogan.title1") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-1-text">
+        <div>{{ $t("home.welcome.slogan.content1") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-images-container">
+        <img class="wel-doc-block-banner-image" :src="Banner0Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Banner1Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Banner2Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Banner3Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Banner4Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Banner5Image" alt="" />
+      </div>
+    </div>
+
+    <div class="wel-doc-block-banner-3">
+      <div class="wel-doc-block-banner-1-title">
+        <div>{{ $t("home.welcome.slogan.title2") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-1-text">
+        <div>{{ $t("home.welcome.slogan.content2") }}</div>
+      </div>
+      <div class="wel-doc-block-banner-images-container">
+        <img class="wel-doc-block-banner-image" :src="Avatar0Image" alt="" />
+
+        <img class="wel-doc-block-banner-image" :src="Avatar1Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Avatar2Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Avatar3Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Avatar4Image" alt="" />
+        <img class="wel-doc-block-banner-image" :src="Avatar5Image" alt="" />
       </div>
     </div>
 
@@ -135,75 +188,106 @@
         <div class="circle-title">{{ $t("home.welcome.dapp") }}</div>
       </div>
       <div class="box">
-        <pre>
-      <code class="javascript">
-import { UnitDomains } from "@unitdomains/unitdomainsjs";
-        
-if (window && typeof window.ethereum !== "undefined") {
-  const unitdomains = await UnitDomains.create(window.ethereum);
-
-  console.log(await unitdomains.addr("hello.cat"));
-  console.log(await unitdomains.owner("hello.cat"));
-  console.log(await unitdomains.resolver("hello.cat"));
-  console.log(await unitdomains.ttl("hello.cat"));
-  console.log(await unitdomains.available("hello.cat"));
-  console.log(await unitdomains.rentPrice("hello.cat", 1));
-  console.log(await unitdomains.registerPrice("hello.cat"));
-}
-</code>
-    </pre>
+        <div class="code">
+          <div class="code-line">
+            <span class="code-key">import</span>
+            <span class="code-Brace">{</span> UnitDomains
+            <span class="code-Brace">}</span>
+            <span class="code-key">from</span>
+            <span class="code-String">"@unitdomains/unitdomainsjs"</span>;
+          </div>
+          <div class="code-line">
+            <span class="code-key">if</span> <span class="code-Brace">(</span>window
+            <span class="code-Operator">&&</span>
+            <span class="code-key">typeof</span> window.ethereum
+            <span class="code-Operator">!==</span>
+            "undefined"<span class="code-Brace">)</span>
+            <span class="code-Brace">{</span>
+          </div>
+          <div class="code-line code-indent">
+            <span class="code-key">const</span>
+            <span class="code-Identifier">unitdomains</span>
+            <span class="code-Operator">=</span>
+            <span class="code-key">await</span> UnitDomains.create<span class="code-Brace"
+              >(</span
+            >window.ethereum<span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.addr<span class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.owner<span class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.resolver<span
+              class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.ttl<span class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.available<span
+              class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.rentPrice<span
+              class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span>, 1<span class="code-Brace"
+              >)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line code-indent">
+            console.log<span class="code-Brace">(</span
+            ><span class="code-key">await</span>
+            <span class="code-Identifier">unitdomains</span>.registerPrice<span
+              class="code-Brace"
+              >(</span
+            ><span class="code-String">"hello.cat"</span><span class="code-Brace">)</span
+            ><span class="code-Brace">)</span>;
+          </div>
+          <div class="code-line"><span class="code-Brace">}</span></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import DomainsSummaryContainer from "components/summary/DomainsSummaryContainer.vue";
-
-import InputSearch from "components/input/InputSearch.vue";
-
+<script lang="ts">
 export default {
   name: "Welcome",
-  components: {
-    InputSearch,
-    DomainsSummaryContainer,
-  },
-  data() {
-    return {
-      screenWidth: document.body.clientWidth,
-      showDialog: false,
-    };
-  },
-  computed: {
-    summaryDeckWidth: function () {
-      var w = Math.floor((this.screenWidth - 20) / 380) * 380;
-      if (w > 380 * 3) w = 380 * 3;
-      return w;
-    },
-    deckWidth: function () {
-      return Math.floor((this.screenWidth - 20) / 380) * 380;
-    },
-  },
-
-  mounted() {
-    // 监听窗口大小
-    window.onresize = () => {
-      return (() => {
-        this.screenWidth = document.body.clientWidth;
-      })();
-    };
-  },
-
-  methods: {
-    onSearchClick(searchText) {
-      this.$router.push({ path: `/search/${searchText}` });
-    },
-  },
 };
 </script>
 
 <style scoped>
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 .welcome-container {
 }
 
@@ -235,7 +319,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin: 1em;
+  margin: auto;
   margin-top: 4em;
   cursor: pointer;
 }
@@ -284,6 +368,81 @@ export default {
   color: black;
 }
 
+.wel-doc-block-banner-1 {
+  height: 100%;
+  padding: 6em;
+  background: linear-gradient(132deg, rgb(0, 103, 154) 0%, rgb(0, 173, 239) 100%);
+}
+
+.wel-doc-block-banner-1-title {
+  font: 3em sans-serif;
+  color: white;
+}
+
+.wel-doc-block-banner-images-container {
+  padding-top: 4em;
+}
+.wel-doc-block-banner-image {
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+}
+
+.wel-doc-block-banner-web3-name-frame {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 1em;
+  cursor: pointer;
+}
+.wel-doc-block-banner-web3-name-container {
+  width: 300px;
+  height: 100px;
+
+  margin: 1em;
+  margin-top: 4em;
+
+  background: linear-gradient(132deg, rgb(204, 0, 255) 0%, rgb(138, 43, 226) 100%);
+
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px 0 rgba(157, 158, 158, 0.5);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.wel-doc-block-banner-web3-name-text {
+  font: 2em sans-serif;
+  color: white;
+  padding: 1em;
+}
+.wel-doc-block-banner-2 {
+  padding: 6em;
+  background: linear-gradient(132deg, rgb(30, 144, 255) 0%, rgb(138, 43, 226) 100%);
+}
+
+.wel-doc-block-banner-2-title {
+  font: 3em sans-serif;
+  color: antiquewhite;
+}
+
+.wel-doc-block-banner-3 {
+  padding: 6em;
+  background: linear-gradient(132deg, rgb(207, 69, 32) 0%, rgb(71, 55, 40) 100%);
+}
+
+.wel-doc-block-banner-3-title {
+  font: 3em sans-serif;
+  color: aqua;
+}
+
+.wel-doc-block-banner-1-text {
+  margin-top: 2em;
+  font: 2em sans-serif;
+  color: white;
+}
 .wel-doc-block-1 {
   background: linear-gradient(132deg, rgba(251, 251, 255, 0.2), rgba(215, 223, 252, 0.8));
 }
@@ -293,7 +452,7 @@ export default {
 }
 
 .wel-doc-block-3 {
-  background: linear-gradient(132deg, rgba(219, 249, 109, 0.2), rgba(243, 194, 194, 0.8));
+  background: linear-gradient(132deg, rgb(65, 80, 95) 0%, rgb(36, 37, 38) 100%);
 }
 
 .circle {
@@ -358,7 +517,7 @@ export default {
     rgba(30, 144, 255, 0.2),
     rgba(138, 43, 226, 0.4)
   ); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to right, rgba(30, 144, 255, 0.2), rgba(138, 43, 226, 0.4));
+  background: linear-gradient(132deg, rgb(221, 221, 221) 0%, rgb(110, 136, 161) 100%);
 }
 
 .circle-title {
@@ -410,5 +569,52 @@ export default {
   display: block;
   font: 0.8em sans-serif;
   text-decoration: none;
+}
+
+.code {
+  margin-top: 4em;
+  padding: 2em;
+  text-align: left;
+  color: white;
+}
+.code-line {
+  margin-left: 40%;
+  padding: 0.5em;
+}
+.code-indent {
+  padding-left: 2em;
+}
+.code-key {
+  color: #c678dd;
+  margin-right: 0.1em;
+}
+
+.code-Comment {
+  color: #0058544d;
+}
+
+.code-Identifier {
+  color: #e06c75;
+  margin-left: 0.5em;
+}
+
+.code-Number {
+  color: #00ff81ae;
+}
+
+.code-String {
+  color: #d19a66;
+}
+
+.code-Brace {
+  color: #e06c75;
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+}
+
+.code-Operator {
+  color: #c678dd;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 </style>

@@ -67,7 +67,7 @@
     "transfer": "Chuyển quyền ",
     "warning": "Cảnh Báo",
     "year": "năm",
-    "appCaption": "Web3 world coordinates , You must have it",
+    "appCaption": "Names in the Web3 world, You must have it",
     "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -157,6 +157,14 @@
         "f5": "Support unlimited subdomains, different subdomains are used for different fields"
       },
       "dapp": "Dapp Development",
+      "slogan": {
+        "title0": "Have a Web3 name and travel the Web3 world",
+        "content0": "Take full control of your name and use it in the Web3 world",
+        "title1": "The NFT field is promising",
+        "content1": "Generate NFTs that can be traded on the market",
+        "title2": "Web3 configuration file",
+        "content2": "Save various personal data such as avatars, URLs, etc."
+      },
       "more": "more..."
     }
   },
@@ -192,7 +200,9 @@
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Thời gian đăng ký",
     "registrationPriceLabel": "Registration price to pay",
-    "totalDescription": "Estimated Total (Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "rentPriceLabel": "Rental price to pay",
+    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Tổng giá thanh toán",
     "yearUnit": "Năm"
   },
@@ -202,7 +212,7 @@
       "manage": "Quản lý",
       "register": "Đăng lý",
       "request": "Yêu cầu đăng ký",
-      "setreverserecord": "Set reverse record",
+      "setreverserecord": "Set Reverse Record",
       "warning": "Nhấn đăng ký để chuyển đến bước thứ 3"
     },
     "favourite": "*Đánh dấu tên miền yêu thích để dễ truy cập phòng trường hợp bạn đóng trình duyệt ",
@@ -238,6 +248,7 @@
     },
     "titles": [
       "Bạn phải hoàn thành 3 bước để sở hữu tên miền",
+      "Hãy kiên nhẫn và đợi một lúc",
       "Bạn sẽ có thể quản lý tên miền ngay thôi.",
       "Bạn đã hoàn thành tất cả các bước, hãy quản lý tên miền ngay!"
     ]
@@ -285,15 +296,24 @@
   "singleName": {
     "confirm": {
       "button": {
+        "ok": "Xác nhận",
         "cancel": "Huỷ",
-        "confirm": "Xác nhận"
+        "confirm": "Xác nhận",
+        "delete": "xóa bỏ",
+        "ignore": "sao nhãng"
       },
-      "subTitle": "Hành động này sẽ điều chỉnh trạng thái của blockchain",
-      "title": "Bạn có chắc muốn thực hiện điều này?",
+
       "value": {
         "future": "TƯƠNG LAI",
         "previous": "TRƯỚC ĐÓ"
       }
+    },
+    "dialog": {
+      "alert": "cảnh báo",
+      "info": "thông tin kịp thời",
+      "waiting": "Hãy kiên nhẫn chờ đợi để thao tác hoàn tất...",
+      "subTitle": "Hành động này sẽ điều chỉnh trạng thái của blockchain",
+      "title": "Bạn có chắc muốn thực hiện điều này?"
     },
     "dns": {
       "messages": {
@@ -365,6 +385,13 @@
       "openEdit": "Add/Edit Records",
       "title": "Tập ghi"
     },
+    "subdomain": {
+      "removal": "Bạn có chắc chắn muốn xóa tên miền phụ không?",
+      "notAllowedContainsPoint": "Tên miền phụ không thể chứa '.'",
+      "alreadyRegistered": "Tên miền phụ này đã được đăng ký và không thể đăng ký lại.",
+      "add": "Thêm tên miền phụ",
+      "nosubdomains": "Không có tên miền nào được thêm vào"
+    },
     "resolver": {
       "error": "Lỗi Di chuyển Trình phân giải",
       "message": "Nhấp đặt và thêm vào địa chỉ phân giải tuỳ chỉnh của bạn để tự tay đặt lại trình phân giải tuỳ chỉnh của bạn",
@@ -376,14 +403,12 @@
     "search": {
       "title": "Tên miền"
     },
-    "subdomains": {
-      "add": "Thêm tên miền phụ",
-      "nosubdomains": "Không có tên miền nào được thêm vào"
-    },
+
     "tabs": {
       "details": "Chi tiết",
       "register": "Đăng ký",
-      "subdomains": "Tên miền phụ"
+      "subdomains": "Tên miền phụ",
+      "parentDomain": "miền mẹ"
     },
     "test": {
       "note": "Chú ý: tên miền .test cho phép bất kì ai có thể sở hữu những tên miền chưa được sử dụng vào mục đích kiểm tra"
@@ -404,6 +429,28 @@
       "content": "This name contains non-ASCII characters. Please be aware that there are characters that look identical or very similar to English letters, especially characters from Cyrillic and Greek. Also, traditional Chinese characters can look identical or very similar to simplified variants. For more information, please see this",
       "link": "Wikipedia article",
       "title": "ATTENTION"
+    }
+  },
+  "errors": {
+    "network": {
+      "title": "Unsupported Network",
+      "description": "The program only supports some networks, please switch to one of the networks below."
+    },
+    "search": {
+      "InvalidCharacters": "Contains illegal characters",
+      "UnsupportedTLD": "The TLD is not supported"
+    }
+  },
+  "wallet": {
+    "wantWallet": "Vui lòng cài đặt ví",
+    "wantWalletDetail": "Ví chưa được cài đặt, vui lòng cài đặt ví, nếu không chương trình không thể sử dụng được.",
+    "walletError": "Đã xảy ra lỗi ví",
+    "walletRight": "Wallet ổn",
+    "browser": "Chương trình không hỗ trợ trình duyệt này, vui lòng thay đổi trình duyệt",
+    "needlogin": "Vui lòng đăng nhập vào tài khoản ví",
+    "needconnect": "Vui lòng kết nối ứng dụng",
+    "metamask": {
+      "pluginName": "Plugin Metamask"
     }
   }
 }

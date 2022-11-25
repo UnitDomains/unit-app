@@ -1,3 +1,123 @@
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+
+import {
+  getDomain,
+  getDomainSuffix,
+  getSuffixByIndex,
+  getJointName,
+  getDomainIndex,
+  getHostDomain,
+} from "@/contractUtils/domainName";
+
+import { formatPrice2Eth } from "contractUtils/Price";
+
+import { Contract, utils, BigNumber } from "ethers";
+
+import { calculateDuration, formatDate } from "utils/dates";
+
+import { IServerDomainInfo, IServerPriceInfo } from "@/server/serverType";
+import { emptyAddress } from "@/contracts/types";
+
+const { t } = useI18n();
+
+const router = useRouter();
+
+interface Props {
+  domainName: IServerDomainInfo;
+  priceInfo: IServerPriceInfo;
+}
+
+const props = defineProps<Props>();
+
+const owned = computed<boolean>(() => {
+  return props.domainName.owner !== emptyAddress;
+});
+
+const domainExpiryTime = computed(() => {
+  return formatDate(new Date(props.domainName.expires * 1000), false);
+});
+
+const less5 = computed<boolean>(() => {
+  if (getDomain(props.domainName.name).length <= 5) return true;
+  return false;
+});
+
+const less10 = computed<boolean>(() => {
+  if (getDomain(props.domainName.name).length <= 10) return true;
+  return false;
+});
+const less15 = computed<boolean>(() => {
+  if (getDomain(props.domainName.name).length <= 15) return true;
+  return false;
+});
+const hostDomainName = computed<string>(() => {
+  return getDomain(props.domainName.name);
+});
+const domainSuffix = computed(() => {
+  return getSuffixByIndex(props.domainName.baseNodeIndex);
+});
+const RegisterPrice = computed<BigNumber>(() => {
+  return getRegisterPrice(props.domainName.name);
+});
+const RentPrice = computed<BigNumber>(() => {
+  return getRentPrice(props.domainName.name);
+});
+
+const onRegisterDomainButtonClick = () => {
+  router.push({ path: `/name/${props.domainName}/register` });
+};
+
+const convertPriceString2Array = (price: string): string[] => {
+  if (!price || price.length == 0) return [];
+  if (price[0] != "[" || price[price.length - 1] != "]") return [];
+  price = price.substring(1, price.length - 1);
+  console.log(price);
+
+  return price.split(",");
+};
+const getRegisterPrice = (name: string) => {
+  if (!name || name.length == 0) return null;
+  name = getDomain(name);
+  if (!props.priceInfo) return null;
+
+  const registerArray: string[] = convertPriceString2Array(props.priceInfo.registerPrice);
+  if (registerArray.length == 0) return null;
+
+  var price = "";
+
+  if (name.length >= registerArray.length)
+    price = registerArray[registerArray.length - 1].trim();
+  else price = registerArray[name.length - 1].trim();
+
+  //let p = BigNumber.from(price.replace(/\s+/g, ""));
+  const p = BigNumber.from(price);
+
+  return formatPrice2Eth(p, 2);
+};
+
+const getRentPrice = (name: string) => {
+  if (!name || name.length == 0) return null;
+  name = getDomain(name);
+  if (!props.priceInfo) return null;
+
+  const rentArray: string[] = convertPriceString2Array(props.priceInfo.rentPrice);
+  if (rentArray.length == 0) return null;
+
+  var price = "";
+  if (name.length >= rentArray.length) price = rentArray[rentArray.length - 1].trim();
+  else price = rentArray[name.length - 1].trim();
+
+  let p = BigNumber.from(price.replace(/\s+/g, ""));
+  const duration = calculateDuration(1);
+  return formatPrice2Eth(p.mul(duration), 4);
+};
+</script>
+
 <template>
   <div class="domain-specific-container">
     <div class="domain-specific-panel" :class="{ domain_panel_owned: owned }">
@@ -74,127 +194,13 @@
   </div>
 </template>
 
-<script>
-import {
-  getDomain,
-  getDomainSuffix,
-  getSupportDomainNamesSuffixArray,
-  getJointName,
-  getDomainIndex,
-  getHostDomain,
-} from "contractUtils/domainName.js";
-
-import EthVal from "ethval";
-
-import { Contract, utils, BigNumber } from "ethers";
-
-import { calculateDuration, formatDate } from "utils/dates.js";
-
+<script lang="ts">
 export default {
   name: "DomainNameSpecificItem",
-  components: {},
-  computed: {
-    domainExpiryTime() {
-      return !this.expiryTime ? "" : formatDate(new Date(this.expiryTime * 1000), false);
-    },
-    less5() {
-      if (getDomain(this.domainName).length <= 5) return true;
-      return false;
-    },
-    less10() {
-      if (getDomain(this.domainName).length <= 10) return true;
-      return false;
-    },
-    less15() {
-      if (getDomain(this.domainName).length <= 15) return true;
-      return false;
-    },
-    hostDomainName() {
-      return getDomain(this.domainName);
-    },
-    domainSuffix() {
-      return getDomainSuffix(this.domainName);
-    },
-    RegisterPrice() {
-      return this.getRegisterPrice(this.domainName);
-    },
-    RentPrice() {
-      return this.getRentPrice(this.domainName);
-    },
-  },
-  data() {
-    return {
-      searchText: "value",
-    };
-  },
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-    owned: {
-      type: Boolean,
-      default: false,
-    },
-    expiryTime: {
-      type: Number,
-      default: 0,
-    },
-    priceInfo: {
-      type: Object,
-      default: null,
-    },
-  },
-  methods: {
-    onRegisterDomainButtonClick() {
-      this.$router.push({ path: `/name/${this.domainName}/register` });
-    },
-    convertPriceString2Array(price) {
-      if (!price || price.length == 0) return null;
-      if (price[0] != "[" || price[price.length - 1] != "]") return null;
-      price = price.substring(1, price.length - 1);
-      console.log(price);
-
-      return price.split(",");
-    },
-    getRegisterPrice(name) {
-      if (!name || name.length == 0) return null;
-      name = getDomain(name);
-      if (!this.priceInfo) return null;
-
-      const registerArray = this.convertPriceString2Array(this.priceInfo.registerPrice);
-
-      var price = 0;
-
-      if (name.length >= registerArray.length)
-        price = registerArray[registerArray.length - 1];
-      else price = registerArray[name.length - 1];
-
-      let p = BigNumber.from(price.replace(/\s+/g, ""));
-
-      return new EthVal(p).toEth().toFixed(2);
-    },
-
-    getRentPrice(name) {
-      if (!name || name.length == 0) return null;
-      name = getDomain(name);
-      if (!this.priceInfo) return null;
-
-      const rentrArray = this.convertPriceString2Array(this.priceInfo.rentPrice);
-      var price = 0;
-      if (name.length >= rentrArray.length) price = rentrArray[rentrArray.length - 1];
-      else price = rentrArray[name.length - 1];
-
-      let p = BigNumber.from(price.replace(/\s+/g, ""));
-      const duration = calculateDuration(1);
-
-      return new EthVal(p).mul(duration).toEth().toFixed(4);
-    },
-  },
 };
 </script>
 <style scoped>
-@import "~@/assets/css/document.css";
+@import "@/assets/css/document.css";
 
 .domain-specific-container {
   min-height: 50px;

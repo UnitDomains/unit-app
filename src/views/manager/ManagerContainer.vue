@@ -1,4 +1,10 @@
-<script setup></script>
+<script setup lang="ts">
+import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { defineComponent } from "vue";
+
+import { useI18n } from "vue-i18n";
+</script>
 
 <template>
   <div>
@@ -78,25 +84,24 @@
   </div>
 </template>
 
-<script>
-import EthVal from "ethval";
-import { setup, getRegistrar, getENS, getReverseRecord } from "contracts/api";
-import { labelhash } from "contracts/utils/labelhash.js";
-import { getBlock, getNetworkId, getAccount } from "contracts/web3.js";
-import { emptyAddress } from "contracts/utils";
+<script lang="ts">
+import { appContractModels } from "@/contracts/setup";
 
-import { calculateDuration } from "utils/dates.js";
+import { web3Config } from "@/contracts/web3";
+import { emptyAddress } from "@/contracts/utils";
 
-import { normalize } from "contracts/utils/eth-ens-namehash";
+import { calculateDuration } from "utils/dates";
 
-import { getETHPriceFromMarket } from "server/market.js";
+
+
+import { getETHPriceFromMarket } from "server/market";
 
 import {
   getAllRentPrices,
   getAllRegisterPrices,
   setRegisterPrices,
   setRentPrices,
-} from "contractUtils/Price.js";
+} from "contractUtils/Price";
 
 import createIcon from "@/blockies";
 
