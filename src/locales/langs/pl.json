@@ -71,7 +71,7 @@
     "year_0": "years",
     "year_1": "years",
     "year_2": "years",
-    "appCaption": "Names in the Web3 world, You must have it",
+    "appCaption": "Musisz mieć przynajmniej jedno imię w świecie Web3!",
     "appSubCaption": "rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
@@ -105,13 +105,13 @@
       "manage": {
         "text1": "Odkąd jesteś właścicielem, możesz zarządzać swoimi nazwami.",
         "text2": "Ponieważ nie jesteś właścicielem, możesz tylko wyświetlać nazwy w rejestratorze.",
-        "title": "Gratulacje! Udało ci się dodać domenę DNS do Rejestru ENS(unit.domains)"
+        "title": "Gratulacje! Udało ci się dodać domenę DNS do Rejestru UENS(Unit Ethereum Name Service)"
       },
       "proof": {
         "text1": "\nAdres, który pojawia się w rekordzie txt DNS, to ten sam adres.",
         "text2": "Jeśli wiesz, że posiadasz tę domenę, zmień jej rekord TXT, aby zawierał Adres Ethereum i odśwież stronę, aby ponownie przeprowadzić weryfikację DNSSEC.",
-        "title1": "Jesteś właścicielem tego adresu. Dodaj teraz swoją domenę do Rejestru ENS(unit.domains).",
-        "title2": "Nie jesteś właścicielem DNS tej domeny, lecz każdy może dodać domenę do Rejestru ENS(unit.domains)."
+        "title1": "Jesteś właścicielem tego adresu. Dodaj teraz swoją domenę do Rejestru UENS(Unit Ethereum Name Service).",
+        "title2": "Nie jesteś właścicielem DNS tej domeny, lecz każdy może dodać domenę do Rejestru UENS(Unit Ethereum Name Service)."
       }
     },
     "viewinmanager": "Zobacz w Menedżerze"
@@ -135,11 +135,11 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "Aplikacja ENS(unit.domains) to graficzny interfejs użytkownika dla użytkowników nietechnicznych. Umożliwia wyszukiwanie dowolnej nazwy, zarządzanie jej adresami lub zasobami, na które wskazuje, i tworzenie subdomen dla każdej nazwy.",
-      "title": "Jak używać ENS(unit.domains)"
+      "body": "Aplikacja UENS(Unit Ethereum Name Service) to graficzny interfejs użytkownika dla użytkowników nietechnicznych. Umożliwia wyszukiwanie dowolnej nazwy, zarządzanie jej adresami lub zasobami, na które wskazuje, i tworzenie subdomen dla każdej nazwy.",
+      "title": "Jak używać UENS(Unit Ethereum Name Service)"
     },
     "whatisens": {
-      "body": "The Ethereum Name Service to rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum. ENS eliminuje potrzebę kopiowania lub wpisywania długich adresów.",
+      "body": "The UENS(Unit Ethereum Name Service) to rozproszony, otwarty i rozszerzalny system nazewnictwa oparty na blockchainie Ethereum. UENS(Unit Ethereum Name Service) eliminuje potrzebę kopiowania lub wpisywania długich adresów.",
       "title": "Co to jest"
     },
     "website": {
@@ -203,16 +203,16 @@
     "gasDescription": "Estimated Gas Price (Step 1 + Step 3). The gas price will flucuate.",
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Czas rejestracji",
-    "registrationPriceLabel": "Registration price to pay",
-    "rentPriceLabel": "Rental price to pay",
-    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
-    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "registrationPriceLabel": "Cena rejestracji do zapłaty",
+    "rentPriceLabel": "Cena wynajmu do zapłaty",
+    "totalDescription": "Szacunkowa całkowita (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Szacunkowa całkowita (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Łączna kwota do zapłaty",
     "yearUnit": "rok"
   },
   "register": {
     "buttons": {
-      "insufficient": "Insufficient balance on your wallet. Fill in your wallet and reload the page.",
+      "insufficient": "Niewystarczające saldo w portfelu. Uzupełnij swój portfel i ponownie załaduj stronę.",
       "manage": "Zarządzaj",
       "register": "Zarejestruj",
       "request": "Wniosek o rejestrację",
@@ -258,7 +258,7 @@
     ]
   },
   "registrymigration": {
-    "donotaccept": "* Jeśli hadlujesz nazwami ENS(unit.domains), nie akcpetuj tej nazwy!",
+    "donotaccept": "* Jeśli hadlujesz nazwami UENS(Unit Ethereum Name Service), nie akcpetuj tej nazwy!",
     "messages": {
       "controller": "Ta nazwa jest kontrolowana przez kontrakt i nie może być przeniesiona automatycznie. Przed ustawieniem nowego kontrolera ponownie zdeponuj kontrakt, aby używać nowego rejestru.",
       "default": "Tę nazwę należy przenieść do nowego rejestru. Tylko rodzic tej nazwy ({parent}) może to zrobić.",
@@ -273,8 +273,8 @@
       "title": "Register {name}"
     },
     "renewal": {
-      "description": "Your ENS(unit.domains) name is expiring soon, please renew it",
-      "title": "Renew your ENS(unit.domains) domain {name}"
+      "description": "Your UENS(Unit Ethereum Name Service) name is expiring soon, please renew it",
+      "title": "Renew your UENS(Unit Ethereum Name Service) domain {name}"
     }
   },
   "search": {
@@ -335,7 +335,7 @@
       },
 
       "whygreat": {
-        "title": "Why it's great",
+        "title": "Dlaczego jest super",
         "less5": "{name} is 5 characters or less",
         "less10": "{name} is 10 characters or less",
         "less15": "{name} is 15 characters or less",
@@ -352,7 +352,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS(unit.domains) name when you connect to them with your Ethereum account. ",
+        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your UENS(Unit Ethereum Name Service) name when you connect to them with your Ethereum account. ",
         "title": "1. Set a reverse record"
       },
       "step2": {
@@ -360,7 +360,7 @@
         "title": "2. Set other records"
       },
       "step3": {
-        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS(unit.domains) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
+        "text": "You can host your static html/css/images on IPFS and put the hash in your UENS(Unit Ethereum Name Service) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
         "title": "3. Set a content hash of a decentralized website"
       },
       "title": "Learn how to manage your name."
@@ -377,11 +377,11 @@
       "closeEdit": "Close Add/Edit Records",
       "messages": {
         "explanation": "Reverse Resolution tłumaczy adres na nazwę. Pozwala Dapps na wyświetlanie w ich interfejsach '{name}' zamiast długiego adresu '{account}'. Jeśli chcesz skonfigurować swój rewers dla innego konta, przełącz konta w przeglądarce dapp.",
-        "explanation2": "You can only select names you set this Ethereum Address as.",
-        "noForwardRecordAavilable": "You either do not own any ENS(unit.domains) names, or your ENS(unit.domains) names have no ETH records set to this address.",
+        "explanation2": "Możesz wybrać tylko nazwy, które ustawiłeś jako ten adres Ethereum.",
+        "noForwardRecordAavilable": "Nie jesteś właścicielem żadnych nazw UENS (Unit Ethereum Name Service) lub nazwy UENS (Unit Ethereum Name Service) nie mają ustawionych rekordów ETH dla tego adresu.",
         "notSet": "Rekord Reverse: nie ustawiono",
-        "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Select your ENS(unit.domains) name",
+        "reverseRecordRemoval": "Czy na pewno chcesz usunąć odwrotny rekord?",
+        "selectPlaceholder": "Wybierz swoją nazwę UENS (Unit Ethereum Name Service).",
         "setTo": "Rekord Reverse: Ustaw na",
         "setToDifferent": "Rekord Reverse: Ustaw na inną nazwę:"
       },

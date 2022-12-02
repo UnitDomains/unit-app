@@ -69,8 +69,8 @@
     "warning": "Attenzione",
     "year": "anno",
     "year_plural": "anni",
-    "appCaption": "Un nome nel mondo Web3, è necessario averlo",
-    "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
+    "appCaption": "Devi avere almeno un nome nel mondo Web3!",
+    "appSubCaption": "Un sistema di denominazione distribuito, aperto ed estensibile basato sulla blockchain di Ethereum",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -103,13 +103,13 @@
       "manage": {
         "text1": "In qualità di titolare ora puoi gestire il tuo dominio. ",
         "text2": "Poichè non sei il titolare, puoi solamente visualizzare il dominio.",
-        "title": "Congratulazioni! Hai aggiunto con successo il domminio DNS al Registro ENS(unit.domains)."
+        "title": "Congratulazioni! Hai aggiunto con successo il domminio DNS al Registro UENS(Unit Ethereum Name Service)."
       },
       "proof": {
         "text1": "L'indirizzo che appare nel record txt DNS è il tuo stesso indirizzo.",
         "text2": "Se sai di essere il proprietario di questo dominio, cambia il record TXT di modo che contenga il tuo Indirizzo Ethereum e aggiorna questa pagina per effettuare la verifica DNSSEC nuovamente.",
-        "title1": "Sei il titolare di questo indirizzo. Aggoungi ora il tuo dominio al Registro ENS(unit.domains).",
-        "title2": "Non risulti essere il titolare DNS di questo dominio, ad ogni modo puoi aggiungere questo dominio al Registro ENS(unit.domains)."
+        "title1": "Sei il titolare di questo indirizzo. Aggoungi ora il tuo dominio al Registro UENS(Unit Ethereum Name Service).",
+        "title2": "Non risulti essere il titolare DNS di questo dominio, ad ogni modo puoi aggiungere questo dominio al Registro UENS(Unit Ethereum Name Service)."
       }
     },
     "viewinmanager": "Visualizza nel Manager"
@@ -133,11 +133,11 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "L'applicazione ENS(unit.domains) è un'interfaccia grafica per utenti non tecnici. Ti permette di cercare i nomi di dominio, gestire gli indirizzi o le risorse a cui puntano e di creare sottodomini per ogni nome.",
-      "title": "Come usare ENS(unit.domains)"
+      "body": "L'applicazione UENS(Unit Ethereum Name Service) è un'interfaccia grafica per utenti non tecnici. Ti permette di cercare i nomi di dominio, gestire gli indirizzi o le risorse a cui puntano e di creare sottodomini per ogni nome.",
+      "title": "Come usare UENS(Unit Ethereum Name Service)"
     },
     "whatisens": {
-      "body": "Ethereum Name Service è un sistema di gestione di dominio aperto ed estensibile costruito sulla blockchain Ethereum. ENS(unit.domains) elimina la necessità di copiare o digitare lunghi indirizzi esadecimali.",
+      "body": "UENS(Unit Ethereum Name Service) è un sistema di gestione di dominio aperto ed estensibile costruito sulla blockchain Ethereum. UENS(Unit Ethereum Name Service) elimina la necessità di copiare o digitare lunghi indirizzi esadecimali.",
       "title": "Che cos'è"
     },
     "website": {
@@ -271,8 +271,8 @@
       "title": "Registra {name}"
     },
     "renewal": {
-      "description": "Il tuo nome ENS(unit.domains) è in scadenza, perfavore provvedi al rinnovo",
-      "title": "Rinnova il tuo dominio ENS(unit.domains) {name}"
+      "description": "Il tuo nome UENS(Unit Ethereum Name Service) è in scadenza, perfavore provvedi al rinnovo",
+      "title": "Rinnova il tuo dominio UENS(Unit Ethereum Name Service) {name}"
     }
   },
   "search": {
@@ -333,7 +333,7 @@
       },
 
       "whygreat": {
-        "title": "Why it's great",
+        "title": "Perché è fantastico",
         "less5": "{name} is 5 characters or less",
         "less10": "{name} is 10 characters or less",
         "less15": "{name} is 15 characters or less",
@@ -350,7 +350,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Una volta registrato il tuo dominio, Vai alla pagina 'Mio Account' e imposta un record di risoluzione. Questo consente alle dapps di trovare e visualizzare il tuo nome ENS(unit.domains) quandi ti connetti a loro con il tuo account Ethereum. ",
+        "text": "Una volta registrato il tuo dominio, Vai alla pagina 'Mio Account' e imposta un record di risoluzione. Questo consente alle dapps di trovare e visualizzare il tuo nome UENS(Unit Ethereum Name Service) quandi ti connetti a loro con il tuo account Ethereum. ",
         "title": "1. Imposta record di risoluzione"
       },
       "step2": {
@@ -358,7 +358,7 @@
         "title": "2. Imposta altri record"
       },
       "step3": {
-        "text": "Puoi ospitare i tuoi file statici html/css/images su IPFS e inserire l'hash sul Content record del dominio ENS(unit.domains). Dopo potrà essere risolto dai browser che supportano ENS (es. Opera), dalle estensioni browser (Metamask), o da qualsiasi browser con estensione '.link' alla fine (es. ens.eth.link).",
+        "text": "Puoi ospitare i tuoi file statici html/css/images su IPFS e inserire l'hash sul Content record del dominio UENS(Unit Ethereum Name Service). Dopo potrà essere risolto dai browser che supportano UENS(Unit Ethereum Name Service) (es. Opera), dalle estensioni browser (Metamask), o da qualsiasi browser con estensione '.link' alla fine (es. ens.eth.link).",
         "title": "3. Imposta un content hash di un sito web decentralizzato"
       },
       "title": "Impara come gestire il tuo dominio."
@@ -376,10 +376,10 @@
       "messages": {
         "explanation": "La Risoluzione inversa traduce un indirizzo in un nome dominio. Questo consente alle Dapps di visualizzare '{name}' nelle loro interfacce al posto dell'indirizzo completo '{account}'. Se vuoi impostare un tuo risolutore per un account differente, perfavore cambia account nel tuo browser dapp",
         "explanation2": "Puoi selezionare solo i nomi con cui hai impostato questo Indirizzo Ethereum.",
-        "noForwardRecordAavilable": "Non possiedi alcun nome ENS(unit.domains) oppure i tuoi domini ENS(unit.domains) non hanno record ETH impostati su questo indirizzo.",
+        "noForwardRecordAavilable": "Non possiedi alcun nome UENS(Unit Ethereum Name Service) oppure i tuoi domini UENS(Unit Ethereum Name Service) non hanno record ETH impostati su questo indirizzo.",
         "notSet": "Record risoluzione: non impostato",
         "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Seleziona il tuo dominio ENS(unit.domains)",
+        "selectPlaceholder": "Seleziona il tuo dominio UENS(Unit Ethereum Name Service)",
         "setTo": "Record risoluzione: Impostato su ",
         "setToDifferent": "Record risoluzione: Imposta su nome differente:"
       },

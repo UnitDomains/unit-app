@@ -3,7 +3,7 @@ import { reactive, computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
-import { getAddressValidation, getSearchTermType } from "contracts/utils/address";
+import { getAddressValidation, getSearchTermType } from "@/contracts/utils/address";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -74,8 +74,6 @@ const onOkButtonClick = () => {
           <input
             class="custom-input-box"
             :placeholder="$t('singleName.subdomain.add')"
-            @keyup.enter="onAddressContentChange"
-            @input="onAddressContentChange"
             v-model="newContent"
           />
         </div>

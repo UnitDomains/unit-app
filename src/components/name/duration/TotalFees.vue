@@ -7,13 +7,22 @@ import { useI18n } from "vue-i18n";
 
 import { formatPrice2Eth } from "@/contractUtils/Price";
 
+import {
+  getEthRegisterPrice,
+  getTotalPrice,
+  getEthRentPrice,
+  INewDomainPriceValue,
+  IRentPriceValue,
+} from "@/contractUtils/Price";
+
 const gasPriceToGweiFast = ref(2);
 
-const props = defineProps({
-  price: {
-    type: Object,
-    default: null,
-  },
+interface Props {
+  price: INewDomainPriceValue | null;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  price: null,
 });
 
 const registerPriceEth = computed(() => {

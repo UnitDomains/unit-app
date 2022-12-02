@@ -67,7 +67,7 @@
     "transfer": "譲渡",
     "warning": "Warning",
     "year": "年",
-    "appCaption": "Web3の世界では、名前を持つことが必須",
+    "appCaption": "Web3 の世界で少なくとも 1 つの名前を持っている必要があります。",
     "appSubCaption": "ブロックチェーンをベースにした分散型のオープンで拡張性の高いネーミングシステムです",
     "help": "ヘルプセンター",
     "termsofservice": "利用規約",
@@ -131,12 +131,12 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "ENSアプリは、非技術者向けのグラフィカル・ユーザー・インターフェースです。名前の検索、アドレスやリソースの管理、サブドメインの作成などが可能です。",
-      "title": "ENSの使い方"
+      "body": "UENS(Unit Ethereum Name Service)アプリは、非技術者向けのグラフィカル・ユーザー・インターフェースです。名前の検索、アドレスやリソースの管理、サブドメインの作成などが可能です。",
+      "title": "UENS(Unit Ethereum Name Service)の使い方"
     },
     "whatisens": {
       "body": "イーサリアム・ネーム・サービスは、イーサリアム・ブロックチェーンをベースにした分散型のオープンで拡張性の高いネーミングシステムです。ENSは、長いアドレスをコピーしたりタイプしたりする必要がありません。",
-      "title": "ENSとは"
+      "title": "UENS(Unit Ethereum Name Service)とは"
     },
     "website": {
       "about": {
@@ -269,8 +269,8 @@
       "title": "Register {name}"
     },
     "renewal": {
-      "description": "Your ENS(unit.domains) name is expiring soon, please renew it",
-      "title": "Renew your ENS(unit.domains) domain {name}"
+      "description": "Your UENS(Unit Ethereum Name Service) name is expiring soon, please renew it",
+      "title": "Renew your UENS(Unit Ethereum Name Service) domain {name}"
     }
   },
   "search": {
@@ -348,7 +348,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS(unit.domains) name when you connect to them with your Ethereum account. ",
+        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your UENS(Unit Ethereum Name Service) name when you connect to them with your Ethereum account. ",
         "title": "1. Set a reverse record"
       },
       "step2": {
@@ -356,7 +356,7 @@
         "title": "2. Set other records"
       },
       "step3": {
-        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS(unit.domains) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
+        "text": "You can host your static html/css/images on IPFS and put the hash in your UENS(Unit Ethereum Name Service) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
         "title": "3. Set a content hash of a decentralized website"
       },
       "title": "名前の管理についてもっと知る"
@@ -372,14 +372,14 @@
       "cantEdit": "新しいリゾルバに変更するまで編集や移行はできません",
       "closeEdit": "Close Add/Edit Records",
       "messages": {
-        "explanation": "The Reverse Resolution translates an address into a name. It allows Dapps to show in their interfaces '{name}' rather than the long address '{account}'. If you would like to set up your reverse for a different account, please switch accounts in your dapp browser",
-        "explanation2": "You can only select names you set this Ethereum Address as.",
-        "noForwardRecordAavilable": "You either do not own any ENS(unit.domains) names, or your ENS(unit.domains) names have no ETH records set to this address.",
-        "notSet": "Reverse record: not set",
-        "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Select your ENS(unit.domains) name",
-        "setTo": "Reverse record: Set to ",
-        "setToDifferent": "Reverse record: Set to a different name:"
+        "explanation": "逆解決は、アドレスを名前に変換します。これにより、Dapps は、長いアドレス「{account}」ではなく、インターフェース「{name}」を表示できます。別のアカウントにリバースを設定したい場合は、dapp ブラウザでアカウントを切り替えてください",
+        "explanation2": "この Ethereum アドレスに設定した名前のみを選択できます。",
+        "noForwardRecordAavilable": "UENS(Unit Ethereum Name Service) 名を所有していないか、または UENS(Unit Ethereum Name Service) 名にこのアドレスに設定された ETH レコードがありません。",
+        "notSet": "逆録：未設定",
+        "reverseRecordRemoval": "逆引きレコードを削除してもよろしいですか?",
+        "selectPlaceholder": "UENS (Unit Ethereum Name Service) 名を選択します",
+        "setTo": "逆録：に設定 ",
+        "setToDifferent": "逆録: Set to a different name:"
       },
       "openEdit": "Add/Edit Records",
       "title": "レコード"

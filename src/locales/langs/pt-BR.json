@@ -69,7 +69,7 @@
     "warning": "Cuidado",
     "year": "ano",
     "year_plural": "anos",
-    "appCaption": "Um nome no mundo Web3, você deve tê-lo",
+    "appCaption": "Você deve ter pelo menos um nome no mundo Web3!",
     "appSubCaption": "Um sistema de nome de domínio distribuído, aberto e escalável baseado na blockchain Ethereum",
     "help": "Centro de ajuda",
     "termsofservice": "Termos de serviço",
@@ -103,13 +103,13 @@
       "manage": {
         "text1": "Como você é o proprietário, agora você pode gerenciar seu nome.",
         "text2": "Como você não é o propietário, você pode ver o nome no gerenciador.",
-        "title": "Parabéns! Você adicionou com sucesso esse domínio de DNS ao Registro do ENS(unit.domains)."
+        "title": "Parabéns! Você adicionou com sucesso esse domínio de DNS ao Registro do UENS(Unit Ethereum Name Service)."
       },
       "proof": {
         "text1": "O endereço que aparece na entrada de texto do DNS é o seu mesmo endereço.",
         "text2": "Se você é o proprietário desse domínio, modifique sua entrada TXT com seu Endereço Ethereum e recarregue a página para realizar a verficação DNSSEC novamente.",
-        "title1": "Você é o proprietário desse endereço. Agora você pode adicionar seu domínio no Registro ENS(unit.domains).",
-        "title2": "Você não parece ser o proprietário do DNS desse domínio, mas qualquer um pode adicionar esse domínio no Registro ENS(unit.domains)."
+        "title1": "Você é o proprietário desse endereço. Agora você pode adicionar seu domínio no Registro UENS(Unit Ethereum Name Service).",
+        "title2": "Você não parece ser o proprietário do DNS desse domínio, mas qualquer um pode adicionar esse domínio no Registro UENS(Unit Ethereum Name Service)."
       }
     },
     "viewinmanager": "Ver no gerenciador"
@@ -133,11 +133,11 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "O Aplicativo ENS(unit.domains) é uma Interface Grafíca para Usuários que não são tecnicos. Permitindo você buscar qualquer nome, gerenciar seus endereços ou recursos para os quais apontar e criar subdminíos de cada nome.",
-      "title": "Como usar ENS(unit.domains)"
+      "body": "O Aplicativo UENS(Unit Ethereum Name Service) é uma Interface Grafíca para Usuários que não são tecnicos. Permitindo você buscar qualquer nome, gerenciar seus endereços ou recursos para os quais apontar e criar subdminíos de cada nome.",
+      "title": "Como usar UENS(Unit Ethereum Name Service)"
     },
     "whatisens": {
-      "body": "O Ethereum Name Service(ENS) é um sistema de nomenclatura distribuído, aberto e estensível baseado no blockchain Ethereum. O ENS elimina a necessidade de copiar ou digitar endereços longos.",
+      "body": "O UENS(Unit Ethereum Name Service) é um sistema de nomenclatura distribuído, aberto e estensível baseado no blockchain Ethereum. O UENS(Unit Ethereum Name Service) elimina a necessidade de copiar ou digitar endereços longos.",
       "title": "O que é isso"
     },
     "website": {
@@ -202,7 +202,7 @@
     "pricePerAmount": "Preço por quantidade de tempo selecionado",
     "registrationPeriodLabel": "Período de registro",
     "registrationPriceLabel": "Preço de registro a pagar",
-    "rentPriceLabel": "Valor do aluguel a pagar",
+    "rentPriceLabel": "Preço de aluguer a pagar",
     "totalDescription": "Custo total estimado (Preço de registro + Valor do aluguel + Gas). O preço do gas é baseado em {gasPriceToGweiFast} Gwei",
     "totalDescriptionOnlyRent": "Custo total estimado (Valor do aluguel + Gas). O preço do gas é baseado em {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Preço total à pagar",
@@ -256,7 +256,7 @@
     ]
   },
   "registrymigration": {
-    "donotaccept": "*Se você negocia nomes ENS(unit.domains), não aceite este nome!",
+    "donotaccept": "*Se você negocia nomes UENS(Unit Ethereum Name Service), não aceite este nome!",
     "messages": {
       "controller": "Esse nome é controlado por um contrar e não pode ser migrado automaticamente. Por favor reimplante seu contrato para usar um novo registro antes de definir um novo contraolador",
       "default": "Esse nome precisa ser migrado para o novo Registro. Apenas os nomes pais ({parent}) podem fazer isso.",
@@ -271,8 +271,8 @@
       "title": "Registro {name}"
     },
     "renewal": {
-      "description": "Seu nome ENS vai exprirar em breve, por favor estenda seu registro",
-      "title": "Estenda o registro do seu dominio {name} ENS(unit.domains)"
+      "description": "Seu nome UENS(Unit Ethereum Name Service) vai exprirar em breve, por favor estenda seu registro",
+      "title": "Estenda o registro do seu dominio {name} UENS(Unit Ethereum Name Service)"
     }
   },
   "search": {
@@ -333,7 +333,7 @@
       },
 
       "whygreat": {
-        "title": "Why it's great",
+        "title": "Por que é ótimo",
         "less5": "{name} is 5 characters or less",
         "less10": "{name} is 10 characters or less",
         "less15": "{name} is 15 characters or less",
@@ -350,15 +350,15 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Uma vez seu nome registrado, vá para página de 'Minha Conta' e defina o seu nome ENS(unit.domains) primário. Isso permite que os dapps e exibam seu nome ENS(unit.domains) quando você se conectar a eles com sua conta Ethereum.",
-        "title": "1. Defina seu registro de nome ENS(unit.domains) primário"
+        "text": "Uma vez seu nome registrado, vá para página de 'Minha Conta' e defina o seu nome UENS(Unit Ethereum Name Service) primário. Isso permite que os dapps e exibam seu nome UENS(Unit Ethereum Name Service) quando você se conectar a eles com sua conta Ethereum.",
+        "title": "1. Defina seu registro de nome UENS(Unit Ethereum Name Service) primário"
       },
       "step2": {
         "text": "Você pode definir endereços de diferentes cripitomoedas, informações de perfil, como avatar, twitter e mais.",
         "title": "2. Defina outros registros"
       },
       "step3": {
-        "text": "Você pode hospedar seu html/css/images estáticos no IPFS e colocar o hash no registro de conteúdo do seu nome ENS(unit.domains). Em seguida, ele pode ser resolvido por navegadores compatíveis com ENS (por exemplo, Opera), extensões de navegador (Metamask) ou qualquer navegador com '.link' anexado ao final (por exemplo, ens.eth.link)",
+        "text": "Você pode hospedar seu html/css/images estáticos no IPFS e colocar o hash no registro de conteúdo do seu nome UENS(Unit Ethereum Name Service). Em seguida, ele pode ser resolvido por navegadores compatíveis com ENS (por exemplo, Opera), extensões de navegador (Metamask) ou qualquer navegador com '.link' anexado ao final (por exemplo, ens.eth.link)",
         "title": "3. Definir um hash de conteúdo de um site descentralizado."
       },
       "title": "Aprenda como administrar seu nome."
@@ -374,14 +374,14 @@
       "cantEdit": "Você não pode editar ou adicionar registros até migrar para o novo resolvedor.",
       "closeEdit": "Feche adicionar/editar registros",
       "messages": {
-        "explanation": "Isso designa um de seus nomes ENS(unit.domains) para representar sua conta Ethereum e atuar como seu nome e perfil de plataforma cruzada web3. Você só pode ter uma Nome primário ENS por conta Ethereum e pode mudar a qualquer momento.",
-        "explanation2": "Apenas nomes ENS(unit.domains) que apontam para sua conta Ethereum podem ser definidos como seu nome ENS(unit.domains) primário.",
-        "noForwardRecordAavilable": "Nenhum nome de ENS(unit.domains) tem seus registros de endereço ETH configurados para este endereço.",
-        "notSet": "Nome ENS(unit.domains) primário (registro reverso): não definido",
-        "reverseRecordRemoval": "Tem certeza de que deseja excluir seu registro de nome ENS(unit.domains) primário?",
-        "selectPlaceholder": "Selecione um dos seus nomes ENS(unit.domains)",
-        "setTo": "Nome ENS(unit.domains) primário (registro reverso):",
-        "setToDifferent": "Nome ENS(unit.domains) primário (registro reverso): Defina para um nome diferente:"
+        "explanation": "Isso designa um de seus nomes UENS(Unit Ethereum Name Service) para representar sua conta Ethereum e atuar como seu nome e perfil de plataforma cruzada web3. Você só pode ter uma Nome primário ENS por conta Ethereum e pode mudar a qualquer momento.",
+        "explanation2": "Apenas nomes UENS(Unit Ethereum Name Service) que apontam para sua conta Ethereum podem ser definidos como seu nome UENS(Unit Ethereum Name Service) primário.",
+        "noForwardRecordAavilable": "Nenhum nome de UENS(Unit Ethereum Name Service) tem seus registros de endereço ETH configurados para este endereço.",
+        "notSet": "Nome UENS(Unit Ethereum Name Service) primário (registro reverso): não definido",
+        "reverseRecordRemoval": "Tem certeza de que deseja excluir seu registro de nome UENS(Unit Ethereum Name Service) primário?",
+        "selectPlaceholder": "Selecione um dos seus nomes UENS(Unit Ethereum Name Service)",
+        "setTo": "Nome UENS(Unit Ethereum Name Service) primário (registro reverso):",
+        "setToDifferent": "Nome UENS(Unit Ethereum Name Service) primário (registro reverso): Defina para um nome diferente:"
       },
       "openEdit": "Adicionar/Editar Entradas",
       "title": "Entrada"

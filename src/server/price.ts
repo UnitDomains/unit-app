@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers'
-import axios from 'http/http'
-import BASEURL from 'http/api'
+import { axios, BASEURL } from '@/httpconfig'
 
 import { IServerPriceInfo } from './serverType'
 

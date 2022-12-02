@@ -64,7 +64,6 @@ const emit = defineEmits<{
  */
 const getPrice = async (years: number) => {
   emit("onDurationBeginChange");
-  loading.showLoading("#DurationContainer");
 
   let rentPrice = await getEthRentPrice(props.domainName, years);
   let registerPrice = await getEthRegisterPrice(props.domainName, years);
@@ -84,15 +83,13 @@ const getPrice = async (years: number) => {
 
     emit("onDurationChange", years, price);
   }
-
-  // Loading should be closed asynchronously
-  loading.hideLoading();
 };
 
 /**
  * Get price from server
  */
 const getPriceFromServer = async (years: number) => {
+  emit("onDurationBeginChange");
   const networkId = await web3Config.getNetworkId();
   const registerPrice = await getPriceRegisterFromServer(networkId, props.domainName);
 
@@ -104,6 +101,7 @@ const getPriceFromServer = async (years: number) => {
 
   if (rentPrice) {
     const priceTemp: INewDomainPriceValue = await getTotalPrice(rentPrice, registerPrice);
+    console.log(priceTemp);
     price.rentPrice = priceTemp.rentPrice;
     price.registerPrice = priceTemp.registerPrice;
     price.rentAndRegisterPrices = priceTemp.rentAndRegisterPrices;

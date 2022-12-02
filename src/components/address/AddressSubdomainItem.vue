@@ -3,7 +3,7 @@ import { reactive, computed, ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
-import { sendHelper } from "contractUtils/transaction";
+import { sendHelper } from "@/contractUtils/transaction";
 
 import { appContractModels } from "@/contracts/setup";
 
@@ -13,7 +13,7 @@ import { namehash } from "@/contracts/utils/hash";
 
 import { useI18n } from "vue-i18n";
 
-import { getDomain, getDomainSuffix, getHostDomain } from "contractUtils/domainName";
+import { getDomain, getDomainSuffix, getHostDomain } from "@/contractUtils/domainName";
 
 import { showLoading, ILoading } from "@/components/ui/loading";
 import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";

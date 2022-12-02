@@ -24,10 +24,10 @@ import {
   getDomainSuffix,
   getHostDomain,
   getParentDomain,
-} from "contractUtils/domainName";
+} from "@/contractUtils/domainName";
 import moment from "moment";
 
-import { sendHelper } from "contractUtils/transaction";
+import { sendHelper } from "@/contractUtils/transaction";
 
 import { showLoading, ILoading } from "@/components/ui/loading";
 
@@ -37,7 +37,7 @@ import DetailContentItem from "components/name/DetailContentItem.vue";
 
 import Tabs from "components/ui/Tabs.vue";
 
-import { namehash } from "contracts/utils/hash";
+import { namehash } from "@/contracts/utils/hash";
 
 import { UserAccountStore } from "@/store";
 

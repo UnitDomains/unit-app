@@ -4,6 +4,65 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+interface Props {
+  percent: number;
+  state: number /**
+            0:not start
+            1:begin
+            2:end */;
+
+  type: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  percent: 0,
+  state: 0,
+  type: 0,
+});
+
+
+
+const leftCircleBarRotate = computed(() => {
+  if (innerPercent.value >= 0 && innerPercent.value <= 50) {
+    return formatDegree(0);
+  } else if (innerPercent.value > 50 && innerPercent.value <= 100) {
+    return formatDegree(innerPercent.value - 50);
+  }
+
+  return "";
+});
+
+const rightCircleBarRotate = computed(() => {
+  var s = innerPercent.value - 50;
+  if (innerPercent.value >= 0 && innerPercent.value <= 50) {
+    return formatDegree(innerPercent.value);
+  } else if (innerPercent.value > 50 && innerPercent.value <= 100) {
+    return formatDegree(50);
+  }
+
+  return "";
+});
+
+const titleClass = computed(() => {
+  if (props.state == 0) return "title-no-active";
+  else if (props.state == 1) return "title-processing";
+  else if (props.state == 2) return "title-succeed";
+  return "";
+});
+
+const stepState = computed(() => {
+  if (props.state == 0) return "no-active";
+  else if (props.state == 1) return "processing";
+  else if (props.state == 2) return "succeed";
+  return "";
+});
+
+const innerPercent = computed(() => {
+  if (props.state == 0) return 0;
+  else if (props.state == 2) return 100;
+  return props.percent;
+});
 </script>
 
 <template>
@@ -29,69 +88,6 @@ function formatDegree(percent: number) {
 
 export default {
   name: "Circle",
-  props: {
-    percent: {
-      type: Number,
-      default: 0,
-    },
-    state: {
-      type: Number,
-      default: 0 /**
-            0:未开始
-            1:开始
-            2:完成 */,
-    },
-    type: {
-      type: Number,
-      default: 0,
-    },
-  },
-  computed: {
-    leftCircleBarRotate() {
-      if (this.innerPercent >= 0 && this.innerPercent <= 50) {
-        return formatDegree(0);
-      } else if (this.innerPercent > 50 && this.innerPercent <= 100) {
-        return formatDegree(this.innerPercent - 50);
-      }
-
-      return "";
-    },
-    rightCircleBarRotate() {
-      var s = Number(this.innerPercent) - 50;
-      if (this.innerPercent >= 0 && this.innerPercent <= 50) {
-        return formatDegree(this.innerPercent);
-      } else if (this.innerPercent > 50 && this.innerPercent <= 100) {
-        return formatDegree(50);
-      }
-
-      return "";
-    },
-    titleClass() {
-      if (this.state == 0) return "title-no-active";
-      else if (this.state == 1) return "title-processing";
-      else if (this.state == 2) return "title-succeed";
-      return "";
-    },
-    stepState() {
-      if (this.state == 0) return "no-active";
-      else if (this.state == 1) return "processing";
-      else if (this.state == 2) return "succeed";
-      return "";
-    },
-    innerPercent() {
-      if (this.state == 0) return 0;
-      else if (this.state == 2) return 100;
-      return this.percent;
-    },
-  },
-
-  data() {
-    return {};
-  },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 

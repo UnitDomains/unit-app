@@ -266,8 +266,8 @@ export async function getGasPrice() {
       console.log(baseFeeWei)
 
       const price: IGasPrice = {
-        slow: baseFeeWei, //baseFeeWei.add(powTemp),
-        fast: baseFeeWei.add(baseFeeWei.div(10)), //baseFeeWei.add(baseFeeWei.div(10)).add(powTemp),
+        slow: baseFeeWei.add(powTemp),
+        fast: baseFeeWei.add(baseFeeWei.add(powTemp).div(10)), //baseFeeWei.add(baseFeeWei.div(10)).add(powTemp),
       }
       console.log(price)
       return price

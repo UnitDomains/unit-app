@@ -5,26 +5,16 @@ import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
 
-import { appContractModels } from "@/contracts/setup";
-
-import { web3Config } from "@/contracts/web3";
 import { emptyAddress } from "@/contracts/utils";
 
-import { getRentPrice, getAccountBalance } from "contractUtils/Price";
-import { getDomain, getDomainSuffix } from "contractUtils/domainName";
-import moment from "moment";
 import { getAddressValidation } from "contracts/utils/address";
-
-import NameDetailItem from "components/name/NameDetailItem.vue";
 
 import { resolverFromServer } from "server/domain";
 import { UserAccountStore } from "store";
 
-import loading from "components/ui/loading";
-
-import { getAccount } from "@/contracts/web3";
-
 import CopyToClipboard from "components/ui/CopyToClipboard.vue";
+
+const { t } = useI18n();
 
 const props = defineProps({
   domainName: {
@@ -141,7 +131,7 @@ const onAddressContentChange = async () => {
           <div style="margin-top: 1em">
             <input
               class="custom-input-box"
-              :placeholder="$t('search.placeholder')"
+              :placeholder="t('search.placeholder')"
               @keyup.enter="onAddressContentChange"
               @input="onAddressContentChange"
               v-model="address"
@@ -154,7 +144,7 @@ const onAddressContentChange = async () => {
 
       <div class="detail-base-info-foot">
         <UnitButton
-          :caption="$t('c.cancel')"
+          :caption="t('c.cancel')"
           @onClick="onHideEditAreaButtonClick"
           :enable="true"
           type="primary"

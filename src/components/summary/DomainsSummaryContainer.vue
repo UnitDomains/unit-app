@@ -4,46 +4,46 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+import { web3Config } from "@/contracts/web3";
+import { getDomainNamesCountFromServer, getDomainOwnersCount } from "@/server/summary";
+
+const { t } = useI18n();
+
+const domainNamesCount = ref(0);
+const domainOwnersCount = ref(0);
+
+onMounted(async () => {
+  await initDomainSummaryFromServer();
+});
+
+const initDomainSummaryFromServer = async () => {
+  //await setup();
+  const networkId = await web3Config.getNetworkId();
+  console.log(networkId);
+  domainNamesCount.value = await getDomainNamesCountFromServer(
+    networkId == 0 ? 1 : networkId
+  );
+  domainOwnersCount.value = await getDomainOwnersCount(networkId == 0 ? 1 : networkId);
+};
 </script>
 
 <template>
   <div class="domains-summary-container-panel">
     <div class="domains-summary-item">
       <div class="domains-summary-item-value">{{ domainNamesCount }}</div>
-      <div class="domains-summary-item-key">{{ $t("c.names") }}</div>
+      <div class="domains-summary-item-key">{{ t("c.names") }}</div>
     </div>
     <div class="domains-summary-item">
       <div class="domains-summary-item-value">{{ domainOwnersCount }}</div>
-      <div class="domains-summary-item-key">{{ $t("c.owners") }}</div>
+      <div class="domains-summary-item-key">{{ t("c.owners") }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { web3Config } from "contracts/web3";
-import { getDomainNamesCountFromServer, getDomainOwnersCount } from "server/summary";
-
 export default {
   name: "DomainsSummaryContainer",
-  computed: {},
-  data() {
-    return {
-      domainNamesCount: 0,
-      domainOwnersCount: 0,
-    };
-  },
-  props: {},
-  async mounted() {
-    await this.initDomainSummaryFromServer();
-  },
-  methods: {
-    async initDomainSummaryFromServer() {
-      //await setup();
-      var networkId = await web3Config.getNetworkId();
-      this.domainNamesCount = await getDomainNamesCountFromServer(networkId);
-      this.domainOwnersCount = await getDomainOwnersCount(networkId);
-    },
-  },
 };
 </script>
 <style scoped>

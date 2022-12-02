@@ -10,11 +10,11 @@ import { appContractModels } from "@/contracts/setup";
 import { web3Config } from "@/contracts/web3";
 import { emptyAddress } from "@/contracts/utils";
 
-import { checkIsDecrypted, truncateUndecryptedName, parseName } from "contracts/labels";
+import { checkIsDecrypted, truncateUndecryptedName, parseName } from "@/contracts/labels";
 
-import { calculateDuration } from "utils/dates";
-import { sendHelper } from "contractUtils/transaction";
-import { getRentPrice, getAccountBalance } from "contractUtils/Price";
+import { calculateDuration } from "@/utils/dates";
+import { sendHelper } from "@/contractUtils/transaction";
+import { getRentPrice, getAccountBalance } from "@/contractUtils/Price";
 import {
   getDomain,
   getDomainSuffix,

@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 
 import { createDialog, createAlertDialog } from "@/components/ui/dialog/createDialog";
 
-import { getAddressValidation, getSearchTermType } from "contracts/utils/address";
+import { getAddressValidation, getSearchTermType } from "@/contracts/utils/address";
 const { t } = useI18n();
 const searchText = ref("");
 

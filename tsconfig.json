@@ -22,7 +22,7 @@
       "views": ["src/views"],
       "icons": ["src/assets/icons"],
       "images": ["src/assets/images"],
-      "http": ["src/httpconfig"],
+      "http": ["src/httpconfigure"],
       "server": ["src/server"],
       "store": ["src/store"]
     }

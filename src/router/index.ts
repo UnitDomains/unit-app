@@ -9,7 +9,7 @@ import {
   SupportedNetworkId,
   convert2SupportedNetworkId,
   isSupportedNetwork,
-} from 'contracts/types'
+} from '@/contracts/types'
 
 import { web3Config } from '@/contracts/web3'
 
@@ -157,12 +157,8 @@ const routes = [
 const isSubdomain = function (domainName: string) {
   return domainName?.split('.').length - 1 > 1
 }
-/**
- * 创建路由
- */
+
 const router = createRouter({
-  // hash模式：createWebHashHistory，
-  // history模式：createWebHistory
   //history: createWebHistory('/'),
   history: createWebHashHistory(),
   routes,
@@ -184,34 +180,14 @@ router.beforeEach(async (to, from) => {
       return true
     }
 
+    if (to.name === 'welcome') {
+      //   if (isSupportedNetwork(id)) return { path: '/' }
+      return true
+    }
+
+    console.log(id)
     if (!isSupportedNetwork(id)) return { path: '/error/notsupportnetwork' }
   } catch (err) {}
 })
-
-/**
- * 初始化钱包
- */
-/*const InitWallet = function() {
-  if (typeof web3 !== 'undefined') {
-    if (web3.currentProvider.isMetaMask === true) {
-      store.dispatch('setWallet', {
-        value: true
-      })
-    } else {
-      // Another web3 provider
-      store.setWallet(false)
-      store.setAccount(null)
-    }
-  } else {
-    // No web 3 provider
-    //  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-    store.dispatch('setWallet', {
-      value: false
-    })
-    store.dispatch('setAccount', {
-      account: null
-    })
-  }
-}*/
 
 export default router

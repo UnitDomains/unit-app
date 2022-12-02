@@ -20,10 +20,9 @@ import InputNumber from "components/input/InputNumber.vue";
 import TotalFees from "./TotalFees.vue";
 import ChainSvg from "icons/chain.svg";
 
-import { showLoading, hideLoading } from "@/components/ui/loading";
 import DurationFeesOnlyRent from "./DurationFeesOnlyRent.vue";
 
-import { getPriceRegisterFromServer, getPriceRentFromServer } from "server/price";
+import { getPriceRegisterFromServer, getPriceRentFromServer } from "@/server/price";
 import { BigNumber } from "ethers";
 
 const props = defineProps({
@@ -63,9 +62,6 @@ const emit = defineEmits<{
  * @param {} years
  */
 const getPrice = async (years: number) => {
-  emit("onDurationBeginChange");
-  loading.showLoading("#DurationContainer");
-
   let rentPrice = await getEthRentPrice(props.domainName, years);
   let registerPrice = await getEthRegisterPrice(props.domainName, years);
 
@@ -84,9 +80,6 @@ const getPrice = async (years: number) => {
 
     emit("onDurationChange", years, price);
   }
-
-  // Loading should be closed asynchronously
-  loading.hideLoading();
 };
 
 /**

@@ -8,19 +8,61 @@ import { useI18n } from "vue-i18n";
 import InputNumber from "components/input/InputNumber.vue";
 import TotalFeesOnlyRent from "./TotalFeesOnlyRent.vue";
 import ChainSvg from "icons/chain.svg";
+
+import {
+  getEthRegisterPrice,
+  getTotalPrice,
+  getEthRentPrice,
+  INewDomainPriceValue,
+  IRentPriceValue,
+} from "@/contractUtils/Price";
+
+import { formatPrice2Eth } from "@/contractUtils/Price";
+
+const { t } = useI18n();
+
+interface Props {
+  domainName: string;
+  years: number;
+  price: INewDomainPriceValue | null;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  domainName: "",
+  years: 1,
+  price: null,
+});
+
+const rentPriceEth = computed(() => {
+  if (props.price && props.price.rentPrice) return formatPrice2Eth(props.price.rentPrice);
+  return "";
+});
+const registerPriceEth = computed(() => {
+  if (props.price && props.price.registerPrice)
+    return formatPrice2Eth(props.price.registerPrice);
+  return "";
+});
+
+const emit = defineEmits<{
+  (e: "onDurationChange", years: number): void;
+}>();
+
+const onDurationChange = (years: number) => {
+  emit("onDurationChange", years);
+};
 </script>
 
 <template>
   <div id="DurationContainer" class="register-duration-panel">
     <div class="register-duration-year-unit-panel">
       <div class="register-duration-year-unit-period">
-        {{ $t("pricer.registrationPeriodLabel") }}
+        {{ t("pricer.registrationPeriodLabel") }}
       </div>
 
       <div class="register-duration-year-unit-price-space"></div>
 
       <div class="register-duration-year-unit-price">
-        {{ $t("pricer.rentPriceLabel") }}
+        {{ t("pricer.rentPriceLabel") }}
       </div>
     </div>
     <div class="register-duration-input-panel">
@@ -29,7 +71,7 @@ import ChainSvg from "icons/chain.svg";
         :value="years"
         @onChange="onDurationChange"
       ></InputNumber>
-      <img style="margin-top: 0.6em; margin-left: 0.5em" :src="chainSvg" alt="ChainSvg" />
+      <img style="margin-top: 0.6em; margin-left: 0.5em" :src="ChainSvg" alt="ChainSvg" />
 
       <div class="price-fee">{{ rentPriceEth }} ETH</div>
     </div>
@@ -39,54 +81,8 @@ import ChainSvg from "icons/chain.svg";
 </template>
 
 <script lang="ts">
-import { formatPrice2Eth } from "contractUtils/Price";
-import { getDomain, getDomainIndex } from "contractUtils/domainName";
-
-import loading from "components/ui/loading";
-
 export default {
   name: "DurationFeesOnlyRent",
-  components: {},
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-    years: {
-      type: Number,
-      default: 1,
-    },
-    price: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      stepNumber: 0,
-      chainSvg: ChainSvg,
-    };
-  },
-  computed: {
-    rentPriceEth() {
-      if (this.price && this.price.rentPrice)
-        return formatPrice2Eth(this.price.rentPrice);
-      return "";
-    },
-    registerPriceEth() {
-      if (this.price && this.price.registerPrice)
-        return formatPrice2Eth(this.price.registerPrice);
-      return "";
-    },
-  },
-
-  mounted() {},
-
-  methods: {
-    onDurationChange(years: number) {
-      this.$emit("onDurationChange", years);
-    },
-  },
 };
 </script>
 

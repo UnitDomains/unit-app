@@ -65,7 +65,7 @@
     "textrecord": "文本記錄",
     "transfer": "轉讓",
     "warning": "警告",
-    "appCaption": "Web3世界裏的名字，你必須擁有它",
+    "appCaption": "你必須擁有至少一個Web3世界裡的名字！",
     "appSubCaption": "基於以太坊區塊鏈的分布式、開放和可擴展的域名系統",
     "help": "帮助中心",
     "termsofservice": "服務條款",
@@ -99,13 +99,13 @@
       "manage": {
         "text1": "作為域名的所有者，您現在可以管理域名了。",
         "text2": "由於您不是該域名的所有者，所以只能在管理器中查看域名。",
-        "title": "恭喜妳！妳已經成功將該 DNS 域名添加到 ENS(unit.domains) 註冊表中了。"
+        "title": "恭喜妳！妳已經成功將該 DNS 域名添加到 UENS(Unit Ethereum Name Service)  註冊表中了。"
       },
       "proof": {
         "text1": "這裏顯示的 DNS 文本中的以太坊地址應該和妳的地址壹致。",
         "text2": "如果您持有該域名，請更改它的 TXT 記錄以包含您的以太坊地址，並刷新此頁面以再次執行 DNSSEC 驗證。",
-        "title1": "您是這個地址的主人，現在可以將域名加入 ENS(unit.domains) 註冊表了。",
-        "title2": "您似乎不是該 DNS 域名的所有者，但任何人都可以將該域名添加到 ENS(unit.domains) 註冊表。"
+        "title1": "您是這個地址的主人，現在可以將域名加入 UENS(Unit Ethereum Name Service)  註冊表了。",
+        "title2": "您似乎不是該 DNS 域名的所有者，但任何人都可以將該域名添加到 UENS(Unit Ethereum Name Service)  註冊表。"
       }
     },
     "viewinmanager": "在管理器中查看"
@@ -129,12 +129,12 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "ENS(unit.domains) 管理器是壹個面向非技術用戶的圖形化界面。您可以利用它查詢域名，管理域名指向的地址或資源，還可以為域名創建子域名。",
-      "title": "如何使用 ENS(unit.domains)"
+      "body": "UENS(Unit Ethereum Name Service)  管理器是壹個面向非技術用戶的圖形化界面。您可以利用它查詢域名，管理域名指向的地址或資源，還可以為域名創建子域名。",
+      "title": "如何使用 UENS(Unit Ethereum Name Service) "
     },
     "whatisens": {
-      "body": "以太坊域名服務（Ethereum Name Service）是壹個基於以太坊區塊鏈的分布式、開放和可擴展的域名系統。ENS 域名讓人們不用再復制或輸入冗長的區塊鏈地址。通俗地說，ENS 就是區塊鏈中的域名系統。",
-      "title": "ENS(unit.domains) 是什麽"
+      "body": "以太坊域名服務是壹個基於以太坊區塊鏈的分布式、開放和可擴展的域名系統。UENS 域名讓人們不用再復制或輸入冗長的區塊鏈地址。通俗地說，UENS 就是區塊鏈中的域名系統。",
+      "title": "UENS(Unit Ethereum Name Service)  是什麽"
     },
     "website": {
       "about": {
@@ -252,7 +252,7 @@
     ]
   },
   "registrymigration": {
-    "donotaccept": "* 如果您在交易 ENS(unit.domains) 域名，現在不要交易這個域名！",
+    "donotaccept": "* 如果您在交易 UENS(Unit Ethereum Name Service)  域名，現在不要交易這個域名！",
     "messages": {
       "controller": "該域名由智能合約控制，不能自動遷移。在設置新控制器之前，請重新部署您的合約以使用新的註冊表。",
       "default": "該名稱需要遷移到新的註冊表，只有它的父域名（{parent}）可以執行這壹操作。",
@@ -267,8 +267,8 @@
       "title": "註冊 {name}"
     },
     "renewal": {
-      "description": "您的 ENS(unit.domains) 域名即將過期，請續費",
-      "title": "為妳的 ENS(unit.domains) 域名 {name} 進行續費"
+      "description": "您的 UENS(Unit Ethereum Name Service) 域名即將過期，請續費",
+      "title": "為妳的 UENS(Unit Ethereum Name Service)  域名 {name} 進行續費"
     }
   },
   "search": {
@@ -346,7 +346,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "域名註冊完成後，打開“我的域名”頁面，並設置壹個反向解析記錄。這樣您用以太坊賬戶連接 Dapp 時，它們就可以直接顯示妳的 ENS(unit.domains) 域名。",
+        "text": "域名註冊完成後，打開“我的域名”頁面，並設置壹個反向解析記錄。這樣您用以太坊賬戶連接 Dapp 時，它們就可以直接顯示妳的 UENS(Unit Ethereum Name Service) 域名。",
         "title": "1. 設置反向解析記錄"
       },
       "step2": {
@@ -354,7 +354,7 @@
         "title": "2. 設置其他記錄"
       },
       "step3": {
-        "text": "您可以將在 IPFS 部署靜態網站（html/css/images），並將其哈希值記錄在 ENS(unit.domains) 域名的內容記錄中，然後那些支持 ENS(unit.domains) 的瀏覽器（比如 Opera）、瀏覽器插件（比如 Metamask）或是在做任意瀏覽器中加上 ‘.link’ 後綴，就可以解析這類記錄。",
+        "text": "您可以將在 IPFS 部署靜態網站（html/css/images），並將其哈希值記錄在 UENS(Unit Ethereum Name Service)  域名的內容記錄中，然後那些支持 UENS(Unit Ethereum Name Service)  的瀏覽器（比如 Opera）、瀏覽器插件（比如 Metamask）或是在做任意瀏覽器中加上 ‘.link’ 後綴，就可以解析這類記錄。",
         "title": "3. 設置去中心化網站的內容哈希"
       },
       "title": "學習如何管理妳的域名"
@@ -372,10 +372,10 @@
       "messages": {
         "explanation": "反向解析將地址轉換為域名。它能讓 dapp 在其界面上顯示 “{name}”，而不是 “{account}” 這個冗長的地址。如果您想為另壹個賬戶設置反向解析，請先在 dapp 瀏覽器中切換帳戶。",
         "explanation2": "您只能選擇已經解析至這個以太坊地址的域名。",
-        "noForwardRecordAavilable": "您尚未擁有 ENS(unit.domains) 域名，或者您 ENS(unit.domains) 域名的 ETH 記錄沒有設置為此地址。",
+        "noForwardRecordAavilable": "您尚未擁有 UENS(Unit Ethereum Name Service)  域名，或者您 UENS(Unit Ethereum Name Service)  域名的 ETH 記錄沒有設置為此地址。",
         "notSet": "反向記錄：未設置",
         "reverseRecordRemoval": "您確定要刪除反向解析記錄？",
-        "selectPlaceholder": "選擇您的 ENS(unit.domains) 域名",
+        "selectPlaceholder": "選擇您的 UENS(Unit Ethereum Name Service)  域名",
         "setTo": "反向記錄：解析至 ",
         "setToDifferent": "反向記錄：已解析至另壹個域名："
       },

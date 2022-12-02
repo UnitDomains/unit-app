@@ -107,13 +107,6 @@ const step3TitleColor = computed(() => {
 <script lang="ts">
 export default {
   name: "ProgressText",
-
-  computed: {},
-  data() {
-    return {};
-  },
-
-  methods: {},
 };
 </script>
 <style scoped>

@@ -4,6 +4,48 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+interface Props {
+  domainName: string;
+  title: string;
+  content: string;
+  buttonCaption: string;
+  enable: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  domainName: "",
+  title: "",
+  content: "",
+  buttonCaption: "",
+  enable: false,
+});
+
+const editAreaVisible = ref(false);
+const newContent = ref("");
+
+const contentValidate = computed(() => {
+  if (newContent.value.length > 0) return true;
+  return false;
+});
+
+const emit = defineEmits<{
+  (e: "onOkButtonClick", newContent: string): void;
+}>();
+
+const onShowEditAreaButtonClick = () => {
+  editAreaVisible.value = true;
+};
+
+const onHideEditAreaButtonClick = () => {
+  editAreaVisible.value = false;
+};
+const onOkButtonClick = () => {
+  editAreaVisible.value = false;
+  emit("onOkButtonClick", newContent.value);
+};
 </script>
 
 <template>
@@ -27,20 +69,14 @@ import { useI18n } from "vue-i18n";
         <div class="detail-base-info-middle-1">
           <div>{{ content }}</div>
           <div style="margin-top: 1em">
-            <input
-              class="custom-input-box"
-              :placeholder="title"
-              @keyup.enter="onAddressContentChange"
-              @input="onAddressContentChange"
-              v-model="newContent"
-            />
+            <input class="custom-input-box" :placeholder="title" v-model="newContent" />
           </div>
         </div>
       </div>
 
       <div class="detail-base-info-foot">
         <UnitButton
-          :caption="$t('c.cancel')"
+          :caption="t('c.cancel')"
           @onClick="onHideEditAreaButtonClick"
           :enable="true"
           type="primary"
@@ -59,56 +95,6 @@ import { useI18n } from "vue-i18n";
 <script lang="ts">
 export default {
   name: "DetailContentItem",
-  components: {},
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-    title: {
-      type: String,
-      default: "",
-    },
-    content: {
-      type: String,
-      default: "",
-    },
-    buttonCaption: {
-      type: String,
-      default: "",
-    },
-    enable: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    contentValidate() {
-      if (this.newContent.length > 0) return true;
-      return false;
-    },
-  },
-  data() {
-    return {
-      editAreaVisible: false,
-      newContent: "",
-    };
-  },
-
-  async mounted() {},
-
-  methods: {
-    onShowEditAreaButtonClick() {
-      this.editAreaVisible = true;
-    },
-    onHideEditAreaButtonClick() {
-      this.editAreaVisible = false;
-    },
-    onOkButtonClick() {
-      this.editAreaVisible = false;
-      this.$emit("onOkButtonClick", this.newContent);
-    },
-  },
 };
 </script>
 

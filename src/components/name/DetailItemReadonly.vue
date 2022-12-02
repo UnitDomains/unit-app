@@ -4,6 +4,16 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+interface Props {
+  title: string;
+  content: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: "",
+  content: "",
+});
 </script>
 
 <template>
@@ -18,29 +28,6 @@ import { useI18n } from "vue-i18n";
 <script lang="ts">
 export default {
   name: "DetailItemReadonly",
-  components: {},
-  props: {
-    domainName: {
-      type: String,
-      default: "",
-    },
-    title: {
-      type: String,
-      default: "",
-    },
-    content: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {},
-  data() {
-    return {};
-  },
-
-  async mounted() {},
-
-  methods: {},
 };
 </script>
 

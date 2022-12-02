@@ -4,6 +4,53 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+import CircleVue from "components/step/Circle.vue";
+const { t } = useI18n();
+
+interface Props {
+  percent: number;
+  state: number /**
+            0:not start
+            1:begin
+            2:end */;
+
+  type: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  percent: 0,
+  state: 0,
+  type: 0,
+});
+
+const title = computed(() => {
+  if (props.type == 1) return t("register.step1.title");
+  else if (props.type == 2) return t("register.step2.title");
+  else if (props.type == 3) return t("register.step3.title");
+  return "";
+});
+
+const text = computed(() => {
+  if (props.type == 1) return t("register.step1.text") + t("register.step1.text2");
+  else if (props.type == 2) return t("register.step2.text");
+  else if (props.type == 3) return t("register.step3.text");
+  return "";
+});
+
+const stepState = computed(() => {
+  if (props.state == 0) return "number-circle-noactive";
+  else if (props.state == 1) return "number-circle-processing";
+  else if (props.state == 2) return "number-circle-succeed";
+  return "";
+});
+
+const stepStateText = computed(() => {
+  if (props.state == 0) return "noactive-text";
+  else if (props.state == 1) return "processing-text";
+  else if (props.state == 2) return "succeed-text";
+  return "";
+});
 </script>
 
 <template>
@@ -20,63 +67,8 @@ import { useI18n } from "vue-i18n";
 </template>
 
 <script lang="ts">
-import CircleVue from "components/step/Circle.vue";
 export default {
   name: "InputSearch",
-  components: { CircleVue },
-  props: {
-    percent: {
-      type: Number,
-      default: 0,
-    },
-    state: {
-      type: Number,
-      default: 0 /**
-            0:未开始
-            1:开始
-            2:完成 */,
-    },
-    type: {
-      type: Number,
-      default: 0,
-    },
-  },
-  computed: {
-    title() {
-      if (this.type == 1) return this.$t("register.step1.title");
-      else if (this.type == 2) return this.$t("register.step2.title");
-      else if (this.type == 3) return this.$t("register.step3.title");
-      return "";
-    },
-    text() {
-      if (this.type == 1)
-        return this.$t("register.step1.text") + this.$t("register.step1.text2");
-      else if (this.type == 2) return this.$t("register.step2.text");
-      else if (this.type == 3) return this.$t("register.step3.text");
-      return "";
-    },
-    stepState() {
-      if (this.state == 0) return "number-circle-noactive";
-      else if (this.state == 1) return "number-circle-processing";
-      else if (this.state == 2) return "number-circle-succeed";
-      return "";
-    },
-    stepStateText() {
-      if (this.state == 0) return "noactive-text";
-      else if (this.state == 1) return "processing-text";
-      else if (this.state == 2) return "succeed-text";
-      return "";
-    },
-  },
-  data() {
-    return {};
-  },
-
-  methods: {
-    onClick() {
-      this.$emit("onClick", this.searchText);
-    },
-  },
 };
 </script>
 <style scoped>

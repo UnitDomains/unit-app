@@ -67,8 +67,8 @@
     "transfer": "Chuyển quyền ",
     "warning": "Cảnh Báo",
     "year": "năm",
-    "appCaption": "Names in the Web3 world, You must have it",
-    "appSubCaption": "A distributed, open, and extensible naming system based on the Ethereum blockchain",
+    "appCaption": "Bạn phải có ít nhất một cái tên trong thế giới Web3!",
+    "appSubCaption": "Một hệ thống đặt tên phân tán, mở và có thể mở rộng dựa trên chuỗi khối Ethereum",
     "help": "Help Center",
     "termsofservice": "Terms of Service",
     "names": "Names",
@@ -101,13 +101,13 @@
       "manage": {
         "text1": "Bạn có thể quản lý tên miền này ngay bây giờ do bạn đã là chủ sở hữu",
         "text2": "Bạn chỉ có thể xem tên miền này trong trình quản lý do hiện tại bạn không phải là chủ sở hữu",
-        "title": "Xin chúc mừng! Bạn vừa thêm thành công tên miền DNS này vào Trình đăng ký ENS(unit.domains)"
+        "title": "Xin chúc mừng! Bạn vừa thêm thành công tên miền DNS này vào Trình đăng ký UENS(Unit Ethereum Name Service)"
       },
       "proof": {
         "text1": "Địa chỉ xuất hiện trong bản ghi file txt của DNS cũng là địa chỉ của bạn",
         "text2": "Nếu bạn biết mình sở hữu tên miền này, hãy thay đổi bản ghi TXT để lưu trữ Địa chỉ Ethereum của bạn và tải lại trang để tiến hành xác minh lại DNSSEC ",
-        "title1": "Bạn là chủ sở hữu của địa chỉ này. Hãy thêm tên miền của bạn vào Trình đăng ký ENS(unit.domains) ngay",
-        "title2": "Bạn không phải là Người sở hữu DNS của tên miền này, nhưng bất kì ai cũng có thể thêm tên miền này vào trình Đăng ký ENS(unit.domains)"
+        "title1": "Bạn là chủ sở hữu của địa chỉ này. Hãy thêm tên miền của bạn vào Trình đăng ký UENS(Unit Ethereum Name Service) ngay",
+        "title2": "Bạn không phải là Người sở hữu DNS của tên miền này, nhưng bất kì ai cũng có thể thêm tên miền này vào trình Đăng ký UENS(Unit Ethereum Name Service)"
       }
     },
     "viewinmanager": "Xem trong Trình quản lý"
@@ -131,12 +131,12 @@
   "home": {
     "announcements": {},
     "howtouse": {
-      "body": "ENS(unit.domains) App là một giao diện cho người dùng không rành về kỹ thuật . Cho phép bạn tìm bất cứ tên nào, quản lý địa chỉ, tính năng và tạo tên miền con của mỗi tên.",
-      "title": "Cách dùng  ENS(unit.domains) "
+      "body": "UENS(Unit Ethereum Name Service) App là một giao diện cho người dùng không rành về kỹ thuật . Cho phép bạn tìm bất cứ tên nào, quản lý địa chỉ, tính năng và tạo tên miền con của mỗi tên.",
+      "title": "Cách dùng  UENS(Unit Ethereum Name Service) "
     },
     "whatisens": {
-      "body": "Ethereum Name Service là một dịch vụ phân tán, mã nguồn mở, có thể mở rộng hệ thống tên dựa trên nền chuỗi khối Ethereum.\nENS giúp hạn chế việc copy hay đánh các địa chỉ quá dài.",
-      "title": "ENS(unit.domains) là gì"
+      "body": "UENS(Unit Ethereum Name Service) là một dịch vụ phân tán, mã nguồn mở, có thể mở rộng hệ thống tên dựa trên nền chuỗi khối Ethereum.\nENS giúp hạn chế việc copy hay đánh các địa chỉ quá dài.",
+      "title": "UENS(Unit Ethereum Name Service) là gì"
     },
     "website": {
       "about": {
@@ -199,20 +199,20 @@
     "gasDescription": "Estimated Gas Price (Step 1 + Step 3). The gas price will flucuate.",
     "pricePerAmount": "Price per amount of time selected",
     "registrationPeriodLabel": "Thời gian đăng ký",
-    "registrationPriceLabel": "Registration price to pay",
-    "rentPriceLabel": "Rental price to pay",
-    "totalDescription": "Estimated Total (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
-    "totalDescriptionOnlyRent": "Estimated Total (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "registrationPriceLabel": "Giá đăng ký phải trả",
+    "rentPriceLabel": "Giá thuê phải trả",
+    "totalDescription": "Tổng số ước tính (Registration Price + Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
+    "totalDescriptionOnlyRent": "Tổng số ước tính (Rental Price + Gas). The gas price is based at {gasPriceToGweiFast} Gwei",
     "totalPriceLabel": "Tổng giá thanh toán",
     "yearUnit": "Năm"
   },
   "register": {
     "buttons": {
-      "insufficient": "Insufficient balance on your wallet. Fill in your wallet and reload the page.",
+      "insufficient": "Không đủ số dư trên ví của bạn. Điền vào ví của bạn và tải lại trang.",
       "manage": "Quản lý",
       "register": "Đăng lý",
       "request": "Yêu cầu đăng ký",
-      "setreverserecord": "Set Reverse Record",
+      "setreverserecord": "Đặt bản ghi đảo ngược",
       "warning": "Nhấn đăng ký để chuyển đến bước thứ 3"
     },
     "favourite": "*Đánh dấu tên miền yêu thích để dễ truy cập phòng trường hợp bạn đóng trình duyệt ",
@@ -255,7 +255,7 @@
 
   },
   "registrymigration": {
-    "donotaccept": "*Đừng chấp nhận tên miền này khi bạn giao dịch ENS(unit.domains)!",
+    "donotaccept": "*Đừng chấp nhận tên miền này khi bạn giao dịch UENS(Unit Ethereum Name Service)!",
     "messages": {
       "controller": "Tên miền này thuộc quyền điều khiển của một hợp đồng và không thể tự chuyển đổi. Hãy khởi động lại hợp đồng để dùng quyền đăng ký mới trước khi ấn định quyền điều khiển mới",
       "default": "Tên miền này cần được chuyển đổi tới Trình đăng ký mới. Chỉ những tên miền gốc của tên miền này ({parent}) có thể làm vậy",
@@ -270,8 +270,8 @@
       "title": "Register {name}"
     },
     "renewal": {
-      "description": "Your ENS(unit.domains) name is expiring soon, please renew it",
-      "title": "Renew your ENS(unit.domains) domain {name}"
+      "description": "Your UENS(Unit Ethereum Name Service) name is expiring soon, please renew it",
+      "title": "Renew your UENS(Unit Ethereum Name Service) domain {name}"
     }
   },
   "search": {
@@ -325,14 +325,14 @@
     "domain": {
       "state": {
         "auction": "Đang đấu giá",
-        "available": "Available",
+        "available": "có sẵn",
         "default": "Tình trạng chưa rõ",
         "owned": "Không có sẵn",
         "owner": "Chủ nhân"
       },
 
       "whygreat": {
-        "title": "Why it's great",
+        "title": "Tại sao nó tuyệt vời",
         "less5": "{name} is 5 characters or less",
         "less10": "{name} is 10 characters or less",
         "less15": "{name} is 15 characters or less",
@@ -349,7 +349,7 @@
     },
     "learnmore": {
       "step1": {
-        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your ENS(unit.domains) name when you connect to them with your Ethereum account. ",
+        "text": "Once you register your name, Go to 'My Account' page and set a reverse record. This allows dapps to find and display your UENS(Unit Ethereum Name Service) name when you connect to them with your Ethereum account. ",
         "title": "1. Set a reverse record"
       },
       "step2": {
@@ -357,7 +357,7 @@
         "title": "2. Set other records"
       },
       "step3": {
-        "text": "You can host your static html/css/images on IPFS and put the hash in your ENS(unit.domains) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
+        "text": "You can host your static html/css/images on IPFS and put the hash in your UENS(Unit Ethereum Name Service) name's Content record. Then it can be resolved by ENS-aware browsers (e.g. Opera), browser extensions (Metamask), or any browser with '.link' appended to the end (e.g. ens.eth.link).",
         "title": "3. Set a content hash of a decentralized website"
       },
       "title": "Learn how to manage your name."
@@ -374,11 +374,11 @@
       "closeEdit": "Close Add/Edit Records",
       "messages": {
         "explanation": "Trình Phân giải đảo chiều dịch địa chỉ thành tên miền. Nó cho phép các DApps hiển thị giao diện '{name}' chứ không phải những địa chỉ dài dòng '{account}'. Nếu bạn muốn cài đặt việc đảo chiều đến một tài khoản khác, hãy chuyển tài khoản trong trình duyệt dapp của mình",
-        "explanation2": "You can only select names you set this Ethereum Address as.",
-        "noForwardRecordAavilable": "You either do not own any ENS(unit.domains) names, or your ENS(unit.domains) names have no ETH records set to this address.",
+        "explanation2": "Bạn chỉ có thể chọn tên mà bạn đặt Địa chỉ Ethereum này làm.",
+        "noForwardRecordAavilable": "Bạn không sở hữu bất kỳ tên UENS (Unit Ethereum Name Service) nào hoặc tên UENS (Unit Ethereum Name Service) của bạn không có bản ghi ETH nào được đặt cho địa chỉ này.",
         "notSet": "Bản ghi đảo chiều: chưa ấn định",
-        "reverseRecordRemoval": "Are you sure you want to delete the reverse record?",
-        "selectPlaceholder": "Select your ENS(unit.domains) name",
+        "reverseRecordRemoval": "Bạn có chắc chắn muốn xóa bản ghi đảo ngược không?",
+        "selectPlaceholder": "Chọn tên UENS (Unit Ethereum Name Service) của bạn",
         "setTo": "Bản ghi đảo chiều: ấn định cho",
         "setToDifferent": "Bản ghi đảo chiều: Ấn định cho tên miền khác"
       },

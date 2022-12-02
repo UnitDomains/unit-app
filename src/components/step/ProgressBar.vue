@@ -4,6 +4,18 @@ import { useRouter, useRoute } from "vue-router";
 import { defineComponent } from "vue";
 
 import { useI18n } from "vue-i18n";
+
+interface Props {
+  value: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: 0,
+});
+
+const progressPercent = computed(() => {
+  return "--progress:" + props.value + "%";
+});
 </script>
 
 <template>
@@ -17,22 +29,6 @@ import { useI18n } from "vue-i18n";
 <script lang="ts">
 export default {
   name: "ProgressBar",
-  props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-  },
-  computed: {
-    progressPercent() {
-      return "--progress:" + this.value + "%";
-    },
-  },
-  data() {
-    return {};
-  },
-
-  methods: {},
 };
 </script>
 <style scoped>
